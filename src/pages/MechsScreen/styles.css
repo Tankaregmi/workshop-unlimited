@@ -1,0 +1,131 @@
+#page-mechs {
+  display: grid;
+  grid-template-rows: 5rem 1fr;
+  width: 100%;
+  height: 100%;
+}
+
+#page-mechs > main {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  overflow-x: scroll;
+  padding-right: 1rem;
+}
+
+#page-mechs > main > .mech-card {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  min-width: 26rem;
+  height: 70%;
+  border-radius: var(--ui-radius);
+  background-color: var(--color-bg);
+  overflow: hidden;
+  margin-left: 1rem;
+}
+
+#page-mechs > main > .mech-card > div {
+  position: relative;
+  display: block;
+  width: 100%;
+  box-shadow: 0 0 1rem #000000 inset;
+  flex: 1;
+}
+
+#page-mechs > main > .mech-card > div > .mech-gfx {
+  position: absolute;
+  left: 50%;
+  bottom: 1%;
+}
+
+
+#page-mechs > main > .mech-card > footer {
+  width: 100%;
+  text-align: center;
+}
+
+#page-mechs > main > .mech-card > footer > .info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: 7rem;
+}
+
+#page-mechs > main > .mech-card > footer > .info > input[type=text] {
+  width: 100%;
+  text-align: center;
+  border:  none;
+  background: none;
+  font:  inherit;
+  color: inherit;
+}
+
+#page-mechs > main > .mech-card > footer > .info > span {
+  color: var(--color-text-inactive);
+}
+
+#page-mechs > main > .mech-card > footer > .buttons {
+  position: relative;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  height: 4rem;
+}
+
+#page-mechs > main > .mech-card > footer > .buttons > button {
+  height: 90%;
+  width: 48%;
+  font-size: 2rem;
+  background-color: var(--color-primary);
+}
+
+#page-mechs > main > .mech-card > footer > .buttons > button:first-of-type {
+  color: var(--color-on);
+}
+
+#page-mechs > main > .mech-card > footer > .buttons > button:last-of-type {
+  color: var(--color-off);
+}
+
+
+#page-mechs > main > button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26rem;
+  height: 70%;
+  border-radius: var(--ui-radius);
+  background-color: var(--color-bg-2);
+  margin-left: 1rem;
+  border: 0.2rem dashed var(--color-text);
+}
+
+#page-mechs > main > button > svg {
+  width: 6rem;
+  height: 6rem;
+}
+
+
+@media (orientation: portrait) and (max-width: 767px) {
+  #page-mechs > main {
+    display: block;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    padding-right: 0;
+    padding-bottom: 1rem;
+  }
+
+  #page-mechs > main > .mech-card,
+  #page-mechs > main > button {
+    display: flex;
+    width: 88%;
+    height: 36rem;
+    margin: 1rem 0 2rem 6%;
+  }
+}

@@ -1,0 +1,12 @@
+.mech-gfx {
+  position: relative;
+}
+
+.mech-gfx > div {
+  position: absolute;
+  filter: drop-shadow(0 0.3rem 0.5rem #000000) drop-shadow(0 0 0 #000000);
+}
+
+/* .mech-gfx > div > img:hover {
+  filter: contrast(0.9) brightness(1.1);
+} */

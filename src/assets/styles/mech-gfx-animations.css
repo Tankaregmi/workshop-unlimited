@@ -1,0 +1,13 @@
+@keyframes mech-gfx-animation-jump {
+  0% {
+    animation-timing-function: ease-out;
+    transform: translateY(0);
+  }
+  60% {
+    animation-timing-function: ease-in;
+    transform: translateY(-80px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}

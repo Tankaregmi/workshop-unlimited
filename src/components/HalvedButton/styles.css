@@ -1,0 +1,49 @@
+button.halved-button,
+button.halved-button:hover {
+  background-color: unset;
+}
+
+
+button.halved-button > div {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+
+button.halved-button > div > div {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  transition: height 200ms;
+  z-index: 1;
+}
+
+
+button.halved-button > div > div:hover {
+  height: 65%;
+  z-index: 2;
+}
+
+
+button.halved-button > div > div:first-of-type {
+  top: 0;
+  background-color: var(--color-bg);
+}
+
+
+button.halved-button > div > div:last-of-type {
+  bottom: 0;
+  background-color: var(--color-text);
+  color: var(--color-primary);
+}

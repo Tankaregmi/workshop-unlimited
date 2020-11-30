@@ -1,0 +1,103 @@
+#packs-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+#packs-screen > button {
+  width: 36rem;
+  margin: 0.5rem;
+  padding: 1rem 0;
+  font-size: 1.8rem;
+}
+
+#packs-screen > button.disabled {
+  opacity: 0.8;
+}
+
+#packs-screen > button > input[type=file] {
+  position: absolute;
+  display: block;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: inherit;
+}
+
+#packs-screen > button > span {
+  color: var(--color-text-inactive);
+  font-size: 1.4rem;
+}
+
+
+#packs-screen > span {
+  position: absolute;
+  left: 0;
+  top: 2rem;
+  width: 100%;
+  text-align: center;
+}
+
+
+#packs-screen > .items-pack-info {
+  width: 60%;
+  height: 40%;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+#packs-screen > .items-pack-info > .name {
+  width: 100%;
+  height: 3.5rem;
+  font-size: 2rem;
+  text-align: center;
+}
+
+#packs-screen > .items-pack-info > .name > span {
+  font-size: 1.6rem;
+  color: var(--color-on);
+  margin-left: 1rem;
+}
+
+#packs-screen > .items-pack-info > .description {
+  padding: 2rem;
+}
+
+#packs-screen > .items-pack-info > .description > span {
+  color: var(--color-text-inactive);
+}
+
+
+#packs-screen > .progress-bar {
+  width: 60%;
+}
+
+
+#packs-screen > .failed {
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--color-off);
+  background-color: var(--color-bg-2);
+  padding: 0 1rem;
+  z-index: 2;
+}
+
+
+@media (orientation: portrait) and (max-width: 767px) {
+  #packs-screen > .items-pack-info {
+    width: 90%;
+    height: 50%;
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  #packs-screen > .progress-bar {
+    width: 90%;
+  }
+}

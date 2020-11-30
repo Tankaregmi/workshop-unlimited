@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  viewbox="0 0 100 100"
+  width="100%"
+  height="100%"
+  fill="#dddddd">
+
+  <metadata>
+    Author: github.com/ctrl-raul
+  </metadata>
+ 
+  <defs>
+    <path id="arrow" d="m0 -20L17.5 0H10V15H-10V0H-17.5z" />
+  </defs>
+  
+  <use x=" 50" y=" 20" xlink:href="#arrow" />
+  <use x=" 50" y="-80" xlink:href="#arrow" transform="rotate(90)" />
+  <use x="-50" y="-80" xlink:href="#arrow" transform="rotate(180)" />
+  <use x="-50" y=" 20" xlink:href="#arrow" transform="rotate(270)" />
+  
+</svg>

@@ -1,0 +1,932 @@
+{
+  "config": {
+    "key": "@60b432603932b9c5",
+    "name": "KilliN's testing items",
+    "base_url": "https://raw.githubusercontent.com/ctrl-raul/workshop-unlimited/master/items/",
+    "description": "Pack with sole purpose of loading fast"
+  },
+  "items": [
+    {
+      "id": 161,
+      "name": "Hardened Platinum Vest",
+      "image": "%url%HardenedPlatinumVest.png",
+      "type": "TORSO",
+      "element": "PHYSICAL",
+      "stats": {
+        "weight": 346,
+        "health": 960,
+        "eneCap": 207,
+        "eneReg": 64,
+        "heaCap": 310,
+        "heaCol": 96,
+        "phyRes": 16,
+        "expRes": 22,
+        "eleRes": 44
+      },
+      "attachment": {
+        "leg1": {
+          "x": 63,
+          "y": 189
+        },
+        "leg2": {
+          "x": 125,
+          "y": 189
+        },
+        "side1": {
+          "x": 60,
+          "y": 148
+        },
+        "side2": {
+          "x": 140,
+          "y": 148
+        },
+        "side3": {
+          "x": 54,
+          "y": 80
+        },
+        "side4": {
+          "x": 142,
+          "y": 80
+        },
+        "top1": {
+          "x": 53,
+          "y": 24
+        },
+        "top2": {
+          "x": 107,
+          "y": 24
+        }
+      },
+      "transform_range": "L-D"
+    },
+    {
+      "id": 56,
+      "name": "Molten Platinum Vest",
+      "image": "%url%MoltenPlatinumVest.svg",
+      "type": "TORSO",
+      "element": "EXPLOSIVE",
+      "stats": {
+        "weight": 346,
+        "health": 1054,
+        "eneCap": 207,
+        "eneReg": 64,
+        "heaCap": 282,
+        "heaCol": 96,
+        "phyRes": 44,
+        "expRes": 16,
+        "eleRes": 22
+      },
+      "attachment": {
+        "leg1": {
+          "x": 63,
+          "y": 189
+        },
+        "leg2": {
+          "x": 125,
+          "y": 189
+        },
+        "side1": {
+          "x": 60,
+          "y": 148
+        },
+        "side2": {
+          "x": 140,
+          "y": 148
+        },
+        "side3": {
+          "x": 54,
+          "y": 80
+        },
+        "side4": {
+          "x": 142,
+          "y": 80
+        },
+        "top1": {
+          "x": 53,
+          "y": 24
+        },
+        "top2": {
+          "x": 107,
+          "y": 24
+        }
+      },
+      "transform_range": "L-D"
+    },
+    {
+      "id": 111,
+      "name": "Lightning Platinum Vest",
+      "image": "%url%LightningPlatinumVest.svg",
+      "type": "TORSO",
+      "element": "ELECTRIC",
+      "stats": {
+        "weight": 346,
+        "health": 1054,
+        "eneCap": 282,
+        "eneReg": 96,
+        "heaCap": 207,
+        "heaCol": 64,
+        "phyRes": 44,
+        "expRes": 22,
+        "eleRes": 16
+      },
+      "attachment": {
+        "leg1": {
+          "x": 63,
+          "y": 189
+        },
+        "leg2": {
+          "x": 125,
+          "y": 189
+        },
+        "side1": {
+          "x": 60,
+          "y": 148
+        },
+        "side2": {
+          "x": 140,
+          "y": 148
+        },
+        "side3": {
+          "x": 54,
+          "y": 80
+        },
+        "side4": {
+          "x": 142,
+          "y": 80
+        },
+        "top1": {
+          "x": 53,
+          "y": 24
+        },
+        "top2": {
+          "x": 107,
+          "y": 24
+        }
+      },
+      "transform_range": "L-D"
+    },
+    {
+      "id": 4,
+      "name": "Hollow Spectral Armor",
+      "image": "%url%HollowSpectralArmor.png",
+      "type": "TORSO",
+      "element": "PHYSICAL",
+      "stats": {
+        "weight": 370,
+        "health": 1678,
+        "eneCap": 259,
+        "eneReg": 80,
+        "heaCap": 259,
+        "heaCol": 80
+      },
+      "attachment": {
+        "leg1": {
+          "x": 63,
+          "y": 189
+        },
+        "leg2": {
+          "x": 125,
+          "y": 189
+        },
+        "side1": {
+          "x": 60,
+          "y": 148
+        },
+        "side2": {
+          "x": 140,
+          "y": 148
+        },
+        "side3": {
+          "x": 54,
+          "y": 80
+        },
+        "side4": {
+          "x": 142,
+          "y": 80
+        },
+        "top1": {
+          "x": 53,
+          "y": 24
+        },
+        "top2": {
+          "x": 107,
+          "y": 24
+        }
+      },
+      "transform_range": "L-D"
+    },
+    {
+      "id": 58,
+      "name": "Fractured Heat Armor",
+      "image": "%url%FracturedHeatArmor.svg",
+      "width": 210,
+      "height": 197,
+      "type": "TORSO",
+      "element": "EXPLOSIVE",
+      "stats": {
+        "weight": 370,
+        "health": 1786,
+        "eneCap": 207,
+        "eneReg": 64,
+        "heaCap": 282,
+        "heaCol": 96
+      },
+      "attachment": {
+        "leg1": {
+          "x": 63,
+          "y": 189
+        },
+        "leg2": {
+          "x": 125,
+          "y": 189
+        },
+        "side1": {
+          "x": 60,
+          "y": 148
+        },
+        "side2": {
+          "x": 140,
+          "y": 148
+        },
+        "side3": {
+          "x": 54,
+          "y": 80
+        },
+        "side4": {
+          "x": 142,
+          "y": 80
+        },
+        "top1": {
+          "x": 53,
+          "y": 24
+        },
+        "top2": {
+          "x": 107,
+          "y": 24
+        }
+      },
+      "transform_range": "L-D"
+    },
+    {
+      "id": 123,
+      "name": "Rusty Energy Armor",
+      "image": "%url%RustyEnergyArmor.svg",
+      "type": "TORSO",
+      "element": "ELECTRIC",
+      "stats": {
+        "weight": 370,
+        "health": 1786,
+        "eneCap": 282,
+        "eneReg": 96,
+        "heaCap": 207,
+        "heaCol": 64
+      },
+      "attachment": {
+        "leg1": {
+          "x": 64,
+          "y": 177
+        },
+        "leg2": {
+          "x": 128,
+          "y": 177
+        },
+        "side1": {
+          "x": 54,
+          "y": 137
+        },
+        "side2": {
+          "x": 147,
+          "y": 137
+        },
+        "side3": {
+          "x": 54,
+          "y": 87
+        },
+        "side4": {
+          "x": 147,
+          "y": 87
+        },
+        "top1": {
+          "x": 68,
+          "y": 11
+        },
+        "top2": {
+          "x": 122,
+          "y": 11
+        }
+      },
+      "transform_range": "L-D"
+    },
+    {
+      "id": 191,
+      "name": "Massive Stone Feet",
+      "image": "%url%MassiveStoneFeet.png",
+      "type": "LEGS",
+      "element": "PHYSICAL",
+      "stats": {
+        "weight": 132,
+        "health": 541,
+        "phyRes": 10,
+        "phyDmg": [
+          148,
+          239
+        ],
+        "phyResDmg": 10,
+        "range": [
+          1,
+          1
+        ],
+        "push": 1,
+        "walk": 1,
+        "jump": 2
+      },
+      "attachment": {
+        "x": 60,
+        "y": 23
+      },
+      "transform_range": "E-D",
+      "tags": ["melee"]
+    },
+    {
+      "id": 192,
+      "name": "Massive Lava Feet",
+      "image": "%url%MassiveLavaFeet.png",
+      "type": "LEGS",
+      "element": "EXPLOSIVE",
+      "stats": {
+        "weight": 117,
+        "health": 483,
+        "expRes": 10,
+        "expDmg": [
+          131,
+          211
+        ],
+        "heaDmg": 37,
+        "expResDmg": 10,
+        "range": [
+          1,
+          1
+        ],
+        "push": 1,
+        "walk": 1,
+        "jump": 2
+      },
+      "attachment": {
+        "x": 60,
+        "y": 23
+      },
+      "transform_range": "E-D",
+      "tags": ["melee"]
+    },
+    {
+      "id": 193,
+      "name": "Massive Shocker Feet",
+      "image": "%url%MassiveShockerFeet.png",
+      "type": "LEGS",
+      "element": "ELECTRIC",
+      "stats": {
+        "weight": 118,
+        "health": 466,
+        "eleRes": 10,
+        "eleDmg": [
+          131,
+          211
+        ],
+        "eneDmg": 49,
+        "eleResDmg": 10,
+        "range": [
+          1,
+          1
+        ],
+        "push": 1,
+        "walk": 1,
+        "jump": 2
+      },
+      "attachment": {
+        "x": 60,
+        "y": 23
+      },
+      "transform_range": "E-D",
+      "tags": ["melee"]
+    },
+    {
+      "id": 10,
+      "name": "The Claw",
+      "image": "%url%TheClaw.svg",
+      "type": "LEGS",
+      "element": "PHYSICAL",
+      "stats": {
+        "weight": 150,
+        "health": 909,
+        "phyDmg": [
+          83,
+          117
+        ],
+        "range": [
+          1,
+          1
+        ]
+      },
+      "attachment": {
+        "x": 116,
+        "y": 24
+      },
+      "transform_range": "L-D",
+      "tags": ["melee"]
+    },
+    {
+      "id": 114,
+      "name": "Sparked Runners",
+      "image": "%url%SparkedRunners.svg",
+      "type": "LEGS",
+      "element": "ELECTRIC",
+      "stats": {
+        "weight": 114,
+        "health": 389,
+        "eleDmg": [
+          143,
+          264
+        ],
+        "eneDmg": 41,
+        "push": 1,
+        "range": [
+          1,
+          1
+        ],
+        "walk": 3
+      },
+      "attachment": {
+        "x": 115,
+        "y": 22
+      },
+      "transform_range": "L-D",
+      "tags": ["melee"]
+    },
+    {
+      "id": 27,
+      "name": "Dark Eagle",
+      "image": "%url%DarkEagle.svg",
+      "type": "SIDE_WEAPON",
+      "element": "PHYSICAL",
+      "stats": {
+        "weight": 60,
+        "phyDmg": [
+          191,
+          482
+        ],
+        "phyResDmg": 10,
+        "range": [
+          2,
+          4
+        ],
+        "push": 1,
+        "recoil": 1,
+        "uses": 3,
+        "eneCost": 25,
+        "heaCost": 38
+      },
+      "attachment": {
+        "x": 64,
+        "y": 32
+      },
+      "transform_range": "L-D"
+    },
+    {
+      "id": 80,
+      "name": "Shadow Wolf",
+      "image": "%url%ShadowWolf.svg",
+      "type": "SIDE_WEAPON",
+      "element": "EXPLOSIVE",
+      "stats": {
+        "weight": 60,
+        "expDmg": [
+          155,
+          297
+        ],
+        "heaDmg": 53,
+        "expResDmg": 10,
+        "range": [
+          2,
+          4
+        ],
+        "push": 1,
+        "recoil": 1,
+        "uses": 3,
+        "eneCost": 25,
+        "heaCost": 56
+      },
+      "attachment": {
+        "x": 64,
+        "y": 32
+      },
+      "transform_range": "L-D"
+    },
+    {
+      "id": 135,
+      "name": "Piercing Fox",
+      "image": "%url%PiercingFox.svg",
+      "type": "SIDE_WEAPON",
+      "element": "ELECTRIC",
+      "stats": {
+        "weight": 64,
+        "eleDmg": [
+          155,
+          397
+        ],
+        "eneDmg": 71,
+        "eleResDmg": 10,
+        "range": [
+          2,
+          4
+        ],
+        "push": 1,
+        "recoil": 1,
+        "uses": 3,
+        "eneCost": 56,
+        "heaCost": 25
+      },
+      "attachment": {
+        "x": 64,
+        "y": 32
+      },
+      "transform_range": "L-D"
+    },
+    {
+      "id": 30,
+      "name": "Reckless Beam",
+      "image": "%url%RecklessBeam.png",
+      "type": "TOP_WEAPON",
+      "element": "PHYSICAL",
+      "stats": {
+        "weight": 35,
+        "phyDmg": [
+          241,
+          364
+        ],
+        "range": [
+          4,
+          8
+        ],
+        "eneCost": 25,
+        "heaCost": 25
+      },
+      "attachment": {
+        "x": 48,
+        "y": 56
+      },
+      "transform_range": "E-D"
+    },
+    {
+      "id": 88,
+      "name": "Savagery",
+      "image": "%url%Savagery.png",
+      "type": "TOP_WEAPON",
+      "element": "EXPLOSIVE",
+      "stats": {
+        "weight": 51,
+        "expDmg": [
+          158,
+          238
+        ],
+        "heaDmg": 109,
+        "heaCapDmg": 30,
+        "range": [
+          4,
+          8
+        ],
+        "eneCost": 16,
+        "heaCost": 47
+      },
+      "attachment": {
+        "x": 48,
+        "y": 55
+      },
+      "transform_range": "E-D"
+    },
+    {
+      "id": 138,
+      "name": "Hysteria",
+      "image": "%url%Hysteria.png",
+      "type": "TOP_WEAPON",
+      "element": "ELECTRIC",
+      "stats": {
+        "weight": 55,
+        "eleDmg": [
+          174,
+          259
+        ],
+        "eneDmg": 132,
+        "eneCapDmg": 24,
+        "range": [
+          4,
+          8
+        ],
+        "eneCost": 47,
+        "heaCost": 16
+      },
+      "attachment": {
+        "x": 48,
+        "y": 56
+      },
+      "transform_range": "E-D"
+    },
+    {
+      "id": 32,
+      "name": "Mighty Cannon",
+      "image": "%url%MightyCannon.svg",
+      "type": "TOP_WEAPON",
+      "element": "PHYSICAL",
+      "stats": {
+        "weight": 55,
+        "phyDmg": [
+          252,
+          431
+        ],
+        "pull": 1,
+        "range": [
+          4,
+          8
+        ],
+        "eneCost": 38,
+        "heaCost": 38
+      },
+      "attachment": {
+        "x": 56,
+        "y": 35
+      },
+      "transform_range": "L-D"
+    },
+    {
+      "id": 87,
+      "name": "Desert Snake",
+      "image": "%url%DesertSnake.svg",
+      "type": "TOP_WEAPON",
+      "element": "EXPLOSIVE",
+      "attachment": {
+        "x": 56,
+        "y": 35
+      },
+      "stats": {
+        "weight": 63,
+        "expDmg": [
+          202,
+          346
+        ],
+        "heaDmg": 75,
+        "heaColDmg": 7,
+        "pull": 1,
+        "range": [
+          4,
+          8
+        ],
+        "eneCost": 25,
+        "heaCost": 75
+      },
+      "transform_range": "L-D"
+    },
+    {
+      "id": 140,
+      "name": "SpineFall",
+      "image": "%url%SpineFall.svg",
+      "type": "TOP_WEAPON",
+      "element": "ELECTRIC",
+      "attachment": {
+        "x": 56,
+        "y": 35
+      },
+      "stats": {
+        "weight": 67,
+        "eleDmg": [
+          202,
+          346
+        ],
+        "eneDmg": 111,
+        "eneRegDmg": 13,
+        "pull": 1,
+        "range": [
+          4,
+          8
+        ],
+        "eneCost": 75,
+        "heaCost": 25
+      },
+      "transform_range": "L-D"
+    },
+    {
+      "id": 37,
+      "name": "Void",
+      "image": "%url%Void.svg",
+      "type": "DRONE",
+      "element": "PHYSICAL",
+      "stats": {
+        "weight": 29,
+        "phyDmg": [
+          147,
+          192
+        ],
+        "phyResDmg": 6,
+        "eneCost": 16,
+        "heaCost": 16
+      },
+      "transform_range": "E-D"
+    },
+    {
+      "id": 94,
+      "name": "Clash",
+      "image": "%url%Clash.svg",
+      "type": "DRONE",
+      "element": "EXPLOSIVE",
+      "stats": {
+        "weight": 43,
+        "expDmg": [
+          105,
+          138
+        ],
+        "heaDmg": 37,
+        "expResDmg": 6,
+        "heaCost": 31
+      },
+      "transform_range": "E-D"
+    },
+    {
+      "id": 145,
+      "name": "Snack",
+      "image": "%url%Snack.svg",
+      "type": "DRONE",
+      "element": "ELECTRIC",
+      "stats": {
+        "weight": 30,
+        "eleDmg": [
+          105,
+          138
+        ],
+        "eneDmg": 49,
+        "eleResDmg": 6,
+        "eneCost": 31
+      },
+      "transform_range": "E-D"
+    },
+    {
+      "id": 41,
+      "name": "Backstabber",
+      "image": "%url%Backstabber.svg",
+      "type": "DRONE",
+      "element": "PHYSICAL",
+      "stats": {
+        "weight": 51,
+        "phyDmg": [
+          172,
+          278
+        ],
+        "pull": 1,
+        "eneCost": 16,
+        "heaCost": 16
+      },
+      "transform_range": "L-D"
+    },
+    {
+      "id": 98,
+      "name": "FlameWave",
+      "image": "%url%FlameWave.svg",
+      "type": "DRONE",
+      "element": "EXPLOSIVE",
+      "stats": {
+        "weight": 51,
+        "expDmg": [
+          89,
+          163
+        ],
+        "heaDmg": 47,
+        "push": 1,
+        "heaCost": 31
+      },
+      "transform_range": "L-D"
+    },
+    {
+      "id": 149,
+      "name": "Shockwave",
+      "image": "%url%Shockwave.svg",
+      "type": "DRONE",
+      "element": "ELECTRIC",
+      "stats": {
+        "weight": 51,
+        "eleDmg": [
+          147,
+          193
+        ],
+        "eneDmg": 52,
+        "push": 1,
+        "eneCost": 31
+      },
+      "transform_range": "L-D"
+    },
+    {
+      "id": 159,
+      "name": "SuperCharge Protector",
+      "image": "%url%SuperChargeProtector.png",
+      "type": "MODULE",
+      "element": "ELECTRIC",
+      "stats": {
+        "weight": 28,
+        "eleRes": 63
+      },
+      "transform_range": "L-D"
+    },
+    {
+      "id": 154,
+      "name": "Double Teleporter",
+      "image": "%url%DoubleTeleporter.png",
+      "type": "TELEPORTER",
+      "element": "ELECTRIC",
+      "stats": {
+        "weight": 26,
+        "uses": 2,
+        "eneCost": 20
+      },
+      "transform_range": "L-L"
+    },
+    {
+      "id": 45,
+      "name": "Platinum Grappling Hook",
+      "image": "%url%PlatinumGrapplingHook.png",
+      "type": "GRAPPLING_HOOK",
+      "element": "PHYSICAL",
+      "stats": {
+        "weight": 17,
+        "phyDmg": [
+          154,
+          202
+        ],
+        "range": [2, 9],
+        "uses": 1
+      },
+      "transform_range": "L-D"
+    },
+    {
+      "id": 46,
+      "name": "Platinum Plating",
+      "image": "%url%PlatinumPlating.png",
+      "type": "MODULE",
+      "element": "PHYSICAL",
+      "stats": {
+        "weight": 40,
+        "health": 332
+      },
+      "transform_range": "L-D"
+    },
+    {
+      "id": 188,
+      "name": "Combined Storage Unit",
+      "image": "%url%CombinedStorageUnit.png",
+      "type": "MODULE",
+      "element": "COMBINED",
+      "stats": {
+        "weight": 40,
+        "eneCap": 125,
+        "heaCap": 115
+      },
+      "transform_range": "E-D"
+    },
+    {
+      "id": 189,
+      "name": "Combined Engine Unit",
+      "image": "%url%CombinedEngineUnit.png",
+      "type": "MODULE",
+      "element": "COMBINED",
+      "stats": {
+        "weight": 35,
+        "eneCap": 155,
+        "heaCap": 141
+      },
+      "transform_range": "L-D"
+    },
+    {
+      "id": 196,
+      "name": "Overload Preventor",
+      "image": "%url%_ (18).png",
+      "type": "MODULE",
+      "element": "COMBINED",
+      "transform_range": "L-D",
+      "stats": {
+        "weight": 25,
+        "eneReg": 73,
+        "heaCol": 73
+      }
+    },
+    {
+      "id": 197,
+      "name": "Quad Core Booster",
+      "image": "%url%_ (17).png",
+      "type": "MODULE",
+      "element": "COMBINED",
+      "transform_range": "L-D",
+      "stats": {
+        "weight": 40,
+        "eneCap": 104,
+        "eneReg": 49,
+        "heaCap": 94,
+        "heaCol": 49
+      }
+    }
+  ]
+}

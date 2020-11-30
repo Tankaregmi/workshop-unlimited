@@ -1,0 +1,15 @@
+.basic-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.2rem;
+  width: 100%;
+  height: 100%;
+}
+
+.basic-header > button {
+  position: absolute;
+  right: 0.5rem;
+  width: 4rem;
+  height: 4rem;
+}

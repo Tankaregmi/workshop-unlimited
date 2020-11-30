@@ -1,0 +1,100 @@
+#settings-screen {
+  display: grid;
+  grid-template-rows: 5rem 1fr;
+  width: 100%;
+  height: 100%;
+}
+
+#settings-screen > header > div {
+  display: flex;
+  align-items: center;
+}
+
+#settings-screen > main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+#settings-screen > main > section {
+  width: 31.33333%;
+  margin: 1%;
+  height: 86%;
+  background-color: var(--color-bg);
+  border-radius: var(--ui-radius);
+}
+
+#settings-screen > main > section > header {
+  width: 100%;
+  font-size: 2.2rem;
+  line-height: 3.6rem;
+  text-align: center;
+}
+
+#settings-screen > main > section > label {
+  display: flex;
+  align-items: center;
+  margin-top: 1.2rem;
+}
+
+#settings-screen > main > section > label > .switch-button {
+  margin: 0 1.2rem;
+}
+
+
+.switch-button {
+  position: relative;
+  width: 6rem;
+  height: 3rem;
+  border-radius: var(--ui-radius);
+  overflow: hidden;
+  background-color: var(--color-text-inactive);
+  cursor: pointer;
+}
+
+.switch-button > input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+  z-index: 1;
+  cursor: inherit;
+}
+
+.switch-button > input:checked ~ div {
+  left: 50%;
+  background-color: var(--color-on);
+}
+
+.switch-button > div {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  /* border-radius: inherit; */
+  background-color: var(--color-off);
+  transition: left 200ms, background-color 200ms;
+}
+
+
+@media (orientation: portrait) and (max-width: 767px) {
+  #settings-screen > main {
+    display: block;
+    align-items: unset;
+  }
+
+  #settings-screen > main > section {
+    width: 90%;
+    height: unset;
+    margin-left: 5%;
+    margin-top: 1rem;
+    padding-bottom: 1.5rem;
+  }
+}

@@ -1,0 +1,141 @@
+:root {
+  --max-width: 900px;
+  --max-height: 500px;
+
+  --color-primary: #051020;
+  --color-primary-light: #3086c0;
+  --color-bg: #000000DD;
+  --color-bg-hover: #040816DD;
+  --color-bg-2: #040816AA;
+  --color-text: #DDDDEE;
+  --color-text-inactive: #555566;
+  --color-on: #44ff66;
+  --color-off: #ff4466;
+  --color-enlight: #FFFFFF22;
+  --color-discord: #7289DA; /* blurple */
+  --color-good: #6688ff;
+  --color-bad: #ff8833;
+
+  --ui-radius: 0.4rem;
+
+  --z-index-ui: 25;
+  --z-index-tab: 50;
+  --z-index-popup: 75;
+  --z-index-tooltip: 1000;
+
+  font-size: 62.5%;
+}
+
+body {
+  font-size: 1.6rem;
+  color: #dddddd;
+}
+
+#root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+#workshop-unlimited {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: var(--max-width);
+  max-height: var(--max-height);
+  color: var(--color-text);
+  text-shadow: 0 0 0.2rem #000000;
+}
+
+button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  cursor: pointer;
+  transition:
+    background-color 100ms ease,
+    box-shadow 100ms ease;
+}
+
+button:hover {
+  background-color: var(--color-bg-hover);
+  box-shadow: 0 0 0.3rem 0.1rem var(--color-text);
+}
+
+img,
+button,
+.no-select {
+  user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+
+
+.classic-box,
+button {
+  background-color: var(--color-bg);
+  border-radius: var(--ui-radius);
+}
+
+.outline {
+  filter: drop-shadow(0 0 0.08rem #000000) drop-shadow(0 0 0.08rem #000000) drop-shadow(0 0 0.08rem #000000) drop-shadow(0 0 0.08rem #000000) drop-shadow(0 0 0.08rem #000000);
+}
+
+div.image {
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+div.separator {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 1px;
+  margin: 0.4rem 0;
+  background-color: var(--color-enlight);
+}
+
+div.tab {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-bg);
+  z-index: var(--z-index-tab);
+}
+
+
+::-moz-selection {
+  color: var(--color-primary-light);
+  background: #051020;
+  text-shadow: none;
+}
+::selection {
+  color: var(--color-primary-light);
+  background: #051020;
+  text-shadow: none;
+}
+
+
+@media (orientation: portrait) and (max-width: 767px) {
+  #workshop-unlimited {
+    max-width: 100%;
+    max-height: 100%;
+  }
+}

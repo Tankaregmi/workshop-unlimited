@@ -1,0 +1,119 @@
+.item-selecting-tab {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--color-bg);
+  z-index: var(--z-index-tab);
+}
+
+.item-selecting-tab > .content {
+  position: relative;
+  display: grid;
+  grid-template-rows: 23rem 1fr 8rem;
+  grid-template-columns: 23rem 1fr;
+  grid-template-areas:
+    'image items'
+    'info items'
+    'info filters';
+  width: 100%;
+  height: 100%;
+  max-width: var(--max-width);
+  max-height: var(--max-height);
+}
+
+.item-selecting-tab > .content > .item-image {
+  position: relative;
+  left: 10%;
+  top: 10%;
+  width: 75%;
+  height: 75%;
+  object-fit: contain;
+  grid-area: image;
+}
+
+.item-selecting-tab > .content > .component-item-info {
+  background-color: #000000;
+  grid-area: info;
+}
+
+
+.item-selecting-tab > .content > .item-filters {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  grid-area: filters;
+}
+
+.item-selecting-tab > .content > .item-filters > button {
+  width: 7rem;
+  height: 7rem;
+  margin: 0 1rem;
+  background-color: var(--color-primary);
+}
+
+.item-selecting-tab > .content > .item-filters > button.active {
+  box-shadow: 0 0 0.3rem 0.1rem var(--color-on);
+}
+
+.item-selecting-tab > .content > .item-filters > button > img {
+  width: 90%;
+  height: 90%;
+}
+
+.item-selecting-tab > .content > .items-list {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  grid-area: items;
+}
+
+.item-selecting-tab > .content > .items-list > button {
+  --size: 11.40%;
+  position: relative;
+  display: inline-block;
+  width: var(--size);
+  height: 0;
+  padding-top: var(--size);
+  margin: 1% 0 0 1%;
+  will-change: visibility;
+}
+
+.item-selecting-tab > .content > .items-list > button.active {
+  box-shadow: 0 0 0.3rem 0.1rem var(--color-on);
+  background-color: var(--color-bg-hover);
+}
+
+.item-selecting-tab > .content > .items-list > button > .item-img {
+  position: absolute;
+  left: 5%;
+  top: 5%;
+  width: 90%;
+  height: 90%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 1;
+}
+
+
+@media (orientation: portrait) {
+  .item-selecting-tab > .content {
+    grid-template-rows: 24rem 1fr 8rem;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      'image info'
+      'items items'
+      'filters filters';
+    max-width: unset;
+    max-height: unset;
+  }
+
+  .item-selecting-tab > .content > .items-list > button {
+    --size: 13%;
+  }
+}

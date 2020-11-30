@@ -1,0 +1,257 @@
+#screen-workshop {
+  position: absolute;
+  display: block;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  --ui-gap: 0.8rem;
+}
+
+
+#screen-workshop > .parts-slots {
+  position: absolute;
+  display: grid;
+  grid-template-areas:
+    "g i h"
+    "e a f"
+    "c b d";
+  left: 0;
+  top: 0;
+  width: 33.33333%;
+  height: 60%;
+  z-index: var(--z-index-ui);
+}
+
+#screen-workshop > .parts-slots > .equipment-slot {
+  width: 100%;
+  height: 100%;
+}
+
+
+#screen-workshop > .specials-slots {
+  position: absolute;
+  display: flex;
+  left: 4.16666%;
+  top: 60%;
+  width: 25%;
+  height: 15%;
+  z-index: var(--z-index-ui);
+}
+
+#screen-workshop > .specials-slots > .equipment-slot {
+  width: 33.33333%;
+  height: 100%;
+}
+
+#screen-workshop > .modules-slots {
+  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  left: 2.77777%;
+  top: 75%;
+  width: 27.77777%;
+  height: 25%;
+  z-index: var(--z-index-ui);
+}
+
+#screen-workshop > .modules-slots > .equipment-slot {
+  width: 25%;
+  height: 50%;
+}
+
+
+#screen-workshop > .mech-summary {
+  position: absolute;
+  display: flex;
+  align-content: flex-start;
+  flex-wrap: wrap;
+  left: 42%;
+  bottom: 0.5%;
+  width: 40%;
+  height: 20%;
+  line-height: 0;
+  background-color: var(--color-bg);
+  border-radius: var(--ui-radius);
+  z-index: var(--z-index-ui);
+}
+
+#screen-workshop > .mech-summary > .stat-block {
+  width: 33.33333%;
+  height: 33.33333%;
+}
+
+
+#screen-workshop > button.extras {
+  position: absolute;
+  left: 82.5%;
+  bottom: 0.5%;
+  width: 5.5%;
+  height: 9.5%;
+  z-index: var(--z-index-ui);
+}
+
+#screen-workshop > button.extras:hover {
+  background-color: var(--color-bg-hover);
+}
+
+#screen-workshop > button.settings {
+  position: absolute;
+  left: 82.5%;
+  bottom: 11%;
+  width: 5.5%;
+  height: 9.5%;
+  z-index: var(--z-index-ui);
+}
+
+
+#screen-workshop > .extras-tab > button {
+  display: grid;
+  grid-template-columns: 30% 70%;
+  width: 26rem;
+  font-size: 1.8rem;
+  margin: 0.4rem;
+  text-align: unset;
+  padding: 1.2rem 1.8rem;
+}
+
+#screen-workshop > .extras-tab > button > svg {
+  height: 3rem;
+}
+
+#screen-workshop > .extras-tab > button > span {
+  white-space: nowrap;
+}
+
+
+#screen-workshop > .mech-gfx {
+  position: absolute;
+  left: 62%;
+  top: 78%;
+}
+
+
+#screen-workshop .equipment-slot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#screen-workshop .equipment-slot > button {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#screen-workshop .equipment-slot > button.clear {
+  right: 5%;
+  top: 5%;
+  max-width: 33.33333%;
+  max-height: 33.33333%;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0 var(--ui-radius) 0 var(--ui-radius);
+  background-color: var(--color-text);
+  z-index: 2;
+  opacity: 0.4;
+  transition: opacity 100ms ease-out;
+}
+
+#screen-workshop .equipment-slot > button.clear:hover {
+  opacity: 0.8;
+}
+
+#screen-workshop .equipment-slot > button.clear > svg {
+  stroke: var(--color-primary);
+}
+
+#screen-workshop .equipment-slot > button.clear:hover > svg {
+  stroke: var(--color-off);
+}
+
+#screen-workshop .equipment-slot > button.click-area {
+  width: 90%;
+  height: 90%;
+  z-index: 1;
+}
+
+
+#screen-workshop .equipment-slot > button.click-area > img,
+#screen-workshop .equipment-slot > button.click-area > svg {
+  position: relative;
+  display: block;
+  width: 85%;
+  height: 85%;
+  object-fit: contain;
+  -o-object-fit: contain;
+}
+
+
+@media (orientation: portrait) and (max-width: 767px) {
+  #screen-workshop > .parts-slots {
+    top: unset;
+    bottom: 9%;
+    width: 100%;
+    height: 18%;
+    grid-template-areas:
+      'e a f g i h'
+      'c b d . . .';
+  }
+  
+  #screen-workshop > .specials-slots {
+    left: unset;
+    right: 0;
+    top: unset;
+    bottom: 9%;
+    width: 50%;
+    height: 9%;
+  }
+  
+  #screen-workshop > .modules-slots {
+    left: 0;
+    top: unset;
+    bottom: 0;
+    width: 100%;
+    height: 9%;
+  }
+
+  #screen-workshop > .mech-summary {
+    width: 85%;
+    height: 15%;
+    left: 0.25rem;
+    top: 0.25rem;
+  }
+
+  #screen-workshop > button.settings {
+    position: absolute;
+    left: unset;
+    right: 0.25rem;
+    top: 0.25rem;
+    width: 12.5%;
+    height: 7%;
+  }
+
+  #screen-workshop > button.extras {
+    position: absolute;
+    left: unset;
+    right: 0.25rem;
+    top: 8%;
+    margin-top: 0.25rem;
+    width: 12.5%;
+    height: 7%;
+  }
+
+  #screen-workshop > .modules-slots > .equipment-slot {
+    width: 12.5%;
+    height: 100%;
+  }
+
+  #screen-workshop > .mech-gfx {
+    left: 50%;
+    top: unset;
+    bottom: 27%;
+  }
+}

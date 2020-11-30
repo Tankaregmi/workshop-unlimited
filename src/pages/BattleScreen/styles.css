@@ -1,0 +1,245 @@
+#screen-battle {
+  position: absolute;
+  display: block;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+
+#screen-battle > .mech-gfx-container {
+  position: absolute;
+  bottom: 10rem;
+}
+
+
+#screen-battle > .stat-panels {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+}
+
+
+#screen-battle > .buttons-container {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 6.5rem;
+}
+
+#screen-battle > .buttons-container > button {
+  width: 5rem;
+  height: 5rem;
+  margin: 0 0.5rem;
+}
+
+#screen-battle > .buttons-container > button.quit {
+  color: var(--color-off);
+}
+
+
+#screen-battle > footer {
+  position: absolute;
+  display: flex;
+  width: 100%;
+  height: 10rem;
+  left: 0;
+  bottom: 0;
+  background-color: var(--color-bg);
+}
+
+#screen-battle > footer > button {
+  width: 8rem;
+  height: 8rem;
+  margin: 1rem 0 0 1rem;
+  background-color: var(--color-primary);
+}
+
+#screen-battle > footer > button.disabled {
+  filter: brightness(0.25);
+}
+
+#screen-battle > footer > button > img,
+#screen-battle > footer > button > svg {
+  position: absolute;
+  left: 10%;
+  top: 10%;
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+  fill: #dddddd;
+}
+
+#screen-battle > footer > button > span {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 2rem;
+  height: 2rem;
+  border-top-left-radius: 1rem;
+  border-bottom-right-radius: inherit;
+  color: var(--color-primary);
+  line-height: 2rem;
+  font-weight: 700;
+  font-size: 1.6rem;
+  text-align: center;
+  background-color: var(--color-text);
+}
+
+
+#screen-battle > footer > .range-highlight,
+#screen-battle > footer > .position-highlight {
+  --color: #00ff00aa;
+  position: absolute;
+  display: block;
+  top: -30%;
+  width: 8%;
+  height: 30%;
+  background-image: -webkit-linear-gradient(#ff000000, var(--color));
+  background-image: -moz-linear-gradient(#ff000000, var(--color));
+  background-image: -o-linear-gradient(#ff000000, var(--color));
+  background-image: linear-gradient(#ff000000, var(--color));
+}
+#screen-battle > footer > .range-highlight {
+  --color: #ff0000aa;
+}
+
+
+#screen-battle > button.logs-btn {
+  position: abdolute;
+  left: 42.5%;
+  top: 0;
+  width: 15%;
+}
+
+#screen-battle > .logs-tab {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  font-family: monospace;
+  z-index: var(--z-index-tab);
+  overflow-y: scroll;
+}
+
+#screen-battle > .stat-panels > .player-stats-panel {
+  display: grid;
+  grid-template-columns: 15% 15% 15% 5% 50%;
+  grid-template-rows: 2.4rem 2.2rem 2.2rem 4rem;
+  grid-template-areas:
+    'g g g g g'
+    'a a a a a'
+    'b b b c c'
+    'd e f . .';
+  width: 26rem;
+  gap: 0.4rem;
+}
+
+#screen-battle > .stat-panels > .player-stats-panel > .player-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  grid-area: g;
+  background-color: #00000055;
+  border-radius: var(--ui-radius);
+  white-space: nowrap;
+}
+
+#screen-battle > .stat-panels > .player-stats-panel.admin > .player-name {
+  color: var(--color-off);
+}
+
+#screen-battle > .stat-panels > .player-stats-panel:last-of-type {
+  direction: rtl;
+}
+
+#screen-battle > .stat-panels > .player-stats-panel > * {
+  width: 100%;
+  height: 100%;
+}
+
+#screen-battle > .stat-panels > .player-stats-panel > .resistance-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#screen-battle > .stat-panels > .player-stats-panel > .resistance-display > img {
+  position: absolute;
+  width: 4rem;
+  height: 4.4rem;
+  z-index: 1;
+}
+
+#screen-battle > .stat-panels > .player-stats-panel > .resistance-display > span {
+  direction: ltr;
+  font-weight: 700;
+  text-shadow: 1px 1px 1px #000000, -1px 1px 1px #000000, 1px -1px 1px #000000, -1px -1px 1px #000000;
+  z-index: 2;
+}
+
+
+@media (orientation: portrait) and (max-width: 767px) {
+
+  #screen-battle > .mech-gfx-container {
+    bottom: 22vw;
+  }
+
+  #screen-battle > footer > .range-highlight,
+  #screen-battle > footer > .position-highlight {
+    height: 4rem;
+    top: -4.2rem;
+  }
+
+  #screen-battle > .stat-panels {
+    flex-direction: column;
+    width: 80%;
+  }
+  
+  #screen-battle > .stat-panels > .player-stats-panel {
+    width: 94%;
+    margin: 1rem 0 0 1rem;
+    gap: unset;
+  }
+
+  #screen-battle > .stat-panels > .player-stats-panel:last-of-type {
+    direction: unset;
+  }
+
+
+  #screen-battle > .buttons-container {
+    flex-direction: column;
+    align-items: flex-end;
+    width: 20%;
+    height: unset;
+    right: 0;
+  }
+
+  #screen-battle > .buttons-container > button {
+    margin: 1rem 1rem 0 0;
+  }
+
+  #screen-battle > footer {
+    height: unset;
+    padding-bottom: 2%;
+  }
+  
+  #screen-battle > footer > button {
+    width: 17.55555%;
+    height: 0;
+    padding-top: 17.55555%;
+    margin: 2% 0 0 2%;
+  }
+}

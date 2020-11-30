@@ -1,0 +1,27 @@
+.component-item-info {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 22rem;
+  text-align: center;
+}
+
+.component-item-info > span.tag {
+  display: block;
+  font-size: 1.4rem;
+}
+.component-item-info > span.tag::before {
+  content: '#';
+}
+
+.component-item-info > .item-stat-blocks {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.component-item-info > .item-stat-blocks > .stat-block {
+  width: 50%;
+  height: 2.6rem;
+}
