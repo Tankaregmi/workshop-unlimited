@@ -903,7 +903,7 @@
     {
       "id": 196,
       "name": "Overload Preventor",
-      "image": "%url%_ (18).png",
+      "image": "%url%OverloadPreventor.png",
       "type": "MODULE",
       "element": "COMBINED",
       "transform_range": "L-D",
@@ -916,7 +916,7 @@
     {
       "id": 197,
       "name": "Quad Core Booster",
-      "image": "%url%_ (17).png",
+      "image": "%url%QuadCoreBooster.png",
       "type": "MODULE",
       "element": "COMBINED",
       "transform_range": "L-D",
