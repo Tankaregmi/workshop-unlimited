@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import BattleM from '../../managers/BattleManager';
 import MechGfx from '../../components/MechGfx';
 import PlayerStatsPanel from './PlayerStatsPanel';
@@ -7,18 +7,15 @@ import DataManager from '../../managers/DataManager';
 import SocketM from '../../managers/SocketManager';
 import Popup, { PopupParams } from '../../components/Popup';
 import './styles.css';
+import PageContext from '../../contexts/PageContext';
 
 
-interface BattleScreenParams {
-  goTo: (screen: string) => any;
-}
-
-
-const BattleScreen: React.FC<BattleScreenParams> = ({ goTo }) => {
+const BattleScreen: React.FC = () => {
 
   const [popup, setPopup] = useState<PopupParams | null>(null);
   const [battle, setBattle] = useState(DataManager.getBattle());
   const [viewLogs, setViewLogs] = useState(false);
+  const { setPage } = useContext(PageContext);
 
   const { attacker, defender } = BattleM.getPlayers(battle);
   const dir = attacker.position < defender.position ? 1 : -1;
@@ -107,10 +104,10 @@ const BattleScreen: React.FC<BattleScreenParams> = ({ goTo }) => {
 
 
       <div className="buttons-container">
-        <button className="logs-btn" onClick={ () => setViewLogs(true) }>
+        <button className="classic-button logs-btn" onClick={() => setViewLogs(true)}>
           Logs
         </button>
-        <button onClick={onQuitBattle}>
+        <button className="classic-button" onClick={onQuitBattle}>
           Quit
         </button>
       </div>
@@ -124,7 +121,7 @@ const BattleScreen: React.FC<BattleScreenParams> = ({ goTo }) => {
           info={battle.quit && battle.victory ? 'Opponent has quit!' : undefined}
           options={{
             'View Logs': () => setViewLogs(true),
-            'Workshop': () => goTo('workshop')
+            'Workshop': () => setPage('workshop')
           }}
           />
       )}

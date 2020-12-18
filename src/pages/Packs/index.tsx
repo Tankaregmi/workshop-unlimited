@@ -1,30 +1,27 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import fetch from 'node-fetch';
 import ProgressBar from '../../components/ProgressBar';
 import ItemsManager, { ItemsPack } from '../../managers/ItemsManager';
 import Popup, { PopupParams } from '../../components/Popup';
 import isLocally from '../../utils/isLocally';
 import ItemsPack_runtype from '../../runtypes/items-pack';
+import PageContext from '../../contexts/PageContext';
 import testItems from '../../test-items-pack.json';
 import './styles.css';
 
 
-interface PacksScreenParams {
-  goTo: (page: string) => any;
-}
-
-
-const PacksScreen: React.FC<PacksScreenParams> = ({ goTo }) => {
+const Packs: React.FC = () => {
 
   const [popup, setPopup] = useState<PopupParams | null>(null);
   const [itemsPack, setItemsPack] = useState<ItemsPack | null>(null);
   const [progress, setProgress] = useState(0);
+  const { setPage } = useContext(PageContext);
 
   const darkstareItems = 'https://raw.githubusercontent.com/Dharkstare/My-items-pack/main/Item%20pack';
 
 
   function log (...args: any[]) {
-    console.log('[PacksScreen]', ...args);
+    console.log('[Packs]', ...args);
   }
 
 
@@ -81,12 +78,12 @@ const PacksScreen: React.FC<PacksScreenParams> = ({ goTo }) => {
     setPopup(null);
 
     ItemsManager.import(data, (total: number, loaded: number) => {
-    
+
       const progress = loaded / total * 100;
       setProgress(progress);
 
       if (ItemsManager.loaded) {
-        setTimeout(() => goTo('workshop'), 100);
+        setTimeout(() => setPage('workshop'), 100);
       }
 
     }, 100);
@@ -97,7 +94,7 @@ const PacksScreen: React.FC<PacksScreenParams> = ({ goTo }) => {
     if (popup) {
       return;
     }
-    
+
     if (e.target && e.target.files) {
       const file = e.target.files[0];
       if (['application/json', 'text/plain'].includes(file.type)) {
@@ -113,12 +110,14 @@ const PacksScreen: React.FC<PacksScreenParams> = ({ goTo }) => {
     return (
       <>
         <button
+          className="classic-button"
           onClick={ () => importFromURL(darkstareItems) }>
           Use Darkstare's Items
           <span>(Recommended)</span>
         </button>
 
         <button
+          className="classic-button"
           onClick={() => {
           if (popup) {
             return;
@@ -131,15 +130,16 @@ const PacksScreen: React.FC<PacksScreenParams> = ({ goTo }) => {
           Import From URL
         </button>
 
-        <button>
+        <button className="classic-button">
           Import From File
           <input type="file" onChange={ importFromFile }/>
         </button>
-        
+
         {isLocally && (
           <button
+            className="classic-button"
             onClick={() => beginImporting(testItems as ItemsPack)}
-            style={{ color: 'var(--color-on)' }}>
+            style={{ '--color': 'var(--color-on)' }}>
             Dev
           </button>
         )}
@@ -198,4 +198,4 @@ const Loading: React.FC<LoadingParams> = ({ itemsPack, progress }) => {
 };
 
 
-export default PacksScreen;
+export default Packs;

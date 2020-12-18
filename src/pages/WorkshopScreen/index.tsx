@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import MechGfx from '../../components/MechGfx';
 import EquipmentSlot from './EquipmentSlot';
 import StatBlocks from '../../components/StatBlocks';
@@ -8,6 +8,8 @@ import MechSavesManager, { Mech } from '../../managers/MechSavesManager';
 import { Item } from '../../managers/ItemsManager';
 import TooltipManager from '../../managers/TooltipManager';
 import slotsConfig from './slotsConfig';
+import BattleManager from '../../managers/BattleManager';
+import PageContext from '../../contexts/PageContext';
 import { ReactComponent as CrossedSwordsIcon } from '../../assets/images/icons/crossed-swords.svg';
 import { ReactComponent as MechIcon } from '../../assets/images/icons/mech.svg';
 import { ReactComponent as TrashBinIcon } from '../../assets/images/icons/trash-bin.svg';
@@ -15,23 +17,19 @@ import { ReactComponent as PlusIcon } from '../../assets/images/icons/plus.svg';
 import { ReactComponent as CogIcon } from '../../assets/images/icons/cog.svg';
 import { ReactComponent as DiscordLogo } from '../../assets/images/discord-logo.svg';
 import './styles.css';
-import BattleManager from '../../managers/BattleManager';
 
 
-interface WorkshopScreenParams {
-  goTo: (screen: string) => any;
-}
-
-
-const WorkshopScreen: React.FC<WorkshopScreenParams> = ({ goTo }) => {
+const Workshop: React.FC = () => {
 
   const [mech, setMech] = useState<Mech>(MechSavesManager.getLastMech());
   const [focusedSlotInfo, setFocusedSlotInfo] = useState({ index: -1, type: '', });
   const [showExtras, setShowExtras] = useState(false);
   const [showDiscord, setShowDiscord] = useState(false);
   const [popup, setPopup] = useState<PopupParams | null>(null);
+  const { setPage } = useContext(PageContext);
 
   const getNextIndex = ((i = 0) => () => i++)();
+  const blurChildren = showExtras || showDiscord || !!popup || !!focusedSlotInfo.type;
 
 
   function onSelectItem (item: Item | null): void {
@@ -87,12 +85,12 @@ const WorkshopScreen: React.FC<WorkshopScreenParams> = ({ goTo }) => {
   }
 
   function onClickBattle () {
-    
+
     const { can, reason } = BattleManager.canSetupBattle(mech.setup);
     const Ok = () => setPopup(null);
 
     if (can) {
-      goTo('lobby');
+      setPage('lobby');
     } else {
       setPopup({
         title: 'Wait!',
@@ -104,7 +102,7 @@ const WorkshopScreen: React.FC<WorkshopScreenParams> = ({ goTo }) => {
   }
 
   return (
-    <div id="screen-workshop">
+    <div id="screen-workshop" className={blurChildren ? 'blur-children' : undefined}>
 
       <MechGfx setup={mech.setup} outline />
 
@@ -112,20 +110,20 @@ const WorkshopScreen: React.FC<WorkshopScreenParams> = ({ goTo }) => {
       {createSlotsGroup('specials')}
       {createSlotsGroup('modules')}
 
-      <div className="mech-summary">
+      <div className="mech-summary classic-box">
         <StatBlocks source={mech.setup} />
       </div>
 
       <button
-        className="extras"
+        className="extras classic-box"
         onClick={() => setShowExtras(!showExtras)}
         ref={e => TooltipManager.listen(e, { text: 'Extras' })}>
         <PlusIcon />
       </button>
 
       <button
-        className="settings"
-        onClick={() => goTo('settings')}
+        className="settings classic-box"
+        onClick={() => setPage('settings')}
         ref={e => TooltipManager.listen(e, { text: 'Settings' })}>
         <CogIcon />
       </button>
@@ -134,29 +132,34 @@ const WorkshopScreen: React.FC<WorkshopScreenParams> = ({ goTo }) => {
         <div className="tab extras-tab" onClick={() => setShowExtras(false)}>
 
           <button
+            ref={e => TooltipManager.listen(e, { text: 'Work in progress!' })}
+            className="classic-button"
             onClick={onClickBattle}
-            style={{color: 'var(--color-on)'}}
-            ref={e => TooltipManager.listen(e, { text: 'Work in progress!' })}>
+            style={{ '--color': 'var(--color-on)' }}>
             <CrossedSwordsIcon fill="var(--color-on)" />
             <span>Battle</span>
           </button>
 
-          <button onClick={() => goTo('mechs')}>
+          <button
+            className="classic-button"
+            onClick={() => setPage('mechs')}>
             <MechIcon />
             <span>Manage Mechs</span>
           </button>
 
           <button
+            className="classic-button"
             onClick={ dismountMech }
-            style={{ color: 'var(--color-off)' }}>
+            style={{ '--color': 'var(--color-off)' }}>
             <TrashBinIcon fill="var(--color-off)" />
             <span>Dismount Mech</span>
           </button>
 
           <button
-            onClick={() => setShowDiscord(true)}
             ref={e => TooltipManager.listen(e, { text: 'Wanna share some cool idea? Report a bug?' })}
-            style={{ color: 'var(--color-discord)' }}>
+            className="classic-button"
+            onClick={() => setShowDiscord(true)}
+            style={{ '--color': 'var(--color-discord)' }}>
             <DiscordLogo fill="var(--color-discord)" />
             <span>Join Our Discord</span>
           </button>
@@ -192,4 +195,4 @@ const WorkshopScreen: React.FC<WorkshopScreenParams> = ({ goTo }) => {
 };
 
 
-export default WorkshopScreen;
+export default Workshop;

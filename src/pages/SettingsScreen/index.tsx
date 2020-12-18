@@ -1,15 +1,12 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import LSManager from '../../managers/LocalStorageManager';
 import SwitchButton from './SwitchButton';
 import Header from '../../components/Header';
+import PageContext from '../../contexts/PageContext';
 import './styles.css';
 
 
 type InputFormat = [string, boolean, React.Dispatch<React.SetStateAction<boolean>>, string?];
-
-interface SettingsScreenParams {
-  goTo: (screen: string) => any;
-}
 
 interface SectionsType {
   title: string;
@@ -17,7 +14,7 @@ interface SectionsType {
 }
 
 
-const SettingsScreen: React.FC<SettingsScreenParams> = ({ goTo }) => {
+const Settings: React.FC = () => {
 
   const defaultSettings = LSManager.getSettings();
 
@@ -25,6 +22,7 @@ const SettingsScreen: React.FC<SettingsScreenParams> = ({ goTo }) => {
   const [buffsOnTooltip] = useState(defaultSettings.buffs_on_tooltip);
   const [clearSlotButton, setClearSlotButton] = useState(defaultSettings.clear_slot_button);
   const [controlOpponentMech, setControlOpponentMech] = useState(defaultSettings.control_opponent_mech);
+  const { setPage } = useContext(PageContext);
 
 
   LSManager.setSettings({
@@ -52,7 +50,7 @@ const SettingsScreen: React.FC<SettingsScreenParams> = ({ goTo }) => {
   return (
     <div id="settings-screen">
 
-      <Header title="Settings" onGoBack={() => goTo('workshop')} />
+      <Header title="Settings" onGoBack={() => setPage('workshop')} />
 
       <main>
         {sections.map(({ title, inputs }) =>
@@ -80,4 +78,4 @@ const SettingsScreen: React.FC<SettingsScreenParams> = ({ goTo }) => {
 };
 
 
-export default SettingsScreen;
+export default Settings;

@@ -42,21 +42,21 @@ const Footer: React.FC<FooterParams> = ({ battle }) => {
       <>
         <button
           ref={e => TooltipM.listen(e, { text: 'Movement' })}
-          className={canMove ? '' : 'disabled'}
+          className={`classic-button ${canMove ? '' : 'disabled'}`}
           onClick={onClickMovements}>
           <ArrowCrossSvg />
         </button>
-        
+
         <button
           ref={e => TooltipM.listen(e, { text: 'Weapons' })}
-          className={hasWeapons ? '' : 'disabled'}
+          className={`classic-button ${hasWeapons ? '' : 'disabled'}`}
           onClick={() => hasWeapons && setSection('weapons')}>
           <AimSvg />
         </button>
-        
+
         <button
           ref={e => TooltipM.listen(e, { text: 'Specials' })}
-          className={hasSpecials ? '' : 'disabled'}
+          className={`classic-button ${hasSpecials ? '' : 'disabled'}`}
           onClick={() => hasSpecials && setSection('specials')}>
           <SpecialsSvg />
         </button>
@@ -67,9 +67,10 @@ const Footer: React.FC<FooterParams> = ({ battle }) => {
           battle={battle}
           onClick={() => BattleM.resolveAction(battle, 'stomp')}
         />
-        
+
         <button
           ref={e => TooltipM.listen(e, { text: `Cooldown (${attacker.stats.heaCol} cooling)` })}
+          className="classic-button"
           onClick={() => BattleM.resolveAction(battle, 'cooldown', { double: false })}>
           <CooldownSvg />
         </button>
@@ -80,7 +81,7 @@ const Footer: React.FC<FooterParams> = ({ battle }) => {
   function weapons () {
     return (
       <>
-        <button onClick={ () => setSection('main') }>
+        <button onClick={() => setSection('main')} className="classic-button">
           <ArrowBackSvg />
         </button>
 
@@ -101,7 +102,7 @@ const Footer: React.FC<FooterParams> = ({ battle }) => {
 
     if (teleporting) {
       return (
-        <button onClick={ () => setTeleporting(false) }>
+        <button onClick={() => setTeleporting(false)} className="classic-button">
           Cancel
         </button>
       )
@@ -118,7 +119,7 @@ const Footer: React.FC<FooterParams> = ({ battle }) => {
 
     return (
       <>
-        <button onClick={ () => setSection('main') }>
+        <button onClick={() => setSection('main')} className="classic-button">
           <ArrowBackSvg />
         </button>
 
@@ -137,7 +138,7 @@ const Footer: React.FC<FooterParams> = ({ battle }) => {
 
   function movements () {
     return (
-      <button onClick={ () => setPositionsMap([]) }>
+      <button onClick={() => setPositionsMap([])} className="classic-button">
         <ArrowBackSvg />
       </button>
     );
@@ -221,7 +222,7 @@ const ItemButton: React.FC<ItemButtonParams> = ({ itemIndex, battle, setRangeMap
       key={ String(item.id) + String(itemIndex) }
       onMouseEnter={ () => setRangeMap(BattleM.getRelativeWeaponRange(battle, itemIndex)) }
       onMouseLeave={ () => setRangeMap([]) }
-      className={ canUse ? undefined : 'disabled' }
+      className={`classic-button ${canUse ? '' : 'disabled'}`}
       onClick={ canUse ? onClick : () => BattleM.log(battle, 2, canPlayerUse.reason) }>
 
       <img src={ item.image.url } alt={ item.name } />
@@ -231,7 +232,7 @@ const ItemButton: React.FC<ItemButtonParams> = ({ itemIndex, battle, setRangeMap
         ? <span>{ attacker.uses[itemIndex] }</span>
         : null
       }
-      
+
     </button>
   );
 };

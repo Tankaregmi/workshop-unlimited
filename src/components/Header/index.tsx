@@ -17,7 +17,7 @@ const Header: React.FC<HeaderParams> = ({ title, onGoBack, canGoBack = true }) =
       {title}
 
       {canGoBack && (
-        <button onClick={onGoBack}>
+        <button className="classic-box" onClick={onGoBack}>
           <CrossIcon />
         </button>
       )}

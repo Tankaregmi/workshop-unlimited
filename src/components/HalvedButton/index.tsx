@@ -9,7 +9,7 @@ interface HalvedButtonParams {
 
 const HalvedButton: React.FC<HalvedButtonParams> = ({ first, last }) => {
   return (
-    <button className="halved-button">
+    <button className="halved-button classic-button">
       <div>
         {/*Extra div just so the padding affects both halfs as a whole*/}
         <div onClick={first[1]}>{first[0]}</div>

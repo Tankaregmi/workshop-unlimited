@@ -30,10 +30,15 @@ class TooltipManager
     this.onChange && this.onChange(null);
   }
 
-  listen (element: HTMLElement | null, data: TooltipData): void {
+  listen (element: HTMLElement | null, data: TooltipData | string): void {
     if (element) {
 
-      const setData = () => this.setData(data);
+      const setData = () => this.setData(
+        typeof data === 'string'
+        ? { text: data }
+        : data
+      );
+
       const clear = () => this.clear();
   
       element.addEventListener('pointerenter', setData);

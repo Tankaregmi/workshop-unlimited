@@ -9,6 +9,7 @@
 
 #packs-screen > button {
   width: 36rem;
+  max-width: 90%;
   margin: 0.5rem;
   padding: 1rem 0;
   font-size: 1.8rem;

@@ -1,0 +1,200 @@
+#mechs-manager-screen * {
+  /* box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.5); */
+  /* background: rgba(255, 255, 255, 0.1); */
+}
+
+#mechs-manager-screen button {
+  /* box-shadow: 0 0 0 0.1rem rgba(0, 0, 0, 0.5); */
+  /* background-color: rgba(255, 255, 255, 0.1); */
+}
+
+#mechs-manager-screen {
+  display: grid;
+  grid-template-rows: 5rem 1fr 8rem;
+  grid-template-columns: 30% 70%;
+  grid-template-areas:
+    'a a'
+    'b c'
+    'd c';
+  width: 100%;
+  height: 100%;
+}
+
+#mechs-manager-screen > .basic-header {
+  grid-area: a;
+}
+
+#mechs-manager-screen > .current-mech-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 2%;
+  gap: 2%;
+  grid-area: b;
+}
+
+#mechs-manager-screen > .current-mech-view > .mech-card {
+  width: 100%;
+  flex: 1;
+}
+
+#mechs-manager-screen > .current-mech-view > .buttons-container {
+  width: 100%;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#mechs-manager-screen > .current-mech-view > .buttons-container > button {
+  width: calc(50% - 0.25rem);
+  height: calc(100% - 0.75rem);
+}
+
+#mechs-manager-screen > .current-mech-view > .buttons-container > button:first-of-type {
+  --color: var(--color-off);
+}
+
+#mechs-manager-screen > .current-mech-view > .buttons-container > button:last-of-type {
+  --color: var(--color-on);
+}
+
+#mechs-manager-screen > .mechs-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  padding: 0 1% 1% 1%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  grid-area: c;
+}
+
+#mechs-manager-screen > .mechs-container > .mech-card {
+  width: 32.33333%;
+  height: 0;
+  margin: 1% 1% 0 0;
+  padding-top: 32.33333%;
+  cursor: pointer;
+}
+
+#mechs-manager-screen > .buttons-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  grid-area: d;
+}
+
+#mechs-manager-screen > .buttons-container > button {
+  width: calc(50% - 0.75rem);
+  height: calc(50% - 0.75rem);
+}
+
+#mechs-manager-screen > .buttons-container > button:first-of-type {
+  width: calc(100% - 1rem);
+}
+
+#mechs-manager-screen > .buttons-container > button.active {
+  box-shadow: 0 0 0.3rem 0.1rem var(--color-on);
+  --color: var(--color-on);
+}
+
+.mech-card {
+  /* box-shadow: 0 0 0 0.1rem rgba(0, 0, 0, 0.5); */
+  position: relative;
+  border-radius: var(--ui-radius);
+  /* background-color: rgba(255, 255, 255, 0.1); */
+  background-color: var(--color-bg);
+  overflow: hidden;
+}
+
+.mech-card > input[type=text] {
+  position: absolute;
+  text-align: center;
+  top: 2%;
+  width: 100%;
+  background-color: var(--color-primary);
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  border: none;
+  z-index: 2;
+}
+
+.mech-card > .mech-gfx-holder {
+  position: absolute;
+  display: block;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.mech-card > .mech-gfx-holder > .mech-gfx {
+  position: absolute;
+  left: 50%;
+  bottom: 1%;
+}
+
+.mech-card > input[type=checkbox] {
+  position: absolute;
+  left: 1rem;
+  bottom: 1rem;
+  width: 2rem;
+  height: 2rem;
+  z-index: 2;
+}
+
+@media (orientation: portrait) and (max-width: 767px) {
+  #mechs-manager-screen {
+    grid-template-rows: 5rem 6rem 1fr 12rem;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      'a a'
+      'b b'
+      'c c'
+      'd d';
+  }
+
+  #mechs-manager-screen > .mechs-container {
+    padding: 2%;
+    gap: 2%;
+  }
+
+  #mechs-manager-screen > .mechs-container > .mech-card {
+    width: 48%;
+    height: 0;
+    padding-top: 54%;
+  }
+
+  .mech-card > .mech-gfx-holder {
+    height: 80%;
+  }
+
+  .mech-card > .buttons-container {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 20%;
+  }
+
+  .mech-card > .buttons-container > button {
+    width: calc(50% - 0.75rem);
+    height: calc(100% - 0.5rem);
+  }
+
+  .mech-card > input[type=checkbox] {
+    bottom: calc(22%);
+  }
+}

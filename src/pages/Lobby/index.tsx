@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import Header from '../../components/Header';
 import MechGfx from '../../components/MechGfx';
 import Popup, { PopupParams } from '../../components/Popup';
 import HalvedButton from '../../components/HalvedButton';
+import PageContext from '../../contexts/PageContext';
 
 import MechSavesM, { Mech } from '../../managers/MechSavesManager';
 import SocketM from '../../managers/SocketManager';
@@ -16,14 +17,10 @@ import { arrayRandomItem } from '../../utils/arrayRandom';
 import './styles.css';
 
 
-interface LobbyScreenParams {
-  goTo: (screen: string) => any;
-}
-
-
-const LobbyScreen: React.FC<LobbyScreenParams> = ({ goTo }) => {
+const Lobby: React.FC = () => {
 
   const [popup, setPopup] = useState<PopupParams | null>(null);
+  const { setPage } = useContext(PageContext);
 
   const [inPool, setInPool] = useState(false);
   const [mech] = useState(MechSavesM.getLastMech());
@@ -92,7 +89,7 @@ const LobbyScreen: React.FC<LobbyScreenParams> = ({ goTo }) => {
       }
     }
 
-    goTo('workshop');
+    setPage('workshop');
   }
 
   function battleVSComputer () {
@@ -101,7 +98,7 @@ const LobbyScreen: React.FC<LobbyScreenParams> = ({ goTo }) => {
       multiplayer: false,
       turnOwnerIndex: 0
     });
-    goTo('battle');
+    setPage('battle');
   }
 
   function getOponentFromMechSaves () {
@@ -144,7 +141,7 @@ const LobbyScreen: React.FC<LobbyScreenParams> = ({ goTo }) => {
 
       <div className="battle-button-holder">
         {inPool ? (
-          <button onClick={quitArenaPool} className="cancel">
+          <button onClick={quitArenaPool} className="cancel classic-button">
             Searching For Opponent...
             <span>(Click to cancel)</span>
           </button>
@@ -157,10 +154,10 @@ const LobbyScreen: React.FC<LobbyScreenParams> = ({ goTo }) => {
       </div>
 
       {popup && <Popup { ...popup } />}
-      
+
     </div>
   );
 };
 
 
-export default LobbyScreen;
+export default Lobby;

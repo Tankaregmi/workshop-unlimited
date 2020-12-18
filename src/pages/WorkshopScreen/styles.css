@@ -5,8 +5,7 @@
   top: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden;
-  --ui-gap: 0.8rem;
+  /* overflow: hidden; */
 }
 
 
@@ -92,10 +91,6 @@
   z-index: var(--z-index-ui);
 }
 
-#screen-workshop > button.extras:hover {
-  background-color: var(--color-bg-hover);
-}
-
 #screen-workshop > button.settings {
   position: absolute;
   left: 82.5%;
@@ -153,10 +148,12 @@
   max-height: 33.33333%;
   width: 2rem;
   height: 2rem;
+  border: none;
   border-radius: 0 var(--ui-radius) 0 var(--ui-radius);
   background-color: var(--color-text);
   z-index: 2;
   opacity: 0.4;
+  cursor: pointer;
   transition: opacity 100ms ease-out;
 }
 

@@ -27,7 +27,7 @@ const ItemSelectingTab: React.FC<ItemSelectingTabParams> = ({ type, currentItem,
 
 
   function onOffClick (e: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
-    
+
     // Responsible for clearing the slot if you don't click on an item
 
     try {
@@ -39,7 +39,7 @@ const ItemSelectingTab: React.FC<ItemSelectingTabParams> = ({ type, currentItem,
     } catch (error) {
       // cope
     }
-    
+
   }
 
   function onSelectItem (item: Item): void {
@@ -72,7 +72,7 @@ const ItemSelectingTab: React.FC<ItemSelectingTabParams> = ({ type, currentItem,
 
 
   return (
-    <div className="item-selecting-tab" data-select-null onClick={onOffClick}>
+    <div className="item-selecting-tab tab" data-select-null onClick={onOffClick}>
       <div className="content" data-select-null>
 
         {itemToDisplay !== null && (
@@ -88,38 +88,31 @@ const ItemSelectingTab: React.FC<ItemSelectingTabParams> = ({ type, currentItem,
         )}
 
         <div className="items-list" data-select-null>
-          {itemsFiltered.map((item, i) =>
+          {itemsFiltered.map(item =>
             <button
+              key={item.id}
+              className={`classic-button ${activeItem && item.id === activeItem.id ? 'active' : ''}`}
               onMouseOver={() => setInspectedItem(item)}
               onMouseOut={() => setInspectedItem(null)}
-              onClick={() => onSelectItem(item)}
-              className={activeItem && item.id === activeItem.id ? 'active' : undefined}
-              key={item.id}>
-
-              <div
-                className="item-img"
-                style={{
-                  backgroundImage: `url(${ item.image.url })`
-                }}>
-              </div>
-
+              onClick={() => onSelectItem(item)}>
+              <img src={item.image.url} alt={item.name} />
             </button>
           )}
         </div>
 
         <div className="item-filters">
           <button
-            className={elementFilters.includes('PHYSICAL') ? 'active' : undefined}
+            className={`classic-button ${elementFilters.includes('PHYSICAL') ? 'active' : ''}`}
             onClick={e => addElementFilter(e, 'PHYSICAL')}>
             <img src={StatsM.getStatTemplate('phyDmg').imageURL} alt="Physical"/>
           </button>
           <button
-            className={elementFilters.includes('EXPLOSIVE') ? 'active' : undefined}
+            className={`classic-button ${elementFilters.includes('EXPLOSIVE') ? 'active' : ''}`}
             onClick={e => addElementFilter(e, 'EXPLOSIVE')}>
             <img src={StatsM.getStatTemplate('expDmg').imageURL} alt="Explosive"/>
           </button>
           <button
-            className={elementFilters.includes('ELECTRIC') ? 'active' : undefined}
+            className={`classic-button ${elementFilters.includes('ELECTRIC') ? 'active' : ''}`}
             onClick={e => addElementFilter(e, 'ELECTRIC')}>
             <img src={StatsM.getStatTemplate('eleDmg').imageURL} alt="Electric"/>
           </button>

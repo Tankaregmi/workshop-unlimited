@@ -21,7 +21,7 @@ const EquipmentSlot: React.FC<EquipmentSlotParams> = ({ config, style, item, onC
 
   return (
     <div className="equipment-slot" style={style}>
-      
+
       {clear_slot_button && item && (
         <button
           onClick={onClear}
@@ -30,8 +30,8 @@ const EquipmentSlot: React.FC<EquipmentSlotParams> = ({ config, style, item, onC
           <CrossImg />
         </button>
       )}
-      
-      <button onClick={onClick} className="click-area">
+
+      <button onClick={onClick} className="click-area classic-box">
         {item ? (
           <img
             ref={e => TooltipM.listen(e, { item })}

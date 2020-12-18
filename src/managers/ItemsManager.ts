@@ -1,5 +1,5 @@
 import getImgBlob from '../utils/getImgBlob';
-import forge_SHA256 from '../utils/forge-sha256';
+import sha256 from 'simple-js-sha2-256';
 import { ItemStats } from './StatsManager';
 import { MechSetup } from './MechSavesManager';
 
@@ -15,7 +15,6 @@ export interface Item {
   attachment: any;
   stats: ItemStats;
   error: Error;
-  __typeof: string;
   tags: string[];
 }
 
@@ -60,7 +59,7 @@ async function createItemFromRaw (raw: RawItem, baseURL: string): Promise<Item> 
   const image: ItemImg = { width: 0, height: 0, url: '' };
   const src = raw.image.replace(/%url%/gi, baseURL);
   const tags = raw.tags ? Array.from(raw.tags) : [];
-  
+
   let error = null;
 
   try {
@@ -93,7 +92,6 @@ async function createItemFromRaw (raw: RawItem, baseURL: string): Promise<Item> 
     transform_range: raw.transform_range,
     attachment: raw.attachment,
     stats: raw.stats,
-    __typeof: 'item',
     tags,
     error
   };
@@ -114,11 +112,11 @@ class ItemsManager
   itemElements = ['PHYSICAL', 'EXPLOSIVE', 'ELECTRIC', 'COMBINED'];
 
   async import (itemsPack: ItemsPack, callback: (total: number, loaded: number) => any, interval: number) {
-      
+
     const baseURL = itemsPack.config.base_url || '';
     const itemsLoaded: Item[] = [];
 
-    this.hash = forge_SHA256(JSON.stringify(itemsPack));
+    this.hash = sha256(JSON.stringify(itemsPack));
     this.loading = true;
     this.loaded = false;
     this.items = [];
@@ -156,6 +154,13 @@ class ItemsManager
           }
         });
     }
+  }
+
+  getItemsPackConfig (): ItemsPackConfig {
+    if (this.packConfig) {
+      return this.packConfig;
+    }
+    throw new Error(`No items pack loaded`);
   }
 
 

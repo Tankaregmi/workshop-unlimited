@@ -14,25 +14,26 @@ export interface PopupParams {
 
 const Popup: React.FC<PopupParams> = ({ title, info, options, onOffClick }) => {
   return (
-    <div className="popup-container" onClick={onOffClick}>
+    <div className="popup-container tab" onClick={onOffClick}>
       <div className="classic-box">
-        
+
         <h3>{title}</h3>
-        
-        {info && (
-          <span>{info}</span>
-        )}
-        
+
+        {info && <span>{info}</span>}
+
         {options && (
           <div className="buttons">
             {Object.entries(options).map(([key, handler]) =>
-              <button key={key} onClick={handler}>
+              <button
+                key={key}
+                className="classic-button"
+                onClick={handler}>
                 {key}
               </button>
             )}
           </div>
         )}
-      
+
       </div>
     </div>
   );

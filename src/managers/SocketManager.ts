@@ -16,9 +16,10 @@ class SocketManager
   procket: Procket;
 
   serverURL = (
-    window.location.hostname === 'localhost'
+    window.location.hostname === 'localhost' && 0
     ? 'http://localhost:3600/'
-    : 'https://workshop-unlimited-server.herokuapp.com/'
+    // : 'https://workshop-unlimited-server.herokuapp.com/'
+    : 'https://workshop-unlimited-server.thearchives.repl.co'
   );
   
   goTo: GoToFunction = () => {

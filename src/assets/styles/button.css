@@ -1,0 +1,31 @@
+.classic-button {
+  --color: var(--color-text);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border: none;
+  border-radius: var(--ui-radius);
+  background-color: var(--color-bg);
+  color: var(--color);
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  cursor: pointer;
+  transition:
+    filter 100ms ease,
+    box-shadow 100ms ease;
+}
+
+.classic-button:hover {
+  filter: brightness(1.2) contrast(0.9);
+}
+
+.classic-button:hover {
+  box-shadow: 0 0.3rem 0.3rem -0.3rem var(--color);
+}
+
+.classic-button.active {
+  box-shadow: 0 0 0.3rem 0.1rem var(--color);
+}
