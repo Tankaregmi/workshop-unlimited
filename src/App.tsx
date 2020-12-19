@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserView } from 'react-device-detect';
-import WorkshopScreen from './pages/WorkshopScreen';
-import SettingsScreen from './pages/SettingsScreen';
+import WorkshopScreen from './pages/Workshop';
+import SettingsScreen from './pages/Settings';
 import PacksScreen from './pages/Packs';
 import MechsScreen from './pages/Mechs';
-import BattleScreen from './pages/BattleScreen';
+import BattleScreen from './pages/Battle';
 import LobbyScreen from './pages/Lobby';
-import StatsManager from './managers/StatsManager';
-import SocketManager from './managers/SocketManager';
+import StatsM from './managers/StatsManager';
+import SocketM from './managers/SocketManager';
 import Tooltip from './components/Tooltip';
 import ScreenOrientationContext, { Orientations, initialOrientation } from './contexts/ScreenOrientationContext';
 import PageContext from './contexts/PageContext';
@@ -40,12 +40,10 @@ const App = () => {
 
   useEffect(() => {
 
-    console.log('App init');
-
     // TODO: Make the app actually care about the stats,
     // and perhaps make the stats customizable too.
-    StatsManager.load();
-    SocketManager.init(setPage);
+    StatsM.load();
+    SocketM.init(setPage);
 
     window.addEventListener('resize', () => {
 

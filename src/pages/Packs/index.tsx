@@ -20,8 +20,8 @@ const Packs: React.FC = () => {
   const defaultItems = 'https://gist.githubusercontent.com/ctrl-raul/3b5669e4246bc2d7dc669d484db89062/raw';
 
 
-  function log (...args: any[]) {
-    console.log('[Packs]', ...args);
+  function removePopup () {
+    setPopup(null);
   }
 
 
@@ -34,24 +34,22 @@ const Packs: React.FC = () => {
     setPopup({ title: 'Awaiting Response...' });
 
 
-    let data;
+    let data: ItemsPack;
 
     try {
       const response = await fetch(url);
-      data = await response.json() as ItemsPack;
+      data = await response.json();
     } catch(error) {
       setPopup({
         title: 'Error: Failed to import',
         info: `${error.message || 'Unknown Error'}\n\nTip: Try using online JSON validators`,
-        options: {
-          Ok: () => setPopup(null)
-        },
-        onOffClick: () => setPopup(null)
+        options: { Ok: removePopup },
+        onOffClick: removePopup
       });
       return;
     }
 
-    log('Items Pack:', data);
+    console.log('[Packs] Items Pack:', data);
 
     try {
       ItemsPack_runtype.check(data);
@@ -59,10 +57,8 @@ const Packs: React.FC = () => {
       setPopup({
         title: 'Error: Invalid items pack',
         info: `${error.message || 'Unknown Issue'}`,
-        options: {
-          Ok: () => setPopup(null)
-        },
-        onOffClick: () => setPopup(null)
+        options: { Ok: removePopup },
+        onOffClick: removePopup
       });
       return;
     }
@@ -73,17 +69,13 @@ const Packs: React.FC = () => {
   function beginImporting (data: ItemsPack): void {
 
     setItemsPack(data);
-    setPopup(null);
+    removePopup();
 
     ItemsManager.import(data, (total: number, loaded: number) => {
-
-      const progress = loaded / total * 100;
-      setProgress(progress);
-
+      setProgress(loaded / total * 100);
       if (ItemsManager.loaded) {
         setTimeout(() => setPage('workshop'), 100);
       }
-
     }, 100);
   }
 
@@ -110,7 +102,7 @@ const Packs: React.FC = () => {
         <button
           className="classic-button"
           onClick={ () => importFromURL(defaultItems) }>
-          Use Darkstare's Items
+          Use the default items
           <span>(Recommended)</span>
         </button>
 

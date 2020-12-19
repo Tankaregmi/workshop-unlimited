@@ -6,11 +6,11 @@ import Footer from './Footer';
 import DataManager from '../../managers/DataManager';
 import SocketM from '../../managers/SocketManager';
 import Popup, { PopupParams } from '../../components/Popup';
-import './styles.css';
 import PageContext from '../../contexts/PageContext';
+import './styles.css';
 
 
-const BattleScreen: React.FC = () => {
+const Battle: React.FC = () => {
 
   const [popup, setPopup] = useState<PopupParams | null>(null);
   const [battle, setBattle] = useState(DataManager.getBattle());
@@ -31,7 +31,6 @@ const BattleScreen: React.FC = () => {
 
 
   DataManager.updateBattle = () => {
-    // console.log('updated');
     setBattle(Object.assign({}, DataManager.getBattle()));
   };
 
@@ -73,10 +72,10 @@ const BattleScreen: React.FC = () => {
           left: 5 + defender.position * 10 + '%',
         }}>
         <MechGfx
-          setup={ defender.mech.setup }
-          droneActive={ defender.droneActive }
-          scale={ mechScale }
-          outline={ true }
+          setup={defender.mech.setup}
+          droneActive={defender.droneActive}
+          scale={mechScale}
+          outline={true}
           style={{ left: 5 + defender.position * 10 + '%' }}
         />
       </div>
@@ -84,9 +83,9 @@ const BattleScreen: React.FC = () => {
       <div
         className="mech-gfx-container"
         style={{
-          transform: `scaleX(${ dir })`,
+          transform: `scaleX(${dir})`,
           left: 5 + attacker.position * 10 + '%',
-          filter: `drop-shadow(0 0 0.2rem ${ mechHighlightColor }) drop-shadow(0 0 0.2rem ${ mechHighlightColor })`
+          filter: `drop-shadow(0 0 0.2rem ${mechHighlightColor}) drop-shadow(0 0 0.2rem ${mechHighlightColor})`
         }}>
         <MechGfx
           setup={ attacker.mech.setup }
@@ -98,8 +97,8 @@ const BattleScreen: React.FC = () => {
 
 
       <div className="stat-panels">
-        <PlayerStatsPanel player={ battle.players[0] } />
-        <PlayerStatsPanel player={ battle.players[1] } />
+        <PlayerStatsPanel player={battle.players[0]} />
+        <PlayerStatsPanel player={battle.players[1]} />
       </div>
 
 
@@ -115,7 +114,7 @@ const BattleScreen: React.FC = () => {
 
       {isMyTurn && <Footer battle={battle} />}
 
-      {battle.over && !viewLogs && (
+      {battle.over && !viewLogs &&
         <Popup
           title={battle.victory ? 'You Won' : 'You Lost'}
           info={battle.quit && battle.victory ? 'Opponent has quit!' : undefined}
@@ -123,22 +122,22 @@ const BattleScreen: React.FC = () => {
             'View Logs': () => setViewLogs(true),
             'Workshop': () => setPage('workshop')
           }}
-          />
-      )}
+        />
+      }
 
-      {viewLogs && (
+      {viewLogs &&
         <div className="logs-tab classic-box" onClick={ () => setViewLogs(false) }>
           {battle.logs.map(([log, color], i) => 
-            <span key={ i } style={{ color }}>{ log }</span>
+            <span key={i} style={{ color }}>{log}</span>
           )}
         </div>
-      )}
+      }
 
-      {popup && <Popup {...popup} /> }
+      {popup && <Popup {...popup} />}
 
     </div>
   );
 };
 
 
-export default BattleScreen;
+export default Battle;
