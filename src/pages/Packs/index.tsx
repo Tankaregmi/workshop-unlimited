@@ -17,7 +17,7 @@ const Packs: React.FC = () => {
   const [progress, setProgress] = useState(0);
   const { setPage } = useContext(PageContext);
 
-  const darkstareItems = 'https://raw.githubusercontent.com/Dharkstare/My-items-pack/main/Item%20pack';
+  const defaultItems = 'https://gist.githubusercontent.com/ctrl-raul/3b5669e4246bc2d7dc669d484db89062/raw';
 
 
   function log (...args: any[]) {
@@ -31,9 +31,7 @@ const Packs: React.FC = () => {
       return;
     }
 
-    setPopup({
-      title: 'Awaiting Response...'
-    });
+    setPopup({ title: 'Awaiting Response...' });
 
 
     let data;
@@ -111,7 +109,7 @@ const Packs: React.FC = () => {
       <>
         <button
           className="classic-button"
-          onClick={ () => importFromURL(darkstareItems) }>
+          onClick={ () => importFromURL(defaultItems) }>
           Use Darkstare's Items
           <span>(Recommended)</span>
         </button>
