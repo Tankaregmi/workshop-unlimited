@@ -6,12 +6,17 @@ import phyResShieldIcon from '../../../assets/images/icons/phyResShield.png';
 import expResShieldIcon from '../../../assets/images/icons/expResShield.png';
 import eleResShieldIcon from '../../../assets/images/icons/eleResShield.png';
 
+import './styles.css';
 
-interface PlayerStatsPanelParams {
+
+interface PlayerStatsPanelParams extends React.HTMLProps<HTMLDivElement> {
   player: BattlePlayerData;
+  side?: "left" | "right";
 }
 
-const PlayerStatsPanel: React.FC<PlayerStatsPanelParams> = ({ player }) => {
+const PlayerStatsPanel: React.FC<PlayerStatsPanelParams> = props => {
+
+  const { player, side = 'left' } = props;
 
   const {
     healthCap,
@@ -30,60 +35,49 @@ const PlayerStatsPanel: React.FC<PlayerStatsPanelParams> = ({ player }) => {
   if (energy > eneCap) debugger;
 
   return (
-    <div className={`player-stats-panel ${player.admin ? 'admin' : ''}`}>
+    <div className={`player-stats-panel ${player.admin ? 'admin' : ''} ${side}`} {...props}>
 
-      <div className="player-name">
-        {player.mech.name}
-      </div>
+      <div className="player-name">{player.mech.name}</div>
 
       <ProgressBar 
-        label={ ds(health) + ' / ' + ds(healthCap) }
-        progress={ health / healthCap * 100 }
+        label={`${ds(health)}/${ds(healthCap)}`}
+        progress={health / healthCap * 100}
         color="#ddaa22"
         tip="Health"
-        style={{
-          gridArea: 'a'
-        }}
+        style={{ gridArea: 'health' }}
       />
 
       <ProgressBar 
-        label={ ds(energy) + ' / ' + ds(eneCap) }
-        progress={ energy / eneCap * 100 }
-        color={ '#22aadd' }
-        tip={ `Energy (${ ds(eneReg) } regeneration)` }
-        style={{
-          gridArea: 'b'
-        }}
+        label={`${ds(energy)}/${ds(eneCap)}`}
+        progress={energy / eneCap * 100}
+        color="#22aadd"
+        tip={`Energy (${ds(eneReg)} regeneration)`}
+        style={{ gridArea: 'energy' }}
       />
 
       <ProgressBar 
-        label={ ds(heat) + ' / ' + ds(heaCap) }
-        progress={ heat / heaCap * 100 }
-        color={ '#dd2222' }
-        tip={ `Heat (${ ds(heaCol) } cooling)` }
-        style={{ gridArea: 'c' }}
+        label={`${ds(heat)}/${ds(heaCap)}`}
+        progress={heat / heaCap * 100}
+        color="#dd2222"
+        tip={`Heat (${ds(heaCol)} cooling)`}
+        style={{ gridArea: 'heat' }}
       />
 
-      <div
-        className="resistance-display"
-        style={{ gridArea: 'd' }}>
-        <img src={phyResShieldIcon} alt="Physical Resistance"/>
-        <span>{phyRes}</span>
+      <div className="resistances-container">
+        <div className="resistance-display">
+          <img src={phyResShieldIcon} alt="Physical Resistance"/>
+          <span>{phyRes}</span>
+        </div>
+        <div className="resistance-display">
+          <img src={expResShieldIcon} alt="Explosive Resistance"/>
+          <span>{expRes}</span>
+        </div>
+        <div className="resistance-display">
+          <img src={eleResShieldIcon} alt="Electric Resistance"/>
+          <span>{eleRes}</span>
+        </div>
       </div>
 
-      <div
-        className="resistance-display"
-        style={{ gridArea: 'e' }}>
-        <img src={expResShieldIcon} alt="Explosive Resistance"/>
-        <span>{expRes}</span>
-      </div>
-
-      <div
-        className="resistance-display"
-        style={{ gridArea: 'f' }}>
-        <img src={eleResShieldIcon} alt="Electric Resistance"/>
-        <span>{eleRes}</span>
-      </div>
     </div>
   );
 };

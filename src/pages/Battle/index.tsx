@@ -65,42 +65,9 @@ const Battle: React.FC = () => {
   return (
     <div id="screen-battle">
 
-      <div
-        className="mech-gfx-container"
-        style={{
-          transform: `scaleX(${ dir * -1 })`,
-          left: 5 + defender.position * 10 + '%',
-        }}>
-        <MechGfx
-          setup={defender.mech.setup}
-          droneActive={defender.droneActive}
-          scale={mechScale}
-          outline={true}
-          style={{ left: 5 + defender.position * 10 + '%' }}
-        />
-      </div>
-
-      <div
-        className="mech-gfx-container"
-        style={{
-          transform: `scaleX(${dir})`,
-          left: 5 + attacker.position * 10 + '%',
-          filter: `drop-shadow(0 0 0.2rem ${mechHighlightColor}) drop-shadow(0 0 0.2rem ${mechHighlightColor})`
-        }}>
-        <MechGfx
-          setup={ attacker.mech.setup }
-          droneActive={ attacker.droneActive }
-          scale={ mechScale }
-          outline={ true }
-        />
-      </div>
-
-
-      <div className="stat-panels">
-        <PlayerStatsPanel player={battle.players[0]} />
-        <PlayerStatsPanel player={battle.players[1]} />
-      </div>
-
+      <PlayerStatsPanel player={battle.players[0]} style={{ gridArea: 'p1-stats' }} />
+      {/* <PlayerStatsPanel player={battle.players[1]} style={{ gridArea: 'p2-stats', direction: 'rtl' }} /> */}
+      <PlayerStatsPanel player={battle.players[1]} style={{ gridArea: 'p2-stats' }} side="right" />
 
       <div className="buttons-container">
         <button className="classic-button logs-btn" onClick={() => setViewLogs(true)}>
@@ -111,6 +78,45 @@ const Battle: React.FC = () => {
         </button>
       </div>
 
+      <div className="mechs-container">
+        <div
+          className="mech-gfx-container"
+          style={{
+            transform: `scaleX(${dir * -1})`,
+            left: 5 + defender.position * 10 + '%',
+          }}>
+          <MechGfx
+            setup={defender.mech.setup}
+            droneActive={defender.droneActive}
+            scale={mechScale}
+            outline={true}
+          />
+        </div>
+        <div
+          className="mech-gfx-container"
+          style={{
+            transform: `scaleX(${dir})`,
+            left: 5 + attacker.position * 10 + '%',
+            filter: `drop-shadow(0 0 0.2rem ${mechHighlightColor}) drop-shadow(0 0 0.2rem ${mechHighlightColor})`
+          }}>
+          <MechGfx
+            setup={attacker.mech.setup}
+            droneActive={attacker.droneActive}
+            scale={mechScale}
+            outline={true}
+          />
+        </div>
+      </div>
+
+      {viewLogs &&
+        <div className="logs-tab" onClick={() => setViewLogs(false)}>
+          <div className="logs-tab-contents">
+            {battle.logs.map(([log, color], i) => 
+              <span key={i} style={{ color }}>{log}</span>
+            )}
+          </div>
+        </div>
+      }
 
       {isMyTurn && <Footer battle={battle} />}
 
@@ -120,17 +126,9 @@ const Battle: React.FC = () => {
           info={battle.quit && battle.victory ? 'Opponent has quit!' : undefined}
           options={{
             'View Logs': () => setViewLogs(true),
-            'Workshop': () => setPage('workshop')
+            'Workshop': () => setPage('workshop'),
           }}
         />
-      }
-
-      {viewLogs &&
-        <div className="logs-tab classic-box" onClick={ () => setViewLogs(false) }>
-          {battle.logs.map(([log, color], i) => 
-            <span key={i} style={{ color }}>{log}</span>
-          )}
-        </div>
       }
 
       {popup && <Popup {...popup} />}

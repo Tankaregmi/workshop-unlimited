@@ -120,6 +120,8 @@ class SocketManager
         player.uses = player.uses.map((x: any) => typeof x === 'number' ? x : Infinity);
       }
 
+      console.log(battle);
+
       DataManager.battle = battle;
       DataManager.turnOwnerID = turnOwnerID;
 
@@ -195,8 +197,8 @@ class SocketManager
 
     this.log('Trying to connect');
 
-    let _resolve: () => any;
-    let _reject: () => any;
+    let _resolve: (value: unknown) => void;
+    let _reject: (value: unknown) => void;
 
     const { socket } = this.procket;
 

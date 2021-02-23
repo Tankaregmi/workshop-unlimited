@@ -1,6 +1,14 @@
 #screen-battle {
   position: absolute;
-  display: block;
+
+  display: grid;
+  grid-template-rows: 12rem 1fr 10rem;
+  grid-template-columns: 2.6fr 1fr 2.6fr;
+  grid-template-areas:
+    'p1-stats buttons  p2-stats'
+    'mechs    mechs    mechs'
+    'controls controls controls';
+
   left: 0;
   top: 0;
   width: 100%;
@@ -8,40 +16,55 @@
   overflow: hidden;
 }
 
-
-#screen-battle > .mech-gfx-container {
-  position: absolute;
-  bottom: 10rem;
-}
-
-
-#screen-battle > .stat-panels {
-  display: flex;
-  justify-content: space-between;
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
+#screen-battle > .player-stats-panel.right {
+  direction: rtl;
 }
 
 
 #screen-battle > .buttons-container {
-  position: absolute;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 0.4rem;
+  gap: 0.2rem;
+  grid-area: buttons;
+}
+
+#screen-battle > .buttons-container > .classic-button {
+  width: 5rem;
+  height: 5rem;
+}
+
+
+#screen-battle > .logs-tab {
+  position: fixed;
   display: flex;
   justify-content: center;
   align-items: center;
+  left: 0;
+  top: 0;
   width: 100%;
-  height: 6.5rem;
+  height: 100%;
+  z-index: var(--z-index-tab);
+  background-color: var(--color-darkscreen);
 }
 
-#screen-battle > .buttons-container > button {
-  width: 5rem;
-  height: 5rem;
-  margin: 0 0.5rem;
-}
-
-#screen-battle > .buttons-container > button.quit {
-  color: var(--color-off);
+#screen-battle > .logs-tab > .logs-tab-contents {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 64rem;
+  height: 36rem;
+  padding: 1rem;
+  font-family: monospace;
+  z-index: var(--z-index-tab);
+  overflow-y: scroll;
+  background-color: #05060a;
+  border: 0.2rem solid #000000;
+  border-radius: var(--ui-radius);
+  box-shadow: 0 0 1rem #000000;
 }
 
 
@@ -49,30 +72,30 @@
   position: absolute;
   display: flex;
   width: 100%;
-  height: 10rem;
+  height: 100%;
   left: 0;
   bottom: 0;
-  background-color: var(--color-bg);
+  padding: 1rem;
+  background-color: #05060a;
+  border-top: 0.2rem solid #000000;
+  box-shadow: 0 0 1rem #000000;
+  grid-area: controls;
 }
 
 #screen-battle > footer > button {
   width: 8rem;
   height: 8rem;
-  margin: 1rem 0 0 1rem;
-  background-color: var(--color-primary);
-}
-
-#screen-battle > footer > button.disabled {
-  filter: brightness(0.25);
+  margin-right: 1rem;
+  background-color: var(--color-bg);
 }
 
 #screen-battle > footer > button > img,
 #screen-battle > footer > button > svg {
   position: absolute;
-  left: 10%;
-  top: 10%;
-  width: 80%;
-  height: 80%;
+  left: 6%;
+  top: 6%;
+  width: 88%;
+  height: 88%;
   object-fit: contain;
   fill: #dddddd;
 }
@@ -93,13 +116,12 @@
   background-color: var(--color-text);
 }
 
-
 #screen-battle > footer > .range-highlight,
 #screen-battle > footer > .position-highlight {
   --color: #00ff00aa;
   position: absolute;
   display: block;
-  top: -30%;
+  bottom: 106%;
   width: 8%;
   height: 30%;
   background-image: -webkit-linear-gradient(#ff000000, var(--color));
@@ -112,134 +134,59 @@
 }
 
 
-#screen-battle > button.logs-btn {
-  position: abdolute;
-  left: 42.5%;
-  top: 0;
-  width: 15%;
-}
-
-#screen-battle > .logs-tab {
+#screen-battle > .mechs-container {
   position: absolute;
-  display: flex;
-  flex-direction: column;
+  display: block;
+  height: 0;
+  width: 100%;
   left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  padding: 1rem;
-  font-family: monospace;
-  z-index: var(--z-index-tab);
-  overflow-y: scroll;
+  bottom: 1rem;
+  grid-area: mechs;
 }
 
-#screen-battle > .stat-panels > .player-stats-panel {
-  display: grid;
-  grid-template-columns: 15% 15% 15% 5% 50%;
-  grid-template-rows: 2.4rem 2.2rem 2.2rem 4rem;
-  grid-template-areas:
-    'g g g g g'
-    'a a a a a'
-    'b b b c c'
-    'd e f . .';
-  width: 26rem;
-  gap: 0.4rem;
-}
-
-#screen-battle > .stat-panels > .player-stats-panel > .player-name {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.8rem;
-  grid-area: g;
-  background-color: #00000055;
-  border-radius: var(--ui-radius);
-  white-space: nowrap;
-}
-
-#screen-battle > .stat-panels > .player-stats-panel.admin > .player-name {
-  color: var(--color-off);
-}
-
-#screen-battle > .stat-panels > .player-stats-panel:last-of-type {
-  direction: rtl;
-}
-
-#screen-battle > .stat-panels > .player-stats-panel > * {
-  width: 100%;
-  height: 100%;
-}
-
-#screen-battle > .stat-panels > .player-stats-panel > .resistance-display {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#screen-battle > .stat-panels > .player-stats-panel > .resistance-display > img {
+#screen-battle > .mechs-container > .mech-gfx-container {
   position: absolute;
-  width: 4rem;
-  height: 4.4rem;
-  z-index: 1;
-}
-
-#screen-battle > .stat-panels > .player-stats-panel > .resistance-display > span {
-  direction: ltr;
-  font-weight: 700;
-  text-shadow: 1px 1px 1px #000000, -1px 1px 1px #000000, 1px -1px 1px #000000, -1px -1px 1px #000000;
-  z-index: 2;
+  bottom: 0;
 }
 
 
 @media (orientation: portrait) and (max-width: 767px) {
 
-  #screen-battle > .mech-gfx-container {
-    bottom: 22vw;
-  }
-
-  #screen-battle > footer > .range-highlight,
-  #screen-battle > footer > .position-highlight {
-    height: 4rem;
-    top: -4.2rem;
-  }
-
-  #screen-battle > .stat-panels {
-    flex-direction: column;
-    width: 80%;
-  }
-  
-  #screen-battle > .stat-panels > .player-stats-panel {
-    width: 94%;
-    margin: 1rem 0 0 1rem;
-    gap: unset;
-  }
-
-  #screen-battle > .stat-panels > .player-stats-panel:last-of-type {
+  #screen-battle > .player-stats-panel.right {
     direction: unset;
   }
 
+  #screen-battle {
+    grid-template-rows: 12rem 12rem 1fr 15vw;
+    grid-template-columns: 1fr 6rem;
+    grid-template-areas:
+      'p1-stats buttons'
+      'p2-stats buttons'
+      'mechs    mechs'
+      'controls controls';
+  }
 
   #screen-battle > .buttons-container {
     flex-direction: column;
-    align-items: flex-end;
-    width: 20%;
-    height: unset;
-    right: 0;
-  }
-
-  #screen-battle > .buttons-container > button {
-    margin: 1rem 1rem 0 0;
+    justify-content: unset;
+    padding: 0.4rem;
   }
 
   #screen-battle > footer {
     height: unset;
-    padding-bottom: 2%;
+    padding: 0.5rem;
   }
   
+  /* aspect ratio hack */
   #screen-battle > footer > button {
-    width: 17.55555%;
+    width: 13.55555%;
     height: 0;
-    padding-top: 17.55555%;
-    margin: 2% 0 0 2%;
+    padding-top: 13.55555%;
+    margin-right: 0.5rem;
   }
+  
+  #screen-battle > footer > button:last-of-type {
+    margin-right: 0;
+  }
+
 }
