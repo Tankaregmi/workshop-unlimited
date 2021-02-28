@@ -1,19 +1,31 @@
 .player-stats-panel {
   position: relative;
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr 1.6fr;
-  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 2rem 2rem 2rem 4.4rem;
+  grid-template-columns: 7rem 1fr 1fr;
   grid-template-areas:
-    'name    name'
-    'health  health'
-    'energy  heat'
-    'resists resists';
+    'pfp   name    name'
+    'pfp   health  health'
+    'pfp   energy  heat'
+    'turns resists buttons';
   gap: 0.2rem;
-  width: 100%;
-  height: 100%;
+  width: 40vw;
+  max-width: 40rem;
   padding: 0.4rem;
-  overflow: hidden;
+  /* overflow: hidden; */
   letter-spacing: 0.15rem;
+}
+
+.player-stats-panel > img.pfp {
+  position: absolute;
+  display: block;
+  left: 5%;
+  top: 5%;
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+  filter: drop-shadow(0 0.3rem 0.5rem #000000);
+  grid-area: pfp;
 }
 
 .player-stats-panel > .player-name {
@@ -27,6 +39,7 @@
   border-radius: var(--ui-radius);
   font-size: 1.8rem;
   grid-area: name;
+  direction: ltr;
 }
 
 .player-stats-panel.admin > .player-name {
@@ -79,4 +92,112 @@
   font-weight: 700;
   text-shadow: 1px 1px 1px #000000, -1px 1px 1px #000000, 1px -1px 1px #000000, -1px -1px 1px #000000;
   z-index: 2;
+}
+
+.player-stats-panel > .buttons {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  height: 100%;
+  grid-area: buttons;
+}
+
+.player-stats-panel > .buttons > button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  width: 4.4rem;
+  height: 4.4rem;
+}
+
+
+.player-stats-panel > .player-weapons {
+  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  left: 0;
+  top: 100%;
+  width: 100%;
+  height: unset;
+  padding: 0.5%;
+  background-color: #05060a;
+  border: 0.2rem solid #000000;
+  box-shadow: 0 0 1rem #000000;
+  z-index: 10;
+}
+
+.player-stats-panel > .player-weapons > button {
+  display: block;
+  width: 10.5%;
+  height: 0;
+  padding-top: 10.5%;
+  margin: 1%;
+}
+
+.player-stats-panel > .player-weapons > button > img {
+  position: absolute;
+  display: block;
+  left: 5%;
+  top: 5%;
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+}
+
+/* .player-stats-panel > .player-weapons > button > span {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-top-left-radius: 1rem;
+  border-bottom-right-radius: inherit;
+  color: var(--color-primary);
+  line-height: 2rem;
+  font-weight: 700;
+  font-size: 1.2rem;
+  text-align: center;
+  background-color: var(--color-text);
+} */
+
+.player-stats-panel > .player-weapons > button > span {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  width: 100%;
+  height: 0.2rem;
+  background-color: #1f2636;
+  direction: ltr;
+}
+
+.player-stats-panel > .player-weapons > button > span > span {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: #3862c5;
+}
+
+
+.player-stats-panel.right {
+  direction: rtl;
+}
+
+.player-stats-panel.right > img.pfp {
+  transform: scaleX(-1);
+}
+
+
+@media (orientation: portrait) and (max-width: 767px) {
+  .player-stats-panel.right {
+    direction: unset;
+  }
+  
+  .player-stats-panel.right > img.pfp {
+    transform: unset;
+  }
 }

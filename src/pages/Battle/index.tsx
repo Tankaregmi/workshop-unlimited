@@ -18,16 +18,17 @@ const Battle: React.FC = () => {
   const { setPage } = useContext(PageContext);
 
   const { attacker, defender } = BattleM.getPlayers(battle);
-  const dir = attacker.position < defender.position ? 1 : -1;
+  const dir = (attacker.position > defender.position ? 1 : -1);
   const mechScale = 0.325;
 
   const isMyTurn = !battle.over && battle.multiplayer ? (
-    DataManager.turnOwnerID === SocketM.procket.socket.id
+    battle.players[battle.turnOwnerIndex].id === SocketM.procket.socket.id
   ) : (
     !battle.activeAI || battle.turnOwnerIndex === 0
   );
 
   const mechHighlightColor = isMyTurn ? '#00ff00' : '#ff0000';
+  const [p1, p2] = battle.players.sort(a => a.id === SocketM.procket.socket.id ? 1 : -1);
 
 
   DataManager.updateBattle = () => {
@@ -65,9 +66,10 @@ const Battle: React.FC = () => {
   return (
     <div id="screen-battle">
 
-      <PlayerStatsPanel player={battle.players[0]} style={{ gridArea: 'p1-stats' }} />
-      {/* <PlayerStatsPanel player={battle.players[1]} style={{ gridArea: 'p2-stats', direction: 'rtl' }} /> */}
-      <PlayerStatsPanel player={battle.players[1]} style={{ gridArea: 'p2-stats' }} side="right" />
+      <div className="stat-panels">
+        <PlayerStatsPanel player={p1} style={{ gridArea: 'p1-stats' }} />
+        <PlayerStatsPanel player={p2} style={{ gridArea: 'p2-stats' }} side="right" />
+      </div>
 
       <div className="buttons-container">
         <button className="classic-button logs-btn" onClick={() => setViewLogs(true)}>
@@ -83,11 +85,11 @@ const Battle: React.FC = () => {
           className="mech-gfx-container"
           style={{
             transform: `scaleX(${dir * -1})`,
-            left: 5 + defender.position * 10 + '%',
+            left: 5 + attacker.position * 10 + '%',
           }}>
           <MechGfx
-            setup={defender.mech.setup}
-            droneActive={defender.droneActive}
+            setup={attacker.mech.setup}
+            droneActive={attacker.droneActive}
             scale={mechScale}
             outline={true}
           />
@@ -96,12 +98,12 @@ const Battle: React.FC = () => {
           className="mech-gfx-container"
           style={{
             transform: `scaleX(${dir})`,
-            left: 5 + attacker.position * 10 + '%',
-            filter: `drop-shadow(0 0 0.2rem ${mechHighlightColor}) drop-shadow(0 0 0.2rem ${mechHighlightColor})`
+            left: 5 + defender.position * 10 + '%',
+            filter: `drop-shadow(0 0 0.2rem ${mechHighlightColor}) drop-shadow(0 0 0.2rem ${mechHighlightColor})`,
           }}>
           <MechGfx
-            setup={attacker.mech.setup}
-            droneActive={attacker.droneActive}
+            setup={defender.mech.setup}
+            droneActive={defender.droneActive}
             scale={mechScale}
             outline={true}
           />

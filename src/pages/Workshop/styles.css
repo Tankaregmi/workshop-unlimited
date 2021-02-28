@@ -16,6 +16,8 @@
 #screen-workshop > .parts-slots {
   position: absolute;
   display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   grid-template-areas:
     "g i h"
     "e a f"
@@ -28,6 +30,8 @@
 }
 
 #screen-workshop > .parts-slots > .equipment-slot {
+  position: relative;
+  display: block;
   width: 100%;
   height: 100%;
 }
