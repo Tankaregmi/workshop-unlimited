@@ -6,6 +6,7 @@ import PacksScreen from './pages/Packs';
 import MechsScreen from './pages/Mechs';
 import BattleScreen from './pages/Battle';
 import LobbyScreen from './pages/Lobby';
+import URLChangedScreen from './pages/URLChanged';
 import StatsM from './managers/StatsManager';
 import SocketM from './managers/SocketManager';
 import Tooltip from './components/Tooltip';
@@ -23,19 +24,22 @@ interface GetCurrentPageParams {
 
 const GetCurrentPage: React.FC<GetCurrentPageParams> = ({ page }) => {
   switch (page) {
-    case 'packs':    return <PacksScreen />;
-    case 'workshop': return <WorkshopScreen />;
-    case 'settings': return <SettingsScreen />;
-    case 'mechs':    return <MechsScreen />;
-    case 'battle':   return <BattleScreen />;
-    case 'lobby':    return <LobbyScreen />;
+    case 'url-changed': return <URLChangedScreen />;
+    case 'packs':       return <PacksScreen />;
+    case 'workshop':    return <WorkshopScreen />;
+    case 'settings':    return <SettingsScreen />;
+    case 'mechs':       return <MechsScreen />;
+    case 'battle':      return <BattleScreen />;
+    case 'lobby':       return <LobbyScreen />;
   }
   return <div>Unknown page '{ page }'</div>;
 }
 
 const App = () => {
 
-  const [page, setPage] = useState('packs');
+  const usingFirebaseURL = window.location.hostname === 'workshop-unlimited.web.app';
+
+  const [page, setPage] = useState(usingFirebaseURL ? 'url-changed' : 'packs');
   const [orientation, setOrientation] = useState<Orientations>(initialOrientation);
 
   useEffect(() => {

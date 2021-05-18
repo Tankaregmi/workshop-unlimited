@@ -27,8 +27,7 @@ interface MechsMap {
 }
 
 interface MechsExportJSON {
-  items_pack_key: string;
-  mechs: {
+  [ItemsPackKey: string]: {
     name: string;
     setup: string;
   }[];
@@ -39,8 +38,6 @@ class MechSavesManager
 {
   genRandomString = randomStringFactory(16);
   genRandomStringShort = randomStringFactory(4);
-
-  _mechsExportItemIDsSeparator = ' ';
 
 
   mechToJSONSafeMech (mech: Mech): JSONSafeMech {
@@ -178,41 +175,90 @@ class MechSavesManager
   }
 
 
-  _generateExportData (ids: Mech['id'][]): MechsExportJSON {
+  public exportAllMechs () {
 
-    console.log('_generateExportData', arguments);
+    const mechSaves = LocalStorageManager.getMechSaves();
+    const data: MechsExportJSON = {};
 
-    const getNameAndRawSetup = (mech: Mech) => ({
-      name: mech.name,
-      setup: ItemsManager.items2ids(mech.setup).join(this._mechsExportItemIDsSeparator)
-    });
+    for (const packKey in mechSaves) {
 
-    const items_pack_key = ItemsManager.getItemsPackConfig().key;
+      data[packKey] = [];
 
-    const mechs = Object.values(this.getMechsForCurrentPack())
-      .filter(mech => ids.length ? ids.includes(mech.id) : true)
-      .map(getNameAndRawSetup);
+      for (const mechID in mechSaves[packKey]) {
 
-    return { items_pack_key, mechs };
-  }
+        const mech = mechSaves[packKey][mechID];
 
-  exportMechs (ids: Mech['id'][] = []): void {
-    const data = this._generateExportData(ids);
-    downloadJSON(data, 'mechs');
-  }
+        data[packKey].push({
+          name: mech.name,
+          setup: mech.setup.join(' '),
+        });
 
-  importMechs (data: MechsExportJSON): void {
-    const mechs = this.getMechsForCurrentPack();
-    for (const { name, setup } of data.mechs) {
-      const mech: Mech = {
-        id: this._genMechID(),
-        name,
-        setup: ItemsManager.ids2items(setup.split(this._mechsExportItemIDsSeparator).map(Number)),
-        pack_key: data.items_pack_key
-      };
-      mechs[mech.id] = mech;
+      }
     }
-    this.setMechs(mechs);
+
+    downloadJSON(data, 'mechs');
+
+  }
+
+  public exportMechs (ids: Mech['id'][]) {
+
+    const mechSaves = LocalStorageManager.getMechSaves();
+    const data: MechsExportJSON = {};
+
+    for (const packKey in mechSaves) {
+
+      data[packKey] = [];
+
+      for (const mechID in mechSaves[packKey]) {
+        if (ids.includes(mechID)) {
+
+          const mech = mechSaves[packKey][mechID];
+
+          data[packKey].push({
+            name: mech.name,
+            setup: mech.setup.join(' '),
+          });
+        }
+      }
+
+      if (data[packKey].length === 0) {
+        delete data[packKey];
+      }
+    }
+
+    downloadJSON(data, 'mechs');
+
+  }
+
+  public importMechs (data: MechsExportJSON): void {
+    try {
+
+      const mechSaves = LocalStorageManager.getMechSaves();
+
+      for (const packKey in data) {
+
+        if (!mechSaves.hasOwnProperty(packKey)) {
+          mechSaves[packKey] = {};
+        }
+
+        for (const mechExport of data[packKey]) {
+
+          const mech: Mech = {
+            id: this._genMechID(),
+            name: mechExport.name,
+            setup: ItemsManager.ids2items(mechExport.setup.split(' ').map(Number)),
+            pack_key: packKey,
+          }
+
+          mechSaves[packKey][mech.id] = this.mechToJSONSafeMech(mech);
+        }
+      }
+
+      LocalStorageManager.setMechSaves(mechSaves);
+
+    } catch (error) {
+      throw new Error(`Invalid mechs data.`);
+    }
   }
 }
 
