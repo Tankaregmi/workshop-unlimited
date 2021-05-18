@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { CSSProperties, useContext, useState } from 'react';
 import fetch from 'node-fetch';
 import ProgressBar from '../../components/ProgressBar';
 import ItemsManager, { ItemsPack } from '../../managers/ItemsManager';
@@ -129,7 +129,7 @@ const Packs: React.FC = () => {
           <button
             className="classic-button"
             onClick={() => beginImporting(testItems as ItemsPack)}
-            style={{ '--color': 'var(--color-on)' }}>
+            style={{ '--color': 'var(--color-on)' } as CSSProperties}>
             Dev
           </button>
         )}

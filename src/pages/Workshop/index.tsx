@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { CSSProperties, useContext, useState } from 'react';
 import MechGfx from '../../components/MechGfx';
 import EquipmentSlot from './EquipmentSlot';
 import StatBlocks from '../../components/StatBlocks';
@@ -136,7 +136,7 @@ const Workshop: React.FC = () => {
             ref={e => TooltipM.listen(e, { text: 'Work in progress!' })}
             className="classic-button"
             onClick={onClickBattle}
-            style={{ '--color': 'var(--color-on)' }}>
+            style={{ '--color': 'var(--color-on)' } as CSSProperties}>
             <CrossedSwordsIcon fill="var(--color-on)" />
             <span>Battle</span>
           </button>
@@ -151,7 +151,7 @@ const Workshop: React.FC = () => {
           <button
             className="classic-button"
             onClick={ dismountMech }
-            style={{ '--color': 'var(--color-off)' }}>
+            style={{ '--color': 'var(--color-off)' } as CSSProperties}>
             <TrashBinIcon fill="var(--color-off)" />
             <span>Dismount Mech</span>
           </button>
@@ -160,7 +160,7 @@ const Workshop: React.FC = () => {
             ref={e => TooltipM.listen(e, { text: 'Wanna share some cool idea? Report a bug?' })}
             className="classic-button"
             onClick={() => setShowDiscord(true)}
-            style={{ '--color': 'var(--color-discord)' }}>
+            style={{ '--color': 'var(--color-discord)' } as CSSProperties}>
             <DiscordLogo fill="var(--color-discord)" />
             <span>Join Our Discord</span>
           </button>
