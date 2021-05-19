@@ -29,12 +29,11 @@ const Workshop: React.FC = () => {
   const [mech, setMech] = useState<Mech>(MechSavesM.getLastMech());
   const [focusedSlotInfo, setFocusedSlotInfo] = useState({ index: -1, type: '', });
   const [showExtras, setShowExtras] = useState(false);
-  const [showDiscord, setShowDiscord] = useState(false);
   const [popup, setPopup] = useState<PopupParams | null>(null);
   const { setPage } = useContext(PageContext);
 
   const getNextIndex = ((i = 0) => () => i++)();
-  const blurChildren = showExtras || showDiscord || !!popup || !!focusedSlotInfo.type;
+  const blurChildren = showExtras || !!popup || !!focusedSlotInfo.type;
 
 
   function onSelectItem (item: Item | null): void {
@@ -156,15 +155,6 @@ const Workshop: React.FC = () => {
             <span>Dismount Mech</span>
           </button>
 
-          <button
-            ref={e => TooltipM.listen(e, { text: 'Wanna share some cool idea? Report a bug?' })}
-            className="classic-button"
-            onClick={() => setShowDiscord(true)}
-            style={{ '--color': 'var(--color-discord)' } as CSSProperties}>
-            <DiscordLogo fill="var(--color-discord)" />
-            <span>Join Our Discord</span>
-          </button>
-
         </div>
       )}
 
@@ -174,19 +164,6 @@ const Workshop: React.FC = () => {
           currentItem={mech.setup[focusedSlotInfo.index]}
           selectItem={onSelectItem}
         />
-      )}
-
-      {showDiscord && (
-        <div className="tab classic-box" onClick={() => setShowDiscord(false)}>
-          <iframe
-            title="Workshop Unlimited"
-            src="https://discordapp.com/widget?id=527596699988918282&theme=dark"
-            width="350"
-            height="400"
-            frameBorder="0"
-            sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts">
-          </iframe>
-        </div>
       )}
 
       {popup && <Popup {...popup} />}
