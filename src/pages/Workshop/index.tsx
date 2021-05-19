@@ -17,7 +17,6 @@ import { ReactComponent as MechIcon } from '../../assets/images/icons/mech.svg';
 import { ReactComponent as TrashBinIcon } from '../../assets/images/icons/trash-bin.svg';
 import { ReactComponent as PlusIcon } from '../../assets/images/icons/plus.svg';
 import { ReactComponent as CogIcon } from '../../assets/images/icons/cog.svg';
-import { ReactComponent as DiscordLogo } from '../../assets/images/discord-logo.svg';
 
 import slotsConfig from './slotsConfig';
 
