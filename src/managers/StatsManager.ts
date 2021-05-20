@@ -50,6 +50,16 @@ const rawStatsData: RawStatTemplate[] = [{
     amount: 1.2
   }
 }, {
+  key: 'bulletsCap',
+  name: 'Bullets Capacity',
+  type: 'number',
+  buff: null
+}, {
+  key: 'rocketsCap',
+  name: 'Rockets Capacity',
+  type: 'number',
+  buff: null
+}, {
   key: 'phyRes',
   name: 'Physical Resistance',
   type: 'number',
@@ -209,6 +219,16 @@ const rawStatsData: RawStatTemplate[] = [{
 }, {
   key: 'eneCost',
   name: 'Energy Consumption',
+  type: 'number',
+  buff: null
+}, {
+  key: 'bulletsCost',
+  name: 'Bullets Usage',
+  type: 'number',
+  buff: null
+}, {
+  key: 'rocketsCost',
+  name: 'Rockets Usage',
   type: 'number',
   buff: null
 }];
