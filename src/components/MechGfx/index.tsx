@@ -1,5 +1,6 @@
 import React from 'react';
-import { Item } from '../../managers/ItemsManager';
+import { Item, TorsoAttachment } from '../../managers/ItemsManager';
+import Vector2 from '../../utils/Vector2';
 
 import './styles.css';
 
@@ -23,7 +24,7 @@ interface PartData {
 
 
 const partNames = ['torso', 'leg1', 'leg2', 'side1', 'side2', 'side3', 'side4', 'top1', 'top2', 'drone'];
-const partNamesToSkipAttachment = ['torso', 'leg1', 'drone'];
+const preAttachedPartsNames = ['torso', 'leg1', 'drone'];
 const zIndexes = [5, 6, 4, 8, 1, 9, 2, 7, 3, 0];
 
 
@@ -77,29 +78,50 @@ const MechGfx: React.FC<MechGfxParams> = props => {
   const torso = partsData[0] as PartData; // We definitely have data here
   const drone = partsData[9];
 
+  const torsoAttachment = torso.item.attachment as TorsoAttachment;
+
 
   if (!leg1) {
     torso.x = -torso.width / 2;
     torso.y = -torso.height;
-  }
-  else {
-    leg1.x = (-leg1.width - (torso.item.attachment.leg2.x - torso.item.attachment.leg1.x)) / 2;
+
+  } else {
+    const legAttachment = leg1.item.attachment as Vector2;
+
+    leg1.x = (-leg1.width - (torsoAttachment.leg2.x - torsoAttachment.leg1.x)) / 2;
     leg1.y = -leg1.height;
-    torso.x = leg1.x + (leg1.item.attachment.x - torso.item.attachment.leg1.x);
-    torso.y = leg1.y + (leg1.item.attachment.y - torso.item.attachment.leg1.y);
+
+    torso.x = leg1.x + (legAttachment.x - torsoAttachment.leg1.x);
+    torso.y = leg1.y + (legAttachment.y - torsoAttachment.leg1.y);
   }
 
+
+  // If has drone, set drone position. We
+  // don't use attachment points for that
   if (drone) {
     drone.x = torso.x - drone.width - 50;
     drone.y = torso.y - drone.height / 2;
   }
 
+
+  // Now we set the position of every other part
   for (let i = 2; i < partsData.length; i++) {
+
     const data = partsData[i];
-    if (data && !partNamesToSkipAttachment.includes(data.name)) {
-      data.x = torso.x + (torso.item.attachment[data.name].x - data.item.attachment.x);
-      data.y = torso.y + (torso.item.attachment[data.name].y - data.item.attachment.y);
+
+    if (data === null) {
+      continue; // No item equipped
     }
+
+    if (preAttachedPartsNames.includes(data.name)) {
+      continue; // Already attached
+    }
+
+    const partAttachment = data.item.attachment as Vector2;
+    const partName = data.name as keyof TorsoAttachment;
+
+    data.x = torso.x + (torsoAttachment[partName].x - partAttachment.x);
+    data.y = torso.y + (torsoAttachment[partName].y - partAttachment.y);
   }
 
 

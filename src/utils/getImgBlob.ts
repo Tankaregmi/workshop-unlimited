@@ -1,17 +1,20 @@
 const useBase64Instead = true;
 
+export interface WUImageData {
+	width: number;
+	height: number;
+	url: string;
+}
 
-export default function (src: string, sizes: number[] = [Infinity], mimeType: string = 'image/png') {
+export default function (src: string, sizes: number[] = [Infinity]) {
+
 	const cnv = document.createElement('canvas');
-	const ctx = cnv.getContext('2d');
+	const ctx = cnv.getContext('2d') as CanvasRenderingContext2D;
 	const img = document.createElement('img');
-  const data: any[] = [];
-  
-  if (ctx === null) {
-    throw new TypeError(`ctx is null`);
-  }
 
-	return new Promise<any[]>((resolve, reject) => {
+  const data: WUImageData[] = [];
+
+	return new Promise<WUImageData[]>((resolve, reject) => {
 
 		img.crossOrigin = 'anonymous';
 		img.onload = async () => {
@@ -61,7 +64,7 @@ export default function (src: string, sizes: number[] = [Infinity], mimeType: st
 						if (data.length === sizes.length) {
 							resolve(data);
 						}
-					}, mimeType);
+					});
 				}
 			}
 		};

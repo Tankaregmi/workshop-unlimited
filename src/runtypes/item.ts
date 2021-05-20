@@ -61,4 +61,9 @@ export default Record({
     ))
   ),
 
+  // Legacy
+  gold_price: Optional(Number),
+  tokens_price: Optional(Number),
+  unlock_level: Optional(Number),
+
 });

@@ -4,7 +4,6 @@ import ProgressBar from '../../components/ProgressBar';
 import ItemsManager, { ItemsPack } from '../../managers/ItemsManager';
 import Popup, { PopupParams } from '../../components/Popup';
 import isLocally from '../../utils/isLocally';
-import ItemsPack_runtype from '../../runtypes/items-pack';
 import PageContext from '../../contexts/PageContext';
 import testItems from '../../test-items-pack.json';
 import './styles.css';
@@ -52,7 +51,7 @@ const Packs: React.FC = () => {
     console.log('[Packs] Items Pack:', data);
 
     try {
-      ItemsPack_runtype.check(data);
+      ItemsManager.checkItemsPack(data);
     } catch (error) {
       setPopup({
         title: 'Error: Invalid items pack',
@@ -76,7 +75,7 @@ const Packs: React.FC = () => {
       if (ItemsManager.loaded) {
         setTimeout(() => setPage('workshop'), 100);
       }
-    }, 100);
+    }, 200);
   }
 
   function importFromFile (e: React.ChangeEvent<HTMLInputElement>) {

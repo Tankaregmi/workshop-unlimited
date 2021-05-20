@@ -1,29 +1,27 @@
-import getImgBlob from '../utils/getImgBlob';
+import getImgBlob, { WUImageData } from '../utils/getImgBlob';
 import sha256 from 'simple-js-sha2-256';
 import { ItemStats } from './StatsManager';
 import { MechSetup } from './MechSavesManager';
+import Vector2 from '../utils/Vector2';
 
 
-export interface Item {
-  name: string;
-  id: number;
-  image: ItemImg;
-  type: string;
-  element: string;
-  kind: string;
-  transform_range: string;
-  attachment: any;
-  stats: ItemStats;
-  error: Error;
-  tags: string[];
+export interface TorsoAttachment {
+  leg1: Vector2;
+  leg2: Vector2;
+  side1: Vector2;
+  side2: Vector2;
+  side3: Vector2;
+  side4: Vector2;
+  top1: Vector2;
+  top2: Vector2;
 }
 
+type ItemElement = 'PHYSICAL' | 'EXPLOSIVE' | 'ELECTRIC' | 'COMBINED';
+type ItemType = (
+  'TORSO' | 'LEGS' | 'SIDE_WEAPON' | 'TOP_WEAPON' | 'DRONE'
+  | 'CHARGE_ENGINE' | 'TELEPORTER' | 'GRAPPLING_HOOK' | 'MODULE'
+);
 
-interface ItemImg {
-	readonly width: number;
-	readonly height: number;
-	readonly url: string;
-}
 
 interface RawItem {
   name: string;
@@ -31,14 +29,16 @@ interface RawItem {
   image: string;
   width?: number;
   height?: number;
-  type: string;
-  element: string;
+  type: ItemType;
+  element: ItemElement;
+	unlock_level?: number;
+	gold_price?: number;
+	tokens_price?: number;
   transform_range: string;
-  attachment: any;
+  attachment?: TorsoAttachment | Vector2;
   stats: ItemStats;
   tags?: string[];
 }
-
 
 
 interface ItemsPackConfig {
@@ -54,54 +54,11 @@ export interface ItemsPack {
 }
 
 
-async function createItemFromRaw (raw: RawItem, baseURL: string): Promise<Item> {
-
-  const image: ItemImg = { width: 0, height: 0, url: '' };
-  const src = raw.image.replace(/%url%/gi, baseURL);
-  const tags = raw.tags ? Array.from(raw.tags) : [];
-
-  let error = null;
-
-  try {
-    const [data] = await getImgBlob(src, [800]);
-    Object.assign(image, {
-      url: data.url,
-      width: raw.width || data.width,
-      height: raw.height || data.height
-    });
-  }
-  catch (err) {
-    error = err;
-  }
-
-  if (raw.transform_range.startsWith('L') || raw.transform_range.startsWith('M')) {
-    tags.push('premium');
-  }
-
-  if ((raw.stats.advance || raw.stats.retreat) && !tags.includes('melee')) {
-    tags.push('require_jump');
-  }
-
-  const item: Item = {
-    name: raw.name,
-    id: raw.id,
-    image: image,
-    type: raw.type,
-    element: raw.element,
-    kind: (raw.element + '_' + raw.type).toLowerCase(),
-    transform_range: raw.transform_range,
-    attachment: raw.attachment,
-    stats: raw.stats,
-    tags,
-    error
-  };
-
-  return item;
-}
+export type Item = Await<ReturnType<ItemsManager['createItemFromRaw']>>;
 
 
-class ItemsManager
-{
+class ItemsManager {
+
   hash: string = '';
   items: Item[] = [];
   itemsFailed: RawItem[] = [];
@@ -111,7 +68,10 @@ class ItemsManager
   packConfig?: ItemsPackConfig | null = null;
   itemElements = ['PHYSICAL', 'EXPLOSIVE', 'ELECTRIC', 'COMBINED'];
 
-  async import (itemsPack: ItemsPack, callback: (total: number, loaded: number) => any, interval: number) {
+  private maxItemImageSize = 800;
+
+
+  public async import (itemsPack: ItemsPack, callback: (total: number, loaded: number) => any, interval: number) {
 
     const baseURL = itemsPack.config.base_url || '';
     const itemsLoaded: Item[] = [];
@@ -144,36 +104,173 @@ class ItemsManager
       callback(itemsPack.items.length, itemsLoaded.length);
     }, interval);
 
+
     for (const rawItem of itemsPack.items) {
-      createItemFromRaw(rawItem, baseURL)
-        .then(item => {
+
+      const src = rawItem.image.replace('%url%', baseURL);
+      
+      getImgBlob(src, [this.maxItemImageSize])
+        .then(results => {
+
+          const [imageData] = results;
+
+          // Items can have hardcoded image size, for those
+          // we don't have the official image yet haha
+          if (rawItem.width)  imageData.width  = rawItem.width;
+          if (rawItem.height) imageData.height = rawItem.height;
+
+          const item = this.createItemFromRaw(rawItem, imageData);
+
+          // Successfuly imported this item, yay!
           itemsLoaded.push(item);
-          if (item.error) {
-            console.error(`Failed to load '${ rawItem.name }'\n`, item.error);
-            this.itemsFailed.push(rawItem);
-          }
+
+        }).catch(_error => {
+          // Failed to load item image
+
+          // Should probably tell the user what
+          // kind of error this is, right? ...
+
+          this.itemsFailed.push(rawItem);
         });
     }
   }
 
-  getItemsPackConfig (): ItemsPackConfig {
+
+  // Functions
+
+  private createItemFromRaw (data: RawItem, image: WUImageData) {
+
+    // Get item attachment
+    const attachment = data.attachment || this.createAttachment(data.type, image);
+  
+  
+    // Define kind
+    const kind = [data.element, data.type].join('_').toLowerCase();
+  
+  
+    // Get item tags
+    const tags = data.tags || [];
+  
+    if (tags.includes('legacy')) {
+      // Is legacy premium?
+      if (data.transform_range[0] === 'M') {
+        tags.push('premium');
+      }
+    } else {
+      // Is reloaded premium?
+      if ('LM'.includes(data.transform_range[0])) {
+        tags.push('premium');
+      }
+    }
+  
+    if (!tags.includes('melee')) {
+      // Is jumping weapon?
+      if (data.stats.advance || data.stats.retreat) {
+        tags.push('require_jump');
+      }
+    }
+  
+  
+    return {
+      id: data.id,
+      name: data.name,
+      type: data.type,
+      element: data.element,
+      transform_range: data.transform_range,
+      stats: data.stats,
+  
+      attachment,
+      image,
+      kind,
+      tags,
+    };
+  
+  }
+
+  private createAttachment (itemType: ItemType, { width, height }: WUImageData) {
+    switch (itemType) {
+  
+      case 'TORSO':
+        const attachment: TorsoAttachment = {
+          leg1:  new Vector2(width * 0.3,  height * 0.9),
+          leg2:  new Vector2(width * 0.7,  height * 0.9),
+          side1: new Vector2(width * 0.25, height * 0.65),
+          side2: new Vector2(width * 0.75, height * 0.65),
+          side3: new Vector2(width * 0.20, height * 0.4),
+          side4: new Vector2(width * 0.80, height * 0.4),
+          top1:  new Vector2(width * 0.25, height * 0.1),
+          top2:  new Vector2(width * 0.75, height * 0.1),
+        };
+        return attachment;
+  
+      case 'LEGS':
+        return new Vector2(width * 0.5, height * 0.1);
+  
+      case 'SIDE_WEAPON':
+        return new Vector2(width * 0.4, height * 0.5);
+  
+      case 'TOP_WEAPON':
+        return new Vector2(width * 0.3, height * 0.8);
+  
+      default:
+        return null;
+  
+    }
+  }
+
+
+  // Methods
+
+  public checkItemsPack (itemsPack: ItemsPack) {
+
+    // First we should check if the pack format is valid
+    // at all, but we don't do that at the moment because
+    // Runtypes decided to not give useful error messages.
+
+    // Then we check for items with the same ID
+
+    const idsMap: Record<string | number, RawItem[]> = {};
+    let messageLines: string[] = [];
+
+    for (const item of itemsPack.items) {
+      if (idsMap[item.id]) {
+        idsMap[item.id].push(item);
+      } else {
+        idsMap[item.id] = [item];
+      }
+    }
+
+    for (const [id, items] of Object.entries(idsMap)) {
+      if (items.length > 1) {
+        messageLines.push(`Found ${items.length} items with id ${id}`);
+      }
+    }
+
+    if (messageLines.length) {
+      throw new Error(messageLines.join('\n'));
+    }
+
+  }
+
+  public getItemsPackConfig (): ItemsPackConfig {
     if (this.packConfig) {
       return this.packConfig;
     }
     throw new Error(`No items pack loaded`);
   }
 
-
-  getItem (finder: (item: Item) => any): Item | null {
+  public getItem (finder: (item: Item) => any): Item | null {
     return this.items.find(finder) || null;
   }
 
 
-  items2ids (setup: MechSetup): number[] {
+  // Utils
+
+  public items2ids (setup: MechSetup): number[] {
     return setup.map(item => item ? item.id : 0);
   }
 
-  ids2items (ids: number[]): MechSetup {
+  public ids2items (ids: number[]): MechSetup {
     return ids.map(id => this.getItem(item => item.id === id));
   }
 }
