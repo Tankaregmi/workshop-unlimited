@@ -236,9 +236,8 @@ interface StatTemplate {
 }
 
 type MechStatKey =
-  'weight' | 'health' | 'eneCap' |
-  'eneReg' | 'heaCap' | 'heaCol' |
-  'phyRes' | 'expRes' | 'eleRes';
+  'weight' | 'health' | 'eneCap' | 'eneReg' | 'heaCap' | 'heaCol'
+  | 'phyRes' | 'expRes' | 'eleRes' | 'bulletsCap' | 'rocketsCap';
 
 // Stats which are number
 type ItemNumberStatKey =
@@ -247,7 +246,8 @@ type ItemNumberStatKey =
   'heaColDmg' | 'eleResDmg' | 'eneDmg'  | 'eneCapDmg' |
   'eneRegDmg' | 'walk'      | 'jump'    | 'push'      |
   'pull'      | 'recoil'    | 'advance' | 'retreat'   |
-  'uses'      | 'backfire'  | 'heaCost' | 'eneCost';
+  'uses'      | 'backfire'  | 'heaCost' | 'eneCost'   |
+  'bulletsCost' | 'rocketsCost';
 
 // Stats which are [number, number]
 type ItemTupleStatKey = 'phyDmg' | 'expDmg' | 'eleDmg' | 'range';

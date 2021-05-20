@@ -7,6 +7,8 @@ export default Partial({
   eneReg: Number,
   heaCap: Number,
   heaCol: Number,
+  bulletsCap: Number,
+  rocketsCap: Number,
   phyRes: Number,
   expRes: Number,
   eleRes: Number,
@@ -33,5 +35,7 @@ export default Partial({
   uses: Number,
   backfire: Number,
   heaCost: Number,
-  eneCost: Number
+  eneCost: Number,
+  bulletsCost: Number,
+  rocketsCost: Number,
 });
