@@ -2,6 +2,7 @@ import React, { CSSProperties, useContext, useState } from 'react';
 import fetch from 'node-fetch';
 import ProgressBar from '../../components/ProgressBar';
 import ItemsManager, { ItemsPack } from '../../managers/ItemsManager';
+import LocalStorageM from '../../managers/LocalStorageManager';
 import Popup, { PopupParams } from '../../components/Popup';
 import isLocally from '../../utils/isLocally';
 import PageContext from '../../contexts/PageContext';
@@ -17,6 +18,7 @@ const Packs: React.FC = () => {
   const { setPage } = useContext(PageContext);
 
   const defaultItems = 'https://gist.githubusercontent.com/ctrl-raul/3b5669e4246bc2d7dc669d484db89062/raw';
+  const lastPackData = LocalStorageM.getLastItemsPack();
 
 
   function removePopup () {
@@ -95,12 +97,24 @@ const Packs: React.FC = () => {
     }
   }
 
+
   function Buttons () {
     return (
       <>
+        {lastPackData &&
+          <button
+            className="classic-button"
+            onClick={() => {
+              ItemsManager.loadLastPack(lastPackData);
+              setPage('workshop');
+            }}>
+            Use last pack
+          </button>
+        }
+
         <button
           className="classic-button"
-          onClick={ () => importFromURL(defaultItems) }>
+          onClick={() => importFromURL(defaultItems)}>
           Use the default items
           <span>(Recommended)</span>
         </button>
@@ -129,7 +143,7 @@ const Packs: React.FC = () => {
             className="classic-button"
             onClick={() => beginImporting(testItems as ItemsPack)}
             style={{ '--color': 'var(--color-on)' } as CSSProperties}>
-            Dev
+            skibidibop hmm dada
           </button>
         )}
       </>

@@ -3,6 +3,7 @@ import sha256 from 'simple-js-sha2-256';
 import { ItemStats } from './StatsManager';
 import { MechSetup } from './MechSavesManager';
 import Vector2 from '../utils/Vector2';
+import LocalStorageM from './LocalStorageManager';
 
 
 export interface TorsoAttachment {
@@ -40,16 +41,14 @@ interface RawItem {
   tags?: string[];
 }
 
-
-interface ItemsPackConfig {
-  name: string;
-  description: string;
-  key: string;
-  base_url: string;
-}
-
 export interface ItemsPack {
-  config: ItemsPackConfig;
+  config: {
+    name: string;
+    description: string;
+    key: string;
+    base_url: string;
+    pack_url: string;
+  };
   items: RawItem[];
 }
 
@@ -64,17 +63,28 @@ class ItemsManager {
   itemsFailed: RawItem[] = [];
   loading = false;
   loaded = false;
-  error = false;
-  packConfig?: ItemsPackConfig | null = null;
+  error = false; // btw i think this is an unused prop
+  packConfig?: ItemsPack['config'] | null = null;
   itemElements = ['PHYSICAL', 'EXPLOSIVE', 'ELECTRIC', 'COMBINED'];
 
+
   private maxItemImageSize = 800;
+  private oldItemImagesBaseURL = 'https://raw.githubusercontent.com/ctrl-raul/workshop-unlimited/master/items/';
+  private newItemImagesBaseURL = 'https://raw.githubusercontent.com/ctrl-raul/supermechs-item-images/master/png/';
 
 
   public async import (itemsPack: ItemsPack, callback: (total: number, loaded: number) => any, interval: number) {
 
-    const baseURL = itemsPack.config.base_url || '';
+    let baseURL = itemsPack.config.base_url || '';
     const itemsLoaded: Item[] = [];
+
+
+    // Oui, we changed where we host the item images, it's
+    // not in the WU repo anymore, so we do this here.
+    if (baseURL === this.oldItemImagesBaseURL) {
+      baseURL = this.newItemImagesBaseURL;
+    }
+
 
     this.hash = sha256(JSON.stringify(itemsPack));
     this.loading = true;
@@ -82,7 +92,9 @@ class ItemsManager {
     this.items = [];
     this.packConfig = itemsPack.config;
 
+
     console.log('Items Pack HASH:', this.hash);
+
 
     const updateInterval = setInterval(() => {
 
@@ -98,6 +110,8 @@ class ItemsManager {
             this.itemElements.indexOf(a.element)
           - this.itemElements.indexOf(b.element)
         );
+
+        this.saveLastPack();
       }
 
       // Updates loading progress
@@ -218,6 +232,26 @@ class ItemsManager {
     }
   }
 
+  private saveLastPack () {
+    LocalStorageM.setLastItemsPack({
+      config: this.getItemsPackConfig(),
+      hash: this.hash,
+      items: this.items
+    });
+  }
+
+  public loadLastPack (lastPackData = LocalStorageM.getLastItemsPack()) {
+
+    if (lastPackData === null) {
+      throw new Error(`No last pack!`);
+    }
+
+    this.loaded = true;
+    this.items = lastPackData.items;
+    this.packConfig = lastPackData.config;
+
+  }
+
 
   // Methods
 
@@ -252,7 +286,7 @@ class ItemsManager {
 
   }
 
-  public getItemsPackConfig (): ItemsPackConfig {
+  public getItemsPackConfig (): ItemsPack['config'] {
     if (this.packConfig) {
       return this.packConfig;
     }

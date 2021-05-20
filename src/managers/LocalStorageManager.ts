@@ -5,6 +5,7 @@ to avoid storage key typo issues.
 */
 
 
+import { Item, ItemsPack } from './ItemsManager';
 import { JSONSafeMech } from './MechSavesManager';
 
 
@@ -21,6 +22,12 @@ interface LocalStorageMechSaves {
   }
 }
 
+interface LastPackData {
+  hash: string;
+  config: ItemsPack['config'];
+  items: Item[];
+}
+
 
 const defaultSettings: LocalStorageSettings = {
   arena_buffs: false,
@@ -30,19 +37,22 @@ const defaultSettings: LocalStorageSettings = {
 };
 
 
-class LocalStorageManager
-{
-  PREFIX = 'workshop-unlimited.';
-  SETTINGS_KEY = this.PREFIX + 'settings';
-  MECH_SAVES_KEY = this.PREFIX + 'mechs';
-  LAST_MECH_ID_KEY = this.PREFIX + 'last-mech-id';
+class LocalStorageManager {
 
-  set (key: string, value: any): any {
+  private PREFIX = 'workshop-unlimited.';
+  private SETTINGS_KEY = this.PREFIX + 'settings';
+  private MECH_SAVES_KEY = this.PREFIX + 'mechs';
+  private LAST_MECH_ID_KEY = this.PREFIX + 'last-mech-id';
+  private LAST_ITEMS_PACK_KEY = this.PREFIX + 'last-items-pack';
+
+
+
+  private set (key: string, value: any): any {
     localStorage.setItem(key, JSON.stringify(value));
     return value;
   }
 
-  get (key: string, optional?: any): any {
+  private get (key: string, optional?: any): any {
     const data = localStorage.getItem(key);
   
     if (!data) {
@@ -60,30 +70,43 @@ class LocalStorageManager
   }
 
 
-  setSettings (settings: LocalStorageSettings): void {
+
+  public setSettings (settings: LocalStorageSettings): void {
     this.set(this.SETTINGS_KEY, settings);
   }
 
-  getSettings (): LocalStorageSettings {
+  public getSettings (): LocalStorageSettings {
     return this.get(this.SETTINGS_KEY, defaultSettings);
   }
 
 
-  setMechSaves (mechs: LocalStorageMechSaves): void {
+
+  public setMechSaves (mechs: LocalStorageMechSaves): void {
     this.set(this.MECH_SAVES_KEY, mechs);
   }
 
-  getMechSaves (): LocalStorageMechSaves {
+  public getMechSaves (): LocalStorageMechSaves {
     return this.get(this.MECH_SAVES_KEY, {});
   }
 
 
-  setLastMechID (id: string): void {
+
+  public setLastMechID (id: string): void {
     this.set(this.LAST_MECH_ID_KEY, id);
   }
 
-  getLastMechID (): string {
+  public getLastMechID (): string {
     return this.get(this.LAST_MECH_ID_KEY);
+  }
+
+
+
+  public setLastItemsPack (data: LastPackData) {
+    this.set(this.LAST_ITEMS_PACK_KEY, data);
+  }
+
+  public getLastItemsPack (): LastPackData | null {
+    return this.get(this.LAST_ITEMS_PACK_KEY, null);
   }
 }
 
