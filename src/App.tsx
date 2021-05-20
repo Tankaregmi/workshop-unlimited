@@ -18,6 +18,33 @@ import './assets/styles/global.css';
 import './assets/styles/button.css';
 
 
+
+const quotes = [
+  'loading stat images',
+  'removing mech dust',
+  'removing dust mech',
+  'installing more floor pads in arena',
+  'making another Nightmare mech',
+  'balancing energy mechs',
+  'buffing frantic brute',
+  'cooling down',
+  'regenerating energy',
+  'Kraken is op',
+  'doing daily 5 battles',
+  'fixing bugs, and making more',
+  'thinking about more loading screen texts',
+  'you will probably never be able to read this if you have fast internet lol',
+  'alex balut connoisseur',
+  'nerfing drop rates',
+  'finishing a battle vs bobson',
+  'procastinating',
+  'now for something completely different',
+  'workshop limited',
+  'worshop unlimited',
+  'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+];
+
+
 interface GetCurrentPageParams {
   page: string;
 }
@@ -41,12 +68,12 @@ const App = () => {
 
   const [page, setPage] = useState(usingFirebaseURL ? 'url-changed' : 'packs');
   const [orientation, setOrientation] = useState<Orientations>(initialOrientation);
+  const [statsLoaded, setStatsLoaded] = useState(false);
+
 
   useEffect(() => {
 
-    // TODO: Make the app actually care about the stats,
-    // and perhaps make the stats customizable too.
-    StatsM.load();
+    StatsM.load(() => setStatsLoaded(true));
     SocketM.init(setPage);
 
     window.addEventListener('resize', () => {
@@ -70,6 +97,12 @@ const App = () => {
     });
 
   }, []);
+
+
+  if (!statsLoaded) {
+    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+    return <div>{randomQuote}</div>;
+  }
 
 
   return (

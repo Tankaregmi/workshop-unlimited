@@ -290,7 +290,6 @@ type MechStats = {
 class StatsManager
 {
   _stats: { [key in ItemStatKey]?: StatTemplate } = {};
-  loaded = false;
 
   mechStatsKeys: MechStatKey[] = [
     'weight', 'health', 'eneCap',
@@ -298,8 +297,9 @@ class StatsManager
     'phyRes', 'expRes', 'eleRes'
   ];
 
-  async load () {
+  async load (callback: () => unknown) {
 
+    let loadedStatsCount = 0;
     const baseURL = 'https://raw.githubusercontent.com/ctrl-raul/workshop-unlimited/master/src/assets/images/stats/';
 
     for (const data of rawStatsData) {
@@ -309,7 +309,16 @@ class StatsManager
             ...data,
             imageURL: image[0].url
           }
-        );
+        ).catch(_err => {
+          // TODO: Make the app actually care
+          // if some stat image fail to load
+        })
+        .finally(() => {
+          loadedStatsCount++;
+          if (loadedStatsCount === rawStatsData.length) {
+            callback();
+          }
+        });
     }
   }
 
