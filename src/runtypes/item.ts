@@ -1,4 +1,4 @@
-import { Record, Number, String, Union, Array, Literal, Undefined } from 'runtypes';
+import { Record, Number, String, Union, Array, Literal, Optional } from 'runtypes';
 import ItemStats_runtype from './item-stats';
 
 
@@ -37,25 +37,28 @@ export default Record({
   stats: ItemStats_runtype,
   transform_range: String,
 
-  attachment: (
-    Vector_runtype
-    .Or(Record({
-      leg1: Vector_runtype,
-      leg2: Vector_runtype,
-      side1: Vector_runtype,
-      side2: Vector_runtype,
-      side3: Vector_runtype,
-      side4: Vector_runtype,
-      top1: Vector_runtype,
-      top2: Vector_runtype,
-    }))
-    .Or(Undefined)
+  attachment: Optional(
+    Union(
+      Vector_runtype,
+      Record({
+        leg1: Vector_runtype,
+        leg2: Vector_runtype,
+        side1: Vector_runtype,
+        side2: Vector_runtype,
+        side3: Vector_runtype,
+        side4: Vector_runtype,
+        top1: Vector_runtype,
+        top2: Vector_runtype,
+      })
+    )
   ),
 
-  tags: Array(Union(
-    Literal('unreleased'),
-    Literal('custom'),
-    Literal('melee')
-  )).Or(Undefined)
+  tags: Optional(
+    Array(Union(
+      Literal('unreleased'),
+      Literal('custom'),
+      Literal('melee')
+    ))
+  ),
 
 });
