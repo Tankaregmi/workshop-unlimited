@@ -233,11 +233,15 @@ class ItemsManager {
   }
 
   private saveLastPack () {
-    LocalStorageM.setLastItemsPack({
-      config: this.getItemsPackConfig(),
-      hash: this.hash,
-      items: this.items
-    });
+    try {
+      LocalStorageM.setLastItemsPack({
+        config: this.getItemsPackConfig(),
+        hash: this.hash,
+        items: this.items
+      });
+    } catch (error) {
+      console.warn(`Failed to save last pack:`, error.message);
+    }
   }
 
   public loadLastPack (lastPackData = LocalStorageM.getLastItemsPack()) {
