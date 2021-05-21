@@ -233,6 +233,12 @@ class ItemsManager {
   }
 
   private saveLastPack () {
+
+    // First we remove the previous last
+    // pack, yes, regardless if it
+    // succeeds to set the new one.
+    LocalStorageM.setLastItemsPack();
+
     try {
       LocalStorageM.setLastItemsPack({
         config: this.getItemsPackConfig(),
@@ -240,6 +246,7 @@ class ItemsManager {
         items: this.items
       });
     } catch (error) {
+      // Most likely that the json is too long
       console.warn(`Failed to save last pack:`, error.message);
     }
   }
