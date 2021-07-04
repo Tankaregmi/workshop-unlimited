@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import wakeLock from './utils/wakeLock';
+import serviceWorkerRegistration from './serviceWorkerRegistration';
+import wakeLock from './wakeLock';
 
 
 ReactDOM.render(
@@ -12,4 +13,10 @@ ReactDOM.render(
 );
 
 
-wakeLock(true);
+// serviceWorkerRegistration('./serviceWorker.js')
+//   .then(reg => console.log('[serviceWorkerRegistration] Active ->', reg))
+//   .catch(err => console.log('[serviceWorkerRegistration] Error ->', err));
+
+wakeLock('screen')
+  .then(() => console.log('[wakeLock] Active'))
+  .catch(err => console.log('[wakeLock] Error ->', err));

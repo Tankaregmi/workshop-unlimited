@@ -1,7 +1,21 @@
 {
-  "short_name": "Workshop Unlimited",
   "name": "Workshop Unlimited",
+  "short_name": "Workshop Unlimited",
   "start_url": "/",
   "display": "fullscreen",
-  "theme_color": "#06222A"
+  "theme_color": "#06222A",
+  "orientatio": "landscape",
+  "background_color": "#06222A",
+  "description": "SuperMechs mech building simulator",
+  "icons": [{
+    "src": "assets/icons/manifest-icon-512.png",
+    "sizes": "512x512",
+    "type": "image/png",
+    "purpose": "maskable any"
+  }, {
+    "src": "assets/icons/manifest-icon-144.png",
+    "sizes": "144x144",
+    "type": "image/png",
+    "purpose": "maskable any"
+  }]
 }
