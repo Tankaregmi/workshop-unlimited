@@ -237,7 +237,7 @@ class ItemsManager {
     // First we remove the previous last
     // pack, yes, regardless if it
     // succeeds to set the new one.
-    LocalStorageM.setLastItemsPack();
+    LocalStorageM.setLastItemsPack(null);
 
     try {
       LocalStorageM.setLastItemsPack({

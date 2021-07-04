@@ -101,7 +101,7 @@ class LocalStorageManager {
 
 
 
-  public setLastItemsPack (data: LastPackData) {
+  public setLastItemsPack (data: LastPackData | null) {
     this.set(this.LAST_ITEMS_PACK_KEY, data);
   }
 
