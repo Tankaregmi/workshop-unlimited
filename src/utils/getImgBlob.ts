@@ -6,7 +6,7 @@ export interface WUImageData {
 	url: string;
 }
 
-export default function (src: string, sizes: number[] = [Infinity]) {
+export default function getImgBlob (src: string, sizes: number[] = [Infinity]) {
 
 	const cnv = document.createElement('canvas');
 	const ctx = cnv.getContext('2d') as CanvasRenderingContext2D;

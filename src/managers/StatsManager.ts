@@ -302,7 +302,7 @@ class StatsManager
     let loadedStatsCount = 0;
     const baseURL = 'https://raw.githubusercontent.com/ctrl-raul/workshop-unlimited/master/src/assets/images/stats/';
 
-    for (const data of rawStatsData) {
+    const loadItem = (data: RawStatTemplate) => {
       getImgBlob(baseURL + data.key + '.svg', [70])
         .then(image =>
           this._stats[data.key] = {
@@ -319,6 +319,10 @@ class StatsManager
             callback();
           }
         });
+    }
+
+    for (const data of rawStatsData) {
+      loadItem(data);
     }
   }
 

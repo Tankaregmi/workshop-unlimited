@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import serviceWorkerRegistration from './serviceWorkerRegistration';
+// import serviceWorkerRegistration from './serviceWorkerRegistration';
 import wakeLock from './wakeLock';
 
 

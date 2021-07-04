@@ -45,4 +45,7 @@ const modules: SlotConfig[] = [
 ];
 
 
-export default { parts, specials, modules };
+const slotsConfig = { parts, specials, modules };
+
+
+export default slotsConfig;
