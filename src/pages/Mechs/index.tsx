@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import Header from '../../components/Header';
 import MechGfx from '../../components/MechGfx';
 import Popup, { PopupParams } from '../../components/Popup';
-import PageContext from '../../contexts/PageContext';
 import ScreenOrientationContext from '../../contexts/ScreenOrientationContext';
 import ItemsM from '../../managers/ItemsManager';
 import MechSavesM, { Mech } from '../../managers/MechSavesManager';
@@ -17,12 +17,13 @@ const Mechs: React.FC = () => {
   const [activeMech, setActiveMech] = useState<Mech>(MechSavesM.getLastMech());
   const [selectedMechsIDs, setSelectedMechsIDs] = useState<Mech['id'][]>([]);
   const { orientation } = useContext(ScreenOrientationContext);
-  const { setPage } = useContext(PageContext);
+
+  const history = useHistory();
 
 
   function onSelectMech (mech: Mech) {
     MechSavesM.setLastMech(mech);
-    setPage('workshop');
+    history.goBack();
   }
 
   function onDeleteMech (mech: Mech) {
@@ -130,7 +131,7 @@ const Mechs: React.FC = () => {
 
       <Header
         title="Mechs Manager"
-        onGoBack={() => setPage('workshop')}
+        onGoBack={() => history.goBack()}
       />
 
       <div className="current-mech-view">
@@ -161,7 +162,7 @@ const Mechs: React.FC = () => {
         )}
 
         <div ref={e => TooltipM.listen(e, 'Items Pack Name')}>
-          {ItemsM.getItemsPackConfig().name}
+          {ItemsM.getItemsPack().config.name}
         </div>
 
         <div>Mechs: {Object.keys(mechs).length}</div>

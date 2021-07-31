@@ -1,16 +1,16 @@
-import React, { CSSProperties, useContext, useState } from 'react';
+import React, { CSSProperties, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import MechGfx from '../../components/MechGfx';
 import EquipmentSlot from './EquipmentSlot';
 import StatBlocks from '../../components/StatBlocks';
 import ItemSelectingTab from '../../components/ItemSelectingTab';
 import Popup, { PopupParams } from '../../components/Popup';
-import { Item } from '../../managers/ItemsManager';
+import pagePaths from '../pagePaths';
+import Item from '../../classes/Item';
 
 import MechSavesM, { Mech } from '../../managers/MechSavesManager';
 import TooltipM from '../../managers/TooltipManager';
-import BattleM from '../../managers/BattleManager';
-
-import PageContext from '../../contexts/PageContext';
+import BattleUtils from '../../battle/BattleUtils';
 
 import { ReactComponent as CrossedSwordsIcon } from '../../assets/images/icons/crossed-swords.svg';
 import { ReactComponent as MechIcon } from '../../assets/images/icons/mech.svg';
@@ -25,11 +25,12 @@ import './styles.css';
 
 const Workshop: React.FC = () => {
 
+  const history = useHistory();
+
   const [mech, setMech] = useState<Mech>(MechSavesM.getLastMech());
   const [focusedSlotInfo, setFocusedSlotInfo] = useState({ index: -1, type: '', });
   const [showExtras, setShowExtras] = useState(false);
   const [popup, setPopup] = useState<PopupParams | null>(null);
-  const { setPage } = useContext(PageContext);
 
   const getNextIndex = ((i = 0) => () => i++)();
   const blurChildren = showExtras || !!popup || !!focusedSlotInfo.type;
@@ -85,11 +86,11 @@ const Workshop: React.FC = () => {
 
   function onClickBattle () {
 
-    const { can, reason } = BattleM.canSetupBattle(mech.setup);
+    const { can, reason } = BattleUtils.canBattleWithSetup(mech.setup);
     const Ok = () => setPopup(null);
 
     if (can) {
-      setPage('lobby');
+      history.push(pagePaths.lobby);
     } else {
       setPopup({
         title: 'Wait!',
@@ -122,7 +123,7 @@ const Workshop: React.FC = () => {
 
       <button
         className="settings classic-box"
-        onClick={() => setPage('settings')}
+        onClick={() => history.push(pagePaths.settings)}
         ref={e => TooltipM.listen(e, { text: 'Settings' })}>
         <CogIcon />
       </button>
@@ -141,7 +142,7 @@ const Workshop: React.FC = () => {
 
           <button
             className="classic-button"
-            onClick={() => setPage('mechs')}>
+            onClick={() => history.push(pagePaths.mechs)}>
             <MechIcon />
             <span>Manage Mechs</span>
           </button>

@@ -37,11 +37,13 @@
   padding: 0;
   box-sizing: border-box;
   outline: none;
+  letter-spacing: inherit;
 }
 
 body {
   font-size: 1.6rem;
   color: #dddddd;
+  letter-spacing: 0.1rem;
 }
 
 #root {

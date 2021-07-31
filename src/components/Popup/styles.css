@@ -24,8 +24,9 @@
   box-shadow: 0 0 1rem #000000;
 }
 
-.popup-container > div > h3 {
+.popup-container > div > .title {
   margin-bottom: 2rem;
+  font-size: 1.2em;
 }
 
 .popup-container > div > .buttons {

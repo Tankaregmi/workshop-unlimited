@@ -4,8 +4,6 @@ take care of default values and
 to avoid storage key typo issues.
 */
 
-
-import { Item, ItemsPack } from './ItemsManager';
 import { JSONSafeMech } from './MechSavesManager';
 
 
@@ -22,11 +20,11 @@ interface LocalStorageMechSaves {
   }
 }
 
-interface LastPackData {
-  hash: string;
-  config: ItemsPack['config'];
-  items: Item[];
-}
+// interface LastPackData {
+//   hash: string;
+//   config: ItemsPack['config'];
+//   items: Item[];
+// }
 
 
 const defaultSettings: LocalStorageSettings = {
@@ -43,7 +41,7 @@ class LocalStorageManager {
   private SETTINGS_KEY = this.PREFIX + 'settings';
   private MECH_SAVES_KEY = this.PREFIX + 'mechs';
   private LAST_MECH_ID_KEY = this.PREFIX + 'last-mech-id';
-  private LAST_ITEMS_PACK_KEY = this.PREFIX + 'last-items-pack';
+  // private LAST_ITEMS_PACK_KEY = this.PREFIX + 'last-items-pack';
 
 
 
@@ -101,13 +99,13 @@ class LocalStorageManager {
 
 
 
-  public setLastItemsPack (data: LastPackData | null) {
-    this.set(this.LAST_ITEMS_PACK_KEY, data);
-  }
+  // public setLastItemsPack (data: LastPackData | null) {
+  //   this.set(this.LAST_ITEMS_PACK_KEY, data);
+  // }
 
-  public getLastItemsPack (): LastPackData | null {
-    return this.get(this.LAST_ITEMS_PACK_KEY, null);
-  }
+  // public getLastItemsPack (): LastPackData | null {
+  //   return this.get(this.LAST_ITEMS_PACK_KEY, null);
+  // }
 }
 
 

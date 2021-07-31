@@ -2,7 +2,7 @@ import React from 'react';
 import LocalStorageM from '../../../managers/LocalStorageManager';
 import TooltipM from '../../../managers/TooltipManager';
 import { ReactComponent as CrossImg } from '../../../assets/images/icons/cross.svg';
-import { Item } from '../../../managers/ItemsManager';
+import Item from '../../../classes/Item';
 
 
 interface EquipmentSlotParams {
@@ -35,7 +35,7 @@ const EquipmentSlot: React.FC<EquipmentSlotParams> = ({ config, style, item, onC
         {item ? (
           <img
             ref={e => TooltipM.listen(e, { item })}
-            src={item.image.url}
+            src={item.getImage().url}
             alt={item.name} />
         ) : (
           <SlotImg />

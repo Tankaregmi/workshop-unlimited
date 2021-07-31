@@ -1,4 +1,4 @@
-import { Item } from "./ItemsManager";
+import Item from "../classes/Item";
 import { MechSetup } from "./MechSavesManager";
 
 

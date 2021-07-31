@@ -1,50 +1,35 @@
-import LocalStorageM from '../managers/LocalStorageManager';
-import BattlePlayerData from './BattlePlayerData';
-import { arrayRandomItem } from '../utils/arrayRandom';
-import { Mech } from '../managers/MechSavesManager';
+import BattlePlayerData, { BattleStartPlayerData } from './BattlePlayerData';
 
 
-interface BattleArguments {
-  mechs: [Mech, Mech];
-  positions?: [number, number];
-  turnOwnerIndex: 0 | 1;
-  multiplayer: boolean;
-  onUpdate?: () => any;
+export interface BattleStartData {
+  online: boolean;
+  starterID: string;
+  player: BattleStartPlayerData;
+  opponent: BattleStartPlayerData;
 }
 
 
-export default class Battle
-{
-  logs: [string, string][] = [];  
-  turns = 1;
-  turnOwnerIndex = 0;
-  activeAI = !LocalStorageM.getSettings().control_opponent_mech;
-  multiplayer: boolean;
-  over = false;
-  victory = false;
-  quit = false;
-  players: [BattlePlayerData, BattlePlayerData];
-  onUpdate: () => any;
+export default class Battle {
 
-  constructor (args: BattleArguments) {
+  public logs: { color: string, message: string }[] = [];
+  public readonly online: boolean;
+  public turnOwnerID: string;
+  public readonly player: BattlePlayerData;
+  public readonly opponent: BattlePlayerData;
+  public turns = 1;
+  public complete: {
+    victory: boolean;
+    quit: boolean;
+  } | null = null;
 
-    const presetPositions = [[4, 5], [3, 6], [2, 7]];
 
-    const {
-      mechs,
-      positions = arrayRandomItem(presetPositions),
-      multiplayer,
-      turnOwnerIndex = 0,
-      onUpdate = () => {},
-    } = args;
+  constructor (data: BattleStartData) {
 
-    this.players = [
-      new BattlePlayerData(mechs[0], this, positions[0]),
-      new BattlePlayerData(mechs[1], this, positions[1])
-    ];
+    this.online = data.online;
+    this.turnOwnerID = data.starterID;
+    this.player = new BattlePlayerData(data.player);
+    this.opponent = new BattlePlayerData(data.opponent);
 
-    this.multiplayer = multiplayer;
-    this.turnOwnerIndex = turnOwnerIndex;
-    this.onUpdate = onUpdate;
   }
+
 }

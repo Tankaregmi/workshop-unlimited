@@ -1,7 +1,7 @@
 .player-stats-panel {
   position: relative;
   display: grid;
-  grid-template-rows: 2rem 2rem 2rem 4.4rem;
+  grid-template-rows: 1fr 1fr 1fr 2.2fr;
   grid-template-columns: 7rem 1fr 1fr;
   grid-template-areas:
     'pfp   name    name'
@@ -10,22 +10,28 @@
     'turns resists buttons';
   gap: 0.2rem;
   width: 40vw;
-  max-width: 40rem;
+  height: 100%;
   padding: 0.4rem;
   /* overflow: hidden; */
   letter-spacing: 0.15rem;
 }
 
-.player-stats-panel > img.pfp {
-  position: absolute;
-  display: block;
-  left: 5%;
-  top: 5%;
-  width: 90%;
-  height: 90%;
-  object-fit: contain;
-  filter: drop-shadow(0 0.3rem 0.5rem #000000);
+.player-stats-panel .profile-picture-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
   grid-area: pfp;
+}
+
+.player-stats-panel .profile-picture-container img.pfp {
+  position: relative;
+  display: block;
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
 }
 
 .player-stats-panel > .player-name {
@@ -37,7 +43,7 @@
   height: 100%;
   background-color: var(--color-bg);
   border-radius: var(--ui-radius);
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   grid-area: name;
   direction: ltr;
 }
@@ -51,10 +57,21 @@
   height: 100%;
 }
 
-.player-stats-panel > .resistances-container {
+.player-stats-panel > .turns {
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  height: 100%;
+  grid-area: turns;
+}
+
+.player-stats-panel > .turns svg {
+  position: relative;
+  display: block;
+  width: 2.4rem;
+  height: 2.4rem;
 }
 
 .player-stats-panel > .resistances-container {
@@ -180,11 +197,6 @@
   width: 100%;
   height: 100%;
   background-color: #3862c5;
-}
-
-
-.player-stats-panel.right {
-  direction: rtl;
 }
 
 .player-stats-panel.right > img.pfp {

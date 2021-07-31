@@ -17,7 +17,7 @@ const Popup: React.FC<PopupParams> = ({ title, info, options, onOffClick }) => {
     <div className="popup-container tab" onClick={onOffClick}>
       <div className="classic-box">
 
-        <h3>{title}</h3>
+        <div className="title">{title}</div>
 
         {info && <span>{info}</span>}
 

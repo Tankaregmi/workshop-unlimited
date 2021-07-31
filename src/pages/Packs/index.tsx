@@ -1,13 +1,18 @@
-import React, { CSSProperties, useContext, useState } from 'react';
+import React, { CSSProperties, useState } from 'react';
 import fetch from 'node-fetch';
 import ProgressBar from '../../components/ProgressBar';
 import ItemsManager, { ItemsPack } from '../../managers/ItemsManager';
-import LocalStorageM from '../../managers/LocalStorageManager';
+// import LocalStorageM from '../../managers/LocalStorageManager';
 import Popup, { PopupParams } from '../../components/Popup';
 import isLocally from '../../utils/isLocally';
-import PageContext from '../../contexts/PageContext';
 import testItems from '../../test-items-pack.json';
+import pagePaths from '../pagePaths';
+import { useHistory } from 'react-router-dom';
 import './styles.css';
+
+
+const discordTag = 'ctrl-raul#9419';
+const forumProfile = 'https://community.supermechs.com/profile/20-raul/';
 
 
 const Packs: React.FC = () => {
@@ -15,10 +20,11 @@ const Packs: React.FC = () => {
   const [popup, setPopup] = useState<PopupParams | null>(null);
   const [itemsPack, setItemsPack] = useState<ItemsPack | null>(null);
   const [progress, setProgress] = useState(0);
-  const { setPage } = useContext(PageContext);
+
+  const history = useHistory();
 
   const defaultItems = 'https://gist.githubusercontent.com/ctrl-raul/3b5669e4246bc2d7dc669d484db89062/raw';
-  const lastPackData = LocalStorageM.getLastItemsPack();
+  // const lastPackData = LocalStorageM.getLastItemsPack();
 
 
   function removePopup () {
@@ -35,50 +41,24 @@ const Packs: React.FC = () => {
     setPopup({ title: 'Awaiting Response...' });
 
 
-    let data: ItemsPack;
-
     try {
+
       const response = await fetch(url);
-      data = await response.json();
-    } catch(error) {
+      const itemsPack = await response.json();
+      beginImporting(itemsPack);
+
+    } catch (err) {
+
       setPopup({
-        title: 'Error: Failed to import',
-        info: `${error.message || 'Unknown Error'}\n\nTip: Try using online JSON validators`,
+        title: 'Could not load this pack!',
+        info: `Error: ${err.message}\n\nIf you're having trouble contact me:\nDiscord: ${discordTag}\nForum: ${forumProfile}`,
         options: { Ok: removePopup },
-        onOffClick: removePopup
+        onOffClick: removePopup,
       });
-      return;
+
     }
-
-    console.log('[Packs] Items Pack:', data);
-
-    try {
-      ItemsManager.checkItemsPack(data);
-    } catch (error) {
-      setPopup({
-        title: 'Error: Invalid items pack',
-        info: `${error.message || 'Unknown Issue'}`,
-        options: { Ok: removePopup },
-        onOffClick: removePopup
-      });
-      return;
-    }
-
-    beginImporting(data);
   }
 
-  function beginImporting (data: ItemsPack): void {
-
-    setItemsPack(data);
-    removePopup();
-
-    ItemsManager.import(data, (total: number, loaded: number) => {
-      setProgress(loaded / total * 100);
-      if (ItemsManager.loaded) {
-        setTimeout(() => setPage('workshop'), 100);
-      }
-    }, 200);
-  }
 
   function importFromFile (e: React.ChangeEvent<HTMLInputElement>) {
 
@@ -98,19 +78,33 @@ const Packs: React.FC = () => {
   }
 
 
+  function beginImporting (itemsPack: ItemsPack): void {
+    setItemsPack(itemsPack);
+    removePopup();
+
+    ItemsManager.importItemsPack(itemsPack, progress => {
+      if (progress === 1) {
+        history.replace(pagePaths.workshop);
+      } else {
+        setProgress(progress * 100);
+      }
+    });
+  }
+
+
   function Buttons () {
     return (
       <>
-        {lastPackData &&
+        {/* {lastPackData &&
           <button
             className="classic-button"
             onClick={() => {
               ItemsManager.loadLastPack(lastPackData);
-              setPage('workshop');
+              history.replace(pagePaths.workshop);
             }}>
             Use last pack
           </button>
-        }
+        } */}
 
         <button
           className="classic-button"
@@ -158,15 +152,6 @@ const Packs: React.FC = () => {
         <Loading itemsPack={itemsPack} progress={progress} />
       ) : (
         <Buttons />
-      )}
-
-      {!!ItemsManager.itemsFailed.length && (
-        <div className="failed">
-          <h3>Failed</h3>
-          {ItemsManager.itemsFailed.map(item =>
-            <span key={ item.name }>{ item.name }</span>
-          )}
-        </div>
       )}
 
       {popup && <Popup {...popup} />}

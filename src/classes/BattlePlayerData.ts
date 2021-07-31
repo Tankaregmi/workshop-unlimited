@@ -1,32 +1,31 @@
-import Battle from './Battle';
 import StatsM from '../managers/StatsManager';
-import randomHSL from '../utils/randomHSL';
-import { Item } from '../managers/ItemsManager';
-import { Mech } from '../managers/MechSavesManager';
-import isLocally from '../utils/isLocally';
+import ItemsManager from '../managers/ItemsManager';
+import Item from './Item';
 
 
-export type ItemAndIndex = [Item, number];
-
-
-export default class BattlePlayerData
-{
+export interface BattleStartPlayerData {
   id: string;
-  admin: boolean;
-  battle: Battle;
-
-  weapons: ItemAndIndex[];
-  specials: ItemAndIndex[];
-
-  logColor: string;
-  mech: Mech;
-  items: (Item | null)[];
+  name: string;
+  setup: number[];
   position: number;
-  uses: number[];
-  usedInTurn: number[] = [];
-  droneActive = false;
+}
 
-  stats: {
+
+export default class BattlePlayerData {
+
+  public readonly name: string;
+  public readonly id: string;
+
+  public readonly weapons: [Item, number][];
+  public readonly specials: [Item, number][];
+
+  public readonly items: (Item | null)[];
+  public position: number;
+  public uses: number[];
+  public usedInTurn: number[] = [];
+  public droneActive = false;
+
+  public stats: {
     health: number,
     healthCap: number,
     energy: number,
@@ -40,28 +39,28 @@ export default class BattlePlayerData
     eleRes: number
   };
 
-  constructor (mech: Mech, battle: Battle, position: number) {
+  constructor (data: BattleStartPlayerData) {
 
-    const statsMap = StatsM.getStats(mech.setup, true);
+    const items = ItemsManager.ids2items(data.setup);
+    const statsMap = StatsM.getStats(items, true);
 
     const {
       health = 1, eneCap = 1, eneReg = 1, heaCap = 1,
       heaCol = 1, phyRes = 0, expRes = 0, eleRes = 0,
     } = statsMap;
 
-    const itemsAndIndexes = mech.setup.map((item, i) => item ? [item, i] : null) as ItemAndIndex[];
+    const itemsAndIndexes = items.map((item, i) => item ? [item, i] as const : null);
 
-    this.id = mech.id;
-    this.admin = isLocally;
-    this.battle = battle;
+    this.name = data.name;
+    this.id = data.id;
 
+    // @ts-ignore
     this.weapons = itemsAndIndexes.slice(2, 8).filter(x => x !== null);
+    // @ts-ignore
     this.specials = itemsAndIndexes.slice(8, 12).filter(x => x !== null);
 
-    this.logColor = randomHSL();
-    this.mech = mech;
-    this.position = position;
-    this.items = mech.setup;
+    this.position = data.position;
+    this.items = items;
     this.uses = this.items.map(item => item && item.stats.uses ? item.stats.uses : Infinity);
 
     this.stats = {

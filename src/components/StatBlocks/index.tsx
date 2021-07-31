@@ -1,5 +1,5 @@
 import React from 'react';
-import { Item } from '../../managers/ItemsManager';
+import Item from '../../classes/Item';
 import { MechSetup } from '../../managers/MechSavesManager';
 import StatsM, { ItemStatKey } from '../../managers/StatsManager';
 import decimalSeparators from '../../utils/decimalSeparators';
@@ -33,7 +33,7 @@ const StatBlocks: React.FC<StatBlocksParams> = ({ source }) => {
       {entries.map(([key, value]) => 
         <div key={key} className="stat-block">
 
-          <img src={StatsM.getStatTemplate(key).imageURL} alt={key} />
+          <img src={StatsM.getStatInstruction(key).imageURL} alt={key} />
 
           <output style={{
             color: key === 'weight' ? getColorForWeight(value as number) : undefined

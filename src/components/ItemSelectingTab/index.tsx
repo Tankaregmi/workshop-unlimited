@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { isMobile } from 'react-device-detect';
-import ItemsM, { Item } from '../../managers/ItemsManager';
-import StatsM from '../../managers/StatsManager';
+import Item from '../../classes/Item';
+import ItemsManager from '../../managers/ItemsManager';
+import StatsManager from '../../managers/StatsManager';
 import ItemInfo from '../ItemInfo';
 
 import './styles.css';
@@ -16,7 +17,7 @@ interface ItemSelectingTabParams {
 
 const ItemSelectingTab: React.FC<ItemSelectingTabParams> = ({ type, currentItem, selectItem }) => {
 
-  const items = ItemsM.items.filter(item => item.type === type);
+  const items = ItemsManager.getItems(item => item.type === type);
 
   const [elementFilters, setElementFilters] = useState(['PHYSICAL', 'EXPLOSIVE', 'ELECTRIC', 'COMBINED']);
   const [activeItem, setActiveItem] = useState(currentItem);
@@ -78,9 +79,10 @@ const ItemSelectingTab: React.FC<ItemSelectingTabParams> = ({ type, currentItem,
         {itemToDisplay !== null && (
           <img
             data-select-null
-            src={itemToDisplay.image.url}
+            src={itemToDisplay.getImage().url}
             alt={itemToDisplay.name}
-            className="item-image"/>
+            className="item-image"
+          />
         )}
 
         {itemToDisplay !== null && (
@@ -95,7 +97,7 @@ const ItemSelectingTab: React.FC<ItemSelectingTabParams> = ({ type, currentItem,
               onMouseOver={() => setInspectedItem(item)}
               onMouseOut={() => setInspectedItem(null)}
               onClick={() => onSelectItem(item)}>
-              <img src={item.image.url} alt={item.name} />
+              <img src={item.getImage().url} alt={item.name} />
             </button>
           )}
         </div>
@@ -104,17 +106,17 @@ const ItemSelectingTab: React.FC<ItemSelectingTabParams> = ({ type, currentItem,
           <button
             className={`classic-button ${elementFilters.includes('PHYSICAL') ? 'active' : ''}`}
             onClick={e => addElementFilter(e, 'PHYSICAL')}>
-            <img src={StatsM.getStatTemplate('phyDmg').imageURL} alt="Physical"/>
+            <img src={StatsManager.getStatInstruction('phyDmg').imageURL} alt="Physical"/>
           </button>
           <button
             className={`classic-button ${elementFilters.includes('EXPLOSIVE') ? 'active' : ''}`}
             onClick={e => addElementFilter(e, 'EXPLOSIVE')}>
-            <img src={StatsM.getStatTemplate('expDmg').imageURL} alt="Explosive"/>
+            <img src={StatsManager.getStatInstruction('expDmg').imageURL} alt="Explosive"/>
           </button>
           <button
             className={`classic-button ${elementFilters.includes('ELECTRIC') ? 'active' : ''}`}
             onClick={e => addElementFilter(e, 'ELECTRIC')}>
-            <img src={StatsM.getStatTemplate('eleDmg').imageURL} alt="Electric"/>
+            <img src={StatsManager.getStatInstruction('eleDmg').imageURL} alt="Electric"/>
           </button>
         </div>
 

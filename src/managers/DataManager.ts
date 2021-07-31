@@ -6,7 +6,6 @@ class DataManager
   battle: Battle | null = null;
   opponent: Mech | null = null;
   turnOwnerID = '';
-  updateBattle = () => {};
 
   getBattle (): Battle {
     if (this.battle) {

@@ -1,15 +1,11 @@
 import React from 'react';
-import { Item } from '../../managers/ItemsManager';
+import Item from '../../classes/Item';
 import StatBlocks from '../StatBlocks';
 import './styles.css';
 
 
-interface ItemInfoParams {
-  item: Item;
-}
 
-
-const ItemInfo: React.FC<ItemInfoParams> = ({ item }) => {
+const ItemInfo: React.FC<{ item: Item }> = ({ item }) => {
 
   const tag = (text: string, color: string) => {
     return <span className="tag" style={{ color }}>{ text }</span>;

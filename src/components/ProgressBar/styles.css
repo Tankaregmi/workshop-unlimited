@@ -21,11 +21,13 @@
 }
 
 .progress-bar > span {
+  /* -webkit-text-stroke: 0.1rem #000000;
+  -webkit-text-fill-color: #ffffff; */
   text-shadow:
-     1px  1px 1px #000000,
-    -1px  1px 1px #000000,
-     1px -1px 1px #000000,
-    -1px -1px 1px #000000;
+     0.13rem  0.13rem 0.1rem #000000,
+    -0.13rem  0.13rem 0.1rem #000000,
+     0.13rem -0.13rem 0.1rem #000000,
+    -0.13rem -0.13rem 0.1rem #000000;
   z-index: 2;
   direction: ltr;
 }

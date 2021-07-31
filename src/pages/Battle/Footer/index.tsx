@@ -1,22 +1,25 @@
 import React, { useState } from 'react';
 import Battle from '../../../classes/Battle';
-import BattleM from '../../../managers/BattleManager';
 import TooltipM from '../../../managers/TooltipManager';
 import { ReactComponent as ArrowCrossSvg } from '../../../assets/images/icons/arrow-cross.svg';
 import { ReactComponent as AimSvg } from '../../../assets/images/icons/aim.svg';
 import { ReactComponent as SpecialsSvg } from '../../../assets/images/icons/specials.svg';
 import { ReactComponent as CooldownSvg } from '../../../assets/images/icons/cooldown.svg';
 import { ReactComponent as ArrowBackSvg } from '../../../assets/images/icons/arrow-back.svg';
+import BattleUtils from '../../../battle/BattleUtils';
+import { BattleEvent } from '../../../managers/BattleManager';
 
 
 interface FooterParams {
   battle: Battle;
+  resolveAction: (event: BattleEvent) => any;
+  mirror: boolean;
 }
 
 
-const Footer: React.FC<FooterParams> = ({ battle }) => {
+const Footer: React.FC<FooterParams> = ({ battle, resolveAction, mirror }) => {
 
-  const { attacker } = BattleM.getPlayers(battle);
+  const { attacker } = BattleUtils.getAttackerAndDefender(battle);
 
   const [section, setSection] = useState('main');
   const [positionsMap, setPositionsMap] = useState<boolean[]>([]);
@@ -34,7 +37,7 @@ const Footer: React.FC<FooterParams> = ({ battle }) => {
 
     const onClickMovements = () => {
       if (canMove) {
-        setPositionsMap(BattleM.getAccessiblePositions(battle, 1));
+        setPositionsMap(BattleUtils.getWalkablePositions(battle));
       }
     };
 
@@ -65,13 +68,13 @@ const Footer: React.FC<FooterParams> = ({ battle }) => {
           setRangeMap={setRangeMap}
           itemIndex={1}
           battle={battle}
-          onClick={() => BattleM.resolveAction(battle, 'stomp')}
+          onClick={() => resolveAction({ name: 'stomp' })}
         />
 
         <button
           ref={e => TooltipM.listen(e, { text: `Cooldown (${attacker.stats.heaCol} cooling)` })}
           className="classic-button"
-          onClick={() => BattleM.resolveAction(battle, 'cooldown', { double: false })}>
+          onClick={() => resolveAction({ name: 'cooldown', doubleCooldown: false })}>
           <CooldownSvg />
         </button>
       </>
@@ -85,13 +88,13 @@ const Footer: React.FC<FooterParams> = ({ battle }) => {
           <ArrowBackSvg />
         </button>
 
-        {attacker.weapons.map(([_item, itemIndex]) =>
+        {attacker.weapons.map(([_item, weaponIndex]) =>
           <ItemButton
-            key={ itemIndex }
-            setRangeMap={ setRangeMap }
-            itemIndex={ itemIndex }
-            battle={ battle }
-            onClick={ () => BattleM.resolveAction(battle, 'fire', { itemIndex }) }
+            key={weaponIndex}
+            setRangeMap={setRangeMap}
+            itemIndex={weaponIndex}
+            battle={battle}
+            onClick={() => resolveAction({ name: 'use_weapon', weaponIndex })}
             />
         )}
       </>
@@ -111,10 +114,10 @@ const Footer: React.FC<FooterParams> = ({ battle }) => {
     type specialItemType = 'DRONE' | 'TELEPORTER' | 'CHARGE_ENGINE' | 'GRAPPLING_HOOK';
 
     const listeners = {
-      DRONE: () => BattleM.resolveAction(battle, 'drone_toggle'),
+      DRONE: () => resolveAction({ name: 'drone_toggle' }),
       TELEPORTER: () => [setTeleporting(true), setRangeMap([])],
-      CHARGE_ENGINE: () => BattleM.resolveAction(battle, 'charge'),
-      GRAPPLING_HOOK: () => BattleM.resolveAction(battle, 'hook')
+      CHARGE_ENGINE: () => resolveAction({ name: 'charge_engine' }),
+      GRAPPLING_HOOK: () => resolveAction({ name: 'grappling_hook' }),
     };
 
     return (
@@ -156,14 +159,15 @@ const Footer: React.FC<FooterParams> = ({ battle }) => {
         <h1>Error: Unknown section '{ section }'</h1>
       }
 
-      {
-        teleporting &&
-        BattleM.getAccessiblePositions(battle, 10)
+      <div className="ranges" style={{ transform: mirror ? 'scaleX(-1)' : '' }}>
+
+      {teleporting &&
+        BattleUtils.getTeleportablePositions(battle)
           .map((accessible, i) => accessible &&
             <div
               key={ i }
               onClick={ () => {
-                BattleM.resolveAction(battle, 'teleport', { position: i });
+                resolveAction({ name: 'teleport', movingPosition: i });
                 setTeleporting(false);
               }}
               className="position-highlight"
@@ -176,11 +180,11 @@ const Footer: React.FC<FooterParams> = ({ battle }) => {
         <div
           key={ i }
           onClick={ () => {
-            BattleM.resolveAction(battle, 'walk', { position: i });
+            resolveAction({ name: 'walk', movingPosition: i });
             setPositionsMap([]);
           }}
           className="position-highlight"
-          style={{ left: 1 + i * 10 + '%' }}>
+          style={{left: 1 + i * 10 + '%' }}>
         </div>
       )}
 
@@ -191,6 +195,8 @@ const Footer: React.FC<FooterParams> = ({ battle }) => {
           style={{ left: 1 + i * 10 + '%' }}>
         </div>
       )}
+
+      </div>
 
     </footer>
   );
@@ -206,7 +212,7 @@ interface ItemButtonParams {
 
 const ItemButton: React.FC<ItemButtonParams> = ({ itemIndex, battle, setRangeMap, onClick }) => {
 
-  const { attacker } = BattleM.getPlayers(battle);
+  const { attacker } = BattleUtils.getAttackerAndDefender(battle);
 
   const item = attacker.items[itemIndex];
 
@@ -214,18 +220,18 @@ const ItemButton: React.FC<ItemButtonParams> = ({ itemIndex, battle, setRangeMap
     return null;
   }
 
-  const canPlayerUse = BattleM.canPlayerUse(battle, itemIndex);
+  const canPlayerUse = BattleUtils.canPlayerUseItem(battle, itemIndex);
   const canUse = item.type === 'DRONE' || canPlayerUse.can;
 
   return (
     <button
       key={ String(item.id) + String(itemIndex) }
-      onMouseEnter={ () => setRangeMap(BattleM.getRelativeWeaponRange(battle, itemIndex)) }
+      onMouseEnter={ () => setRangeMap(BattleUtils.getItemRangePlot(battle, itemIndex)) }
       onMouseLeave={ () => setRangeMap([]) }
       className={`classic-button ${canUse ? '' : 'disabled'}`}
-      onClick={ canUse ? onClick : () => BattleM.log(battle, 2, canPlayerUse.reason) }>
+      onClick={ canUse ? onClick : () => console.log(canPlayerUse.reason) }>
 
-      <img src={ item.image.url } alt={ item.name } />
+      <img src={item.getImage().url} alt={item.name} />
 
       {
         item.stats.uses

@@ -1,7 +1,8 @@
 import LocalStorageManager from './LocalStorageManager';
-import ItemsManager, { Item } from './ItemsManager';
+import ItemsManager from './ItemsManager';
 import randomStringFactory from '../utils/randomStringFactory';
 import downloadJSON from '../utils/downloadJSON';
+import Item from '../classes/Item';
 
 
 export interface Mech {
@@ -81,17 +82,14 @@ class MechSavesManager
 
   getMechsForCurrentPack (): MechsMap {
 
-    if (!ItemsManager.packConfig) {
-      throw new Error(`Can not get mechs: ItemsManager.packConfig is ${ ItemsManager.packConfig }`);
-    }
-
+    const itemsPackConfig = ItemsManager.getItemsPack().config;
     const mechsPacks = LocalStorageManager.getMechSaves();
 
     // If has saved mechs created with this pack
-    if (ItemsManager.packConfig.key in mechsPacks) {
+    if (itemsPackConfig.key in mechsPacks) {
 
       const mechs: MechsMap = {};
-      const JSONSafeMechs = Object.values(mechsPacks[ItemsManager.packConfig.key]);
+      const JSONSafeMechs = Object.values(mechsPacks[itemsPackConfig.key]);
 
       for (const mech of JSONSafeMechs) {
         mechs[mech.id] = this.JSONSafeMechToMech(mech);
@@ -105,10 +103,7 @@ class MechSavesManager
 
   setMechs (mechs: MechsMap): void {
 
-    if (!ItemsManager.packConfig) {
-      throw new Error(`Can not set (save) mechs: ItemsManager.packConfig is ${ ItemsManager.packConfig }`);
-    }
-
+    const itemsPackConfig = ItemsManager.getItemsPack().config;
     const mechsPacks = LocalStorageManager.getMechSaves();
     const JSONSafeMechsMap: { [mech_id: string]: JSONSafeMech } = {};
 
@@ -125,10 +120,10 @@ class MechSavesManager
 
     // No I will not use ternary here.
     if (Object.keys(JSONSafeMechsMap).length) {
-      mechsPacks[ItemsManager.packConfig.key] = JSONSafeMechsMap;
+      mechsPacks[itemsPackConfig.key] = JSONSafeMechsMap;
     }
     else {
-      delete mechsPacks[ItemsManager.packConfig.key];
+      delete mechsPacks[itemsPackConfig.key];
     }
 
     LocalStorageManager.setMechSaves(mechsPacks);
@@ -137,16 +132,14 @@ class MechSavesManager
 
   createMech (base: Partial<Mech> = {}): Mech {
 
-    if (!ItemsManager.packConfig) {
-      throw new Error(`Can not create mech: ItemsManager.packConfig is ${ ItemsManager.packConfig }`);
-    }
+    const itemsPackConfig = ItemsManager.getItemsPack().config;
 
     const mech = {
       id: base.id || this._genMechID(),
       name: base.name || 'Mech ' + this.genRandomStringShort(),
       setup: base.setup || Array(20).fill(null),
-      pack_key: base.pack_key || ItemsManager.packConfig.key,
-      pack_name: base.pack_name || ItemsManager.packConfig.name
+      pack_key: base.pack_key || itemsPackConfig.key,
+      pack_name: base.pack_name || itemsPackConfig.name
     };
 
     this.saveMech(mech);

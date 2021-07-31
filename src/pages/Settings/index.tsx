@@ -1,8 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import LSManager from '../../managers/LocalStorageManager';
 import SwitchButton from './SwitchButton';
 import Header from '../../components/Header';
-import PageContext from '../../contexts/PageContext';
 import './styles.css';
 
 
@@ -16,13 +16,14 @@ interface SectionsType {
 
 const Settings: React.FC = () => {
 
+  const history = useHistory();
+
   const defaultSettings = LSManager.getSettings();
 
   const [arenaBuffs, setArenaBuffs] = useState(defaultSettings.arena_buffs);
   const [buffsOnTooltip] = useState(defaultSettings.buffs_on_tooltip);
   const [clearSlotButton, setClearSlotButton] = useState(defaultSettings.clear_slot_button);
   const [controlOpponentMech, setControlOpponentMech] = useState(defaultSettings.control_opponent_mech);
-  const { setPage } = useContext(PageContext);
 
 
   LSManager.setSettings({
@@ -50,7 +51,7 @@ const Settings: React.FC = () => {
   return (
     <div id="settings-screen">
 
-      <Header title="Settings" onGoBack={() => setPage('workshop')} />
+      <Header title="Settings" onGoBack={() => history.goBack()} />
 
       <main>
         {sections.map(({ title, inputs }) =>

@@ -6,13 +6,16 @@ import ds from '../../../utils/decimalSeparators';
 import phyResShieldIcon from '../../../assets/images/icons/phyResShield.png';
 import expResShieldIcon from '../../../assets/images/icons/expResShield.png';
 import eleResShieldIcon from '../../../assets/images/icons/eleResShield.png';
+import { ReactComponent as UsesIcon } from '../../../assets/images/stats/uses.svg';
+import Battle from '../../../classes/Battle';
 
 import './styles.css';
-import { Item } from '../../../managers/ItemsManager';
+import Item from '../../../classes/Item';
 
 
 interface PlayerStatsPanelParams extends React.HTMLProps<HTMLDivElement> {
   player: BattlePlayerData;
+  battle: Battle;
   side?: "left" | "right";
 }
 
@@ -20,8 +23,10 @@ const PlayerStatsPanel: React.FC<PlayerStatsPanelParams> = props => {
 
   const [viewPlayerWeapons, setViewPlayerWeapons] = useState(false);
 
-  const { player, side = 'left' } = props;
+  const { player, side = 'left', battle } = props;
   const legs: [Item, number] = [player.items[1] as Item, 1]; // Assumes one never goes to battle without legs
+  const ownsTurn = battle.turnOwnerID === player.id;
+  const turns = ownsTurn ? battle.turns : 0;
 
   const {
     healthCap,
@@ -37,18 +42,23 @@ const PlayerStatsPanel: React.FC<PlayerStatsPanelParams> = props => {
     eleRes
   } = player.stats;
 
-  if (energy > eneCap) debugger;
+
+  if (energy > eneCap) debugger; // lol idk what i was doing here but won't remove
+
+
 
   return (
-    <div className={`player-stats-panel ${player.admin ? 'admin' : ''} ${side}`} {...props}>
+    <div className={`player-stats-panel ${side}`} {...props}>
 
-      <img
-        src={player.items[0]?.image.url}
-        alt=""
-        className="pfp"
-      />
+      <div className="profile-picture-container classic-box">
+        <img
+          src={player.items[0]?.getImage().url}
+          alt=""
+          className="pfp"
+        />
+      </div>
 
-      <div className="player-name">{player.mech.name}</div>
+      <div className="player-name">{player.name}</div>
 
       <ProgressBar 
         label={`${ds(health)}/${ds(healthCap)}`}
@@ -100,7 +110,7 @@ const PlayerStatsPanel: React.FC<PlayerStatsPanelParams> = props => {
               key={itemIndex}
               ref={e => TooltipM.listen(e, { item })}
               className="classic-button">
-              <img src={item.image.url} alt={item.name} />
+              <img src={item.getImage().url} alt={item.name} />
               {item.stats.uses &&
                 <span>
                   <span style={{ width: player.uses[itemIndex] / item.stats.uses * 100 + '%' }}></span>
@@ -110,6 +120,11 @@ const PlayerStatsPanel: React.FC<PlayerStatsPanelParams> = props => {
           )}
         </div>
       }
+
+      <div className="turns classic-box">
+        <UsesIcon style={{ filter: turns     ? '' : 'brightness(0.4)' }} />
+        <UsesIcon style={{ filter: turns > 1 ? '' : 'brightness(0.4)' }} />
+      </div>
 
     </div>
   );

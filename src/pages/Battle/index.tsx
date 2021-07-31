@@ -1,75 +1,149 @@
-import React, { useContext, useState } from 'react';
-import BattleM from '../../managers/BattleManager';
+import React, { useEffect, useState } from 'react';
 import MechGfx from '../../components/MechGfx';
 import PlayerStatsPanel from './PlayerStatsPanel';
 import Footer from './Footer';
-import DataManager from '../../managers/DataManager';
-import SocketM from '../../managers/SocketManager';
 import Popup, { PopupParams } from '../../components/Popup';
-import PageContext from '../../contexts/PageContext';
+import { Redirect, useHistory } from 'react-router-dom';
+import SocketManager from '../../managers/SocketManager';
+import BattleData, { BattleStartData } from '../../classes/Battle';
+import BattleManager, { BattleEvent } from '../../managers/BattleManager';
+import BattleAI from '../../classes/BattleAI';
+import pagePaths from '../pagePaths';
 import './styles.css';
+import BattleUtils from '../../battle/BattleUtils';
+
 
 
 const Battle: React.FC = () => {
 
+  const history = useHistory<{ battle: BattleStartData, mirror: boolean }>();
+
   const [popup, setPopup] = useState<PopupParams | null>(null);
-  const [battle, setBattle] = useState(DataManager.getBattle());
   const [viewLogs, setViewLogs] = useState(false);
-  const { setPage } = useContext(PageContext);
-
-  const { attacker, defender } = BattleM.getPlayers(battle);
-  const dir = (attacker.position > defender.position ? 1 : -1);
-  const mechScale = 0.325;
-
-  const isMyTurn = !battle.over && battle.multiplayer ? (
-    battle.players[battle.turnOwnerIndex].id === SocketM.procket.socket.id
-  ) : (
-    !battle.activeAI || battle.turnOwnerIndex === 0
+  const [battle, setBattle] = useState(
+    history.location.state && history.location.state.battle
+    ? new BattleData(history.location.state.battle)
+    : null
   );
 
-  const mechHighlightColor = isMyTurn ? '#00ff00' : '#ff0000';
-  const [p1, p2] = battle.players.sort(a => a.id === SocketM.procket.socket.id ? 1 : -1);
 
 
-  DataManager.updateBattle = () => {
-    setBattle(Object.assign({}, DataManager.getBattle()));
-  };
+  // Graphic
+  const mechScale = 0.325;
 
 
-  async function onQuitBattle () {
-    if (battle.multiplayer) {
-      try {
-        SocketM.battle_quit();
-        quit();
-      } catch (error) {
-        setPopup({
-          title: 'Error',
-          info: error.message,
-          onOffClick: quit,
-          options: { Ok: quit }
-        });
-      }
-    } else {
-      quit();
+
+  // Effects
+
+  useEffect(() => {
+    if (battle
+     && !battle.complete
+     && !battle.online
+     && !BattleUtils.isPlayerTurn(battle)) {
+
+      setTimeout(() => {
+        const event = BattleAI.think(battle);
+        BattleManager.handleEvent(battle, event);
+        setBattle(Object.assign({}, battle));
+      }, 1000);
+
     }
+  }, [battle]);
+
+
+  useEffect(() => {
+
+    const attachmentID = SocketManager.attach({
+
+      'battle.opponent_quit' (resolve): void {
+        resolve();
+        onOpponentQuit();
+      },
+    
+      'battle.opponent_action' (resolve, _reject, data): void {
+        resolve();
+        if (!BattleUtils.isPlayerTurn(battle)) {
+          BattleManager.handleEvent(battle, data.event);
+          setBattle(Object.assign({}, battle));
+        }
+      },
+
+    });
+
+    return () => {
+      SocketManager.detach(attachmentID);
+    };
+
+  });
+
+
+
+  // Functions
+
+  async function onQuitBattle (): Promise<void> {
+
+    if (battle.online) {
+
+      setPopup({ title: 'Quitting...' });
+
+      try {
+        // Why do we await if we don't care about errors? No idea.
+        await SocketManager.emit('battle.quit', null);
+      } catch (err) {
+        console.log('Error while quitting battle:', err);
+      }
+    }
+
+    history.goBack();
+
   }
 
-  function quit () {
-    const battle = DataManager.getBattle();
-    battle.over = true;
-    battle.victory = false;
-    battle.quit = true;
-    DataManager.updateBattle();
+
+  function onOpponentQuit (): void {
+    BattleManager.setBattleComplete(battle, true, true);
+    setBattle(Object.assign({}, battle));
   }
 
+
+  async function dispatchBattleEvent (event: BattleEvent): Promise<void> {
+
+    if (battle.turnOwnerID !== battle.player.id) {
+      return;
+    }
+
+    if (battle.online) {
+
+      setPopup({ title: 'Please wait...' });
+
+      try {
+        await SocketManager.emit('battle.action', event);
+      } catch (err) {
+        onOpponentQuit(); // Yeah for now we just pretend the opponent quit
+        return;
+      } finally {
+        setPopup(null);
+      }
+
+    }
+
+    BattleManager.handleEvent(battle, event);
+    setBattle(Object.assign({}, battle));
+
+  }
+
+
+
+  // Render
+
+  if (!battle) {
+    return <Redirect to={pagePaths.workshop} />;
+  }
 
   return (
     <div id="screen-battle">
 
-      <div className="stat-panels">
-        <PlayerStatsPanel player={p1} style={{ gridArea: 'p1-stats' }} />
-        <PlayerStatsPanel player={p2} style={{ gridArea: 'p2-stats' }} side="right" />
-      </div>
+      <PlayerStatsPanel player={battle.player}   battle={battle} />
+      <PlayerStatsPanel player={battle.opponent} battle={battle} side="right" />
 
       <div className="buttons-container">
         <button className="classic-button logs-btn" onClick={() => setViewLogs(true)}>
@@ -80,16 +154,19 @@ const Battle: React.FC = () => {
         </button>
       </div>
 
-      <div className="mechs-container">
+      <div className="mechs-container" style={{
+        transform: history.location.state.mirror ? 'scaleX(-1)' : ''
+      }}>
         <div
           className="mech-gfx-container"
           style={{
-            transform: `scaleX(${dir * -1})`,
-            left: 5 + attacker.position * 10 + '%',
+            transform: `scaleX(${BattleUtils.getDirection(battle)})`,
+            left: 5 + battle.player.position * 10 + '%',
+            filter: BattleUtils.isPlayerTurn(battle) ? 'drop-shadow(0 0 0.2rem #00ff00)' : '',
           }}>
           <MechGfx
-            setup={attacker.mech.setup}
-            droneActive={attacker.droneActive}
+            setup={battle.player.items}
+            droneActive={battle.player.droneActive}
             scale={mechScale}
             outline={true}
           />
@@ -97,13 +174,13 @@ const Battle: React.FC = () => {
         <div
           className="mech-gfx-container"
           style={{
-            transform: `scaleX(${dir})`,
-            left: 5 + defender.position * 10 + '%',
-            filter: `drop-shadow(0 0 0.2rem ${mechHighlightColor}) drop-shadow(0 0 0.2rem ${mechHighlightColor})`,
+            transform: `scaleX(${BattleUtils.getDirection(battle) * -1})`,
+            left: 5 + battle.opponent.position * 10 + '%',
+            filter: !BattleUtils.isPlayerTurn(battle) ? 'drop-shadow(0 0 0.2rem #ff0000)' : '',
           }}>
           <MechGfx
-            setup={defender.mech.setup}
-            droneActive={defender.droneActive}
+            setup={battle.opponent.items}
+            droneActive={battle.opponent.droneActive}
             scale={mechScale}
             outline={true}
           />
@@ -113,22 +190,28 @@ const Battle: React.FC = () => {
       {viewLogs &&
         <div className="logs-tab" onClick={() => setViewLogs(false)}>
           <div className="logs-tab-contents">
-            {battle.logs.map(([log, color], i) => 
-              <span key={i} style={{ color }}>{log}</span>
+            {battle.logs.map(({ color, message }, i) =>
+              <div style={{ color }} key={i}>{message}</div>
             )}
           </div>
         </div>
       }
 
-      {isMyTurn && <Footer battle={battle} />}
+      {BattleUtils.isPlayerTurn(battle) &&
+        <Footer
+          battle={battle}
+          resolveAction={dispatchBattleEvent}
+          mirror={history.location.state.mirror}
+        />
+      }
 
-      {battle.over && !viewLogs &&
+      {battle.complete && !viewLogs &&
         <Popup
-          title={battle.victory ? 'You Won' : 'You Lost'}
-          info={battle.quit && battle.victory ? 'Opponent has quit!' : undefined}
+          title={battle.complete.victory ? 'You Won' : 'You Lost'}
+          info={battle.complete.victory && battle.complete.quit && 'Opponent has quit!'}
           options={{
             'View Logs': () => setViewLogs(true),
-            'Workshop': () => setPage('workshop'),
+            'Go Back': () => history.goBack(),
           }}
         />
       }

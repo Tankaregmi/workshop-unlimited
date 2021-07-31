@@ -1,5 +1,5 @@
 import React from 'react';
-import { Item, TorsoAttachment } from '../../managers/ItemsManager';
+import Item, { TorsoAttachment } from '../../classes/Item';
 import Vector2 from '../../utils/Vector2';
 
 import './styles.css';
@@ -15,9 +15,8 @@ interface MechGfxParams extends React.HTMLProps<HTMLDivElement> {
 interface PartData {
   x: number;
   y: number;
-  width: number;
-  height: number;
-  name: string;
+  image: ReturnType<Item['getImage']>;
+  partName: string;
   zIndex: number;
   item: Item;
 }
@@ -64,14 +63,21 @@ const MechGfx: React.FC<MechGfxParams> = props => {
 
   usableSetup.splice(2, 0, setup[1]); // We also need two legs
 
-  const partsData: (PartData | null)[] = usableSetup.map((item, i) => item && {
-    x: 0,
-    y: 0,
-    width: item.image.width,
-    height: item.image.height,
-    name: partNames[i],
-    zIndex: zIndexes[i],
-    item
+  const partsData: (PartData | null)[] = usableSetup.map((item, i) => {
+
+    if (!item) {
+      return null;
+    }
+
+    return {
+      x: 0,
+      y: 0,
+      image: item.getImage(),
+      partName: partNames[i],
+      zIndex: zIndexes[i],
+      item,
+    };
+
   });
 
   const leg1 = partsData[1];
@@ -82,14 +88,14 @@ const MechGfx: React.FC<MechGfxParams> = props => {
 
 
   if (!leg1) {
-    torso.x = -torso.width / 2;
-    torso.y = -torso.height;
+    torso.x = -torso.image.width / 2;
+    torso.y = -torso.image.height;
 
   } else {
     const legAttachment = leg1.item.attachment as Vector2;
 
-    leg1.x = (-leg1.width - (torsoAttachment.leg2.x - torsoAttachment.leg1.x)) / 2;
-    leg1.y = -leg1.height;
+    leg1.x = (-leg1.image.width - (torsoAttachment.leg2.x - torsoAttachment.leg1.x)) / 2;
+    leg1.y = -leg1.image.height;
 
     torso.x = leg1.x + (legAttachment.x - torsoAttachment.leg1.x);
     torso.y = leg1.y + (legAttachment.y - torsoAttachment.leg1.y);
@@ -99,8 +105,8 @@ const MechGfx: React.FC<MechGfxParams> = props => {
   // If has drone, set drone position. We
   // don't use attachment points for that
   if (drone) {
-    drone.x = torso.x - drone.width - 50;
-    drone.y = torso.y - drone.height / 2;
+    drone.x = torso.x - drone.image.width - 50;
+    drone.y = torso.y - drone.image.height / 2;
   }
 
 
@@ -113,12 +119,12 @@ const MechGfx: React.FC<MechGfxParams> = props => {
       continue; // No item equipped
     }
 
-    if (preAttachedPartsNames.includes(data.name)) {
+    if (preAttachedPartsNames.includes(data.partName)) {
       continue; // Already attached
     }
 
     const partAttachment = data.item.attachment as Vector2;
-    const partName = data.name as keyof TorsoAttachment;
+    const partName = data.partName as keyof TorsoAttachment;
 
     data.x = torso.x + (torsoAttachment[partName].x - partAttachment.x);
     data.y = torso.y + (torsoAttachment[partName].y - partAttachment.y);
@@ -130,28 +136,25 @@ const MechGfx: React.FC<MechGfxParams> = props => {
 
   return (
     <div
-      { ...rest }
       className="mech-gfx"
-      style={{
-        transform: `scale(${ finalScale })`,
-        ...style
-      }}>
+      style={{ ...style, transform: `scale(${ finalScale })` }}
+      {...rest}>
 
       {notNullPartsData.map((data, i) =>
         <div
-          key={ data.item.name + i }
+          key={data.item.name + i}
           style={{
-            left:   data.x + 'px',
-            top:    data.y + 'px',
+            left: data.x + 'px',
+            top: data.y + 'px',
             zIndex: data.zIndex,
             filter: outline ? 'undefined' : 'none'
           }}>
           <img
-            src={ data.item.image.url }
-            alt={ data.item.name }
+            src={data.image.url}
+            alt={data.partName}
             style={{
-              width: data.width,
-              height: data.height
+              width: data.image.width,
+              height: data.image.height
             }}
           />
         </div>
