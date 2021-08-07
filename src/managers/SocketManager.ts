@@ -92,13 +92,11 @@ async function emit (
   responseTimeout?: number,
 ): Promise<any> {
 
-  throw new Error(`Unavailable.`);
-
-  // if (connectErrorStreakCount >= connectErrorStreakCountMax) {
-  //   throw new Error(`Unavailable! Try again later.`);
-  // }
+  if (connectErrorStreakCount >= connectErrorStreakCountMax) {
+    throw new Error(`Unavailable! Try again later.`);
+  }
   
-  // return await psocket.emit(event, data, responseTimeout);
+  return await psocket.emit(event, data, responseTimeout);
 
 }
 
