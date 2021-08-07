@@ -15,6 +15,14 @@ export interface ItemsPack {
   items: RawItem[];
 }
 
+interface EssentialItemData {
+  id: number;
+  name: string;
+  type: string;
+  stats: Item['stats'];
+  tags: string[];
+}
+
 type MechSetup = (Item | null)[];
 
 

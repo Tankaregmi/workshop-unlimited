@@ -3,21 +3,6 @@
 
 
 
-
-// Types related to Workshop Unlimited
-
-
-interface EssentialItemData {
-  id: number;
-  name: string;
-  type: string;
-  stats: { [string]: number | [number, number] };
-  tags: string[];
-}
-
-
-
-
 // Util types
 
 
