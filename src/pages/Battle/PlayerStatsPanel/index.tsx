@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import ProgressBar from '../../../components/ProgressBar';
-import BattlePlayerData from '../../../classes/BattlePlayerData';
+import BattlePlayerData from '../../../battle/BattlePlayerData';
 import TooltipM from '../../../managers/TooltipManager';
 import ds from '../../../utils/decimalSeparators';
 import phyResShieldIcon from '../../../assets/images/icons/phyResShield.png';
 import expResShieldIcon from '../../../assets/images/icons/expResShield.png';
 import eleResShieldIcon from '../../../assets/images/icons/eleResShield.png';
 import { ReactComponent as UsesIcon } from '../../../assets/images/stats/uses.svg';
-import Battle from '../../../classes/Battle';
+import Battle from '../../../battle/Battle';
 
 import './styles.css';
 import Item from '../../../classes/Item';

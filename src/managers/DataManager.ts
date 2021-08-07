@@ -1,4 +1,4 @@
-import Battle from '../classes/Battle';
+import Battle from '../battle/Battle';
 import { Mech } from './MechSavesManager';
 
 class DataManager

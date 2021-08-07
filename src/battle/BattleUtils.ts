@@ -1,4 +1,4 @@
-import Battle from "../classes/Battle";
+import Battle from "./Battle";
 import Item from "../classes/Item";
 
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Battle from '../../../classes/Battle';
+import Battle from '../../../battle/Battle';
 import TooltipM from '../../../managers/TooltipManager';
 import { ReactComponent as ArrowCrossSvg } from '../../../assets/images/icons/arrow-cross.svg';
 import { ReactComponent as AimSvg } from '../../../assets/images/icons/aim.svg';
@@ -7,7 +7,7 @@ import { ReactComponent as SpecialsSvg } from '../../../assets/images/icons/spec
 import { ReactComponent as CooldownSvg } from '../../../assets/images/icons/cooldown.svg';
 import { ReactComponent as ArrowBackSvg } from '../../../assets/images/icons/arrow-back.svg';
 import BattleUtils from '../../../battle/BattleUtils';
-import { BattleEvent } from '../../../managers/BattleManager';
+import { BattleEvent } from '../../../battle/BattleManager';
 
 
 interface FooterParams {

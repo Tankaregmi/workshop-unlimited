@@ -1,5 +1,5 @@
-import BattleUtils from "../battle/BattleUtils";
-import Battle from "../classes/Battle";
+import BattleUtils from "./BattleUtils";
+import Battle from "./Battle";
 import Item from '../classes/Item';
 
 

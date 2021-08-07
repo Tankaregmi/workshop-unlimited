@@ -12,7 +12,7 @@ import SocketManager from '../../managers/SocketManager';
 import ItemsManager from '../../managers/ItemsManager';
 import pagePaths from '../pagePaths';
 import BattleUtils from '../../battle/BattleUtils';
-import { BattleStartData } from '../../classes/Battle';
+import { BattleStartData } from '../../battle/Battle';
 import { arrayRandomItem } from '../../utils/arrayRandom';
 
 import './styles.css';

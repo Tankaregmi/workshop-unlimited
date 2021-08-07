@@ -1,6 +1,6 @@
 import StatsM from '../managers/StatsManager';
 import ItemsManager from '../managers/ItemsManager';
-import Item from './Item';
+import Item from '../classes/Item';
 
 
 export interface BattleStartPlayerData {

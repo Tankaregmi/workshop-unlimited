@@ -1,7 +1,7 @@
 // @ts-nocheck TODO: Not call Effects.movements in Effects.fire
 
 
-import Battle from '../classes/Battle';
+import Battle from '../battle/Battle';
 import Item from '../classes/Item';
 import ItemsManager from './ItemsManager';
 import { MechSetup } from './MechSavesManager';

@@ -1,6 +1,6 @@
 import BattleUtils from '../battle/BattleUtils';
-import Battle from '../classes/Battle';
-import { BattleEvent } from '../managers/BattleManager';
+import Battle from './Battle';
+import { BattleEvent } from '../battle/BattleManager';
 import _ from 'lodash';
 
 
