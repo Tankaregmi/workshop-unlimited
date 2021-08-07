@@ -94,6 +94,14 @@ export default class Item {
 
 		this.image = await GetImageData.base64(src, Item.maxImageSize);
 
+		if (this.raw.width) {
+			this.image.width = this.raw.width;
+		}
+
+		if (this.raw.height) {
+			this.image.height = this.raw.height;
+		}
+
 		this.setAttachment();
 
 	}

@@ -153,8 +153,8 @@ const MechGfx: React.FC<MechGfxParams> = props => {
             src={data.image.url}
             alt={data.partName}
             style={{
-              width: data.image.width,
-              height: data.image.height
+              width: data.image.width + 'px',
+              height: data.image.height + 'px',
             }}
           />
         </div>
