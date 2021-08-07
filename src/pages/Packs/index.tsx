@@ -1,11 +1,9 @@
-import React, { CSSProperties, useState } from 'react';
+import React, { useState } from 'react';
 import fetch from 'node-fetch';
 import ProgressBar from '../../components/ProgressBar';
 import ItemsManager, { ItemsPack } from '../../managers/ItemsManager';
 // import LocalStorageM from '../../managers/LocalStorageManager';
 import Popup, { PopupParams } from '../../components/Popup';
-import isLocally from '../../utils/isLocally';
-import testItems from '../../test-items-pack.json';
 import pagePaths from '../pagePaths';
 import { useHistory } from 'react-router-dom';
 import './styles.css';
@@ -132,14 +130,6 @@ const Packs: React.FC = () => {
           <input type="file" onChange={ importFromFile }/>
         </button>
 
-        {isLocally && (
-          <button
-            className="classic-button"
-            onClick={() => beginImporting(testItems as ItemsPack)}
-            style={{ '--color': 'var(--color-on)' } as CSSProperties}>
-            skibidibop hmm dada
-          </button>
-        )}
       </>
     );
   }
