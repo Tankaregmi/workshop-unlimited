@@ -47,7 +47,7 @@ function think (battle: Battle): BattleEvent {
       const plot = weapons.reduce((plotSum, b) => {
 
         const index = b[1];
-        const plot = BattleUtils.getItemRangePlot(battle, index);
+        const plot = BattleUtils.plotItemRange(battle, index);
 
         return plot.map((x, i) => plotSum[i] || x);
 

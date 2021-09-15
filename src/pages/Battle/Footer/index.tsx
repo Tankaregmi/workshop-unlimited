@@ -10,26 +10,28 @@ import BattleUtils from '../../../battle/BattleUtils';
 import { BattleEvent } from '../../../battle/BattleManager';
 
 
-interface FooterParams {
+interface Props {
   battle: Battle;
   resolveAction: (event: BattleEvent) => any;
   mirror: boolean;
+  show: boolean;
 }
 
 
-const Footer: React.FC<FooterParams> = ({ battle, resolveAction, mirror }) => {
+const Footer: React.FC<Props> = props => {
 
+  const { battle, resolveAction, mirror, show } = props;
   const { attacker } = BattleUtils.getAttackerAndDefender(battle);
+  const legs = attacker.items[1];
 
   const [section, setSection] = useState('main');
   const [positionsMap, setPositionsMap] = useState<boolean[]>([]);
   const [rangeMap, setRangeMap] = useState<boolean[]>([]);
   const [teleporting, setTeleporting] = useState<boolean>(false);
 
-  const legs = attacker.items[1];
 
 
-  function main () {
+  function Main () {
 
     const canMove = legs && (legs.stats.walk || legs.stats.jump);
     const hasWeapons = Boolean(attacker.weapons.length);
@@ -81,7 +83,7 @@ const Footer: React.FC<FooterParams> = ({ battle, resolveAction, mirror }) => {
     );
   }
 
-  function weapons () {
+  function Weapons () {
     return (
       <>
         <button onClick={() => setSection('main')} className="classic-button">
@@ -101,14 +103,14 @@ const Footer: React.FC<FooterParams> = ({ battle, resolveAction, mirror }) => {
     );
   }
 
-  function specials () {
+  function Specials () {
 
     if (teleporting) {
       return (
         <button onClick={() => setTeleporting(false)} className="classic-button">
-          Cancel
+          <ArrowBackSvg />
         </button>
-      )
+      );
     }
 
     type specialItemType = 'DRONE' | 'TELEPORTER' | 'CHARGE_ENGINE' | 'GRAPPLING_HOOK';
@@ -139,7 +141,7 @@ const Footer: React.FC<FooterParams> = ({ battle, resolveAction, mirror }) => {
     );
   }
 
-  function movements () {
+  function Movements () {
     return (
       <button onClick={() => setPositionsMap([])} className="classic-button">
         <ArrowBackSvg />
@@ -149,14 +151,13 @@ const Footer: React.FC<FooterParams> = ({ battle, resolveAction, mirror }) => {
 
 
   return (
-    <footer>
+    <footer style={{ bottom: show ? '0' : '-100%' }}>
 
       {
-        positionsMap.length    ? movements() :
-        section === 'main'     ? main()      :
-        section === 'weapons'  ? weapons()   :
-        section === 'specials' ? specials()  :
-        <h1>Error: Unknown section '{ section }'</h1>
+        positionsMap.length    ? <Movements /> :
+        section === 'weapons'  ? <Weapons />   :
+        section === 'specials' ? <Specials />  :
+        <Main />
       }
 
       <div className="ranges" style={{ transform: mirror ? 'scaleX(-1)' : '' }}>
@@ -226,7 +227,7 @@ const ItemButton: React.FC<ItemButtonParams> = ({ itemIndex, battle, setRangeMap
   return (
     <button
       key={ String(item.id) + String(itemIndex) }
-      onMouseEnter={ () => setRangeMap(BattleUtils.getItemRangePlot(battle, itemIndex)) }
+      onMouseEnter={ () => setRangeMap(BattleUtils.plotItemRange(battle, itemIndex)) }
       onMouseLeave={ () => setRangeMap([]) }
       className={`classic-button ${canUse ? '' : 'disabled'}`}
       onClick={ canUse ? onClick : () => console.log(canPlayerUse.reason) }>

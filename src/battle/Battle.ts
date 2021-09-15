@@ -3,22 +3,30 @@ import BattlePlayerData, { BattleStartPlayerData } from './BattlePlayerData';
 
 export interface BattleStartData {
   online: boolean;
+  // playerID: string;
   starterID: string;
-  player: BattleStartPlayerData;
-  opponent: BattleStartPlayerData;
+  p1: BattleStartPlayerData;
+  p2: BattleStartPlayerData;
 }
 
 
 export default class Battle {
 
-  public logs: { color: string, message: string }[] = [];
-  public readonly online: boolean;
-  public turnOwnerID: string;
-  public readonly player: BattlePlayerData;
-  public readonly opponent: BattlePlayerData;
-  public turns = 1;
-  public complete: {
-    victory: boolean;
+  logs = [] as {
+    playerID: string;
+    message: string;
+    type: 'action' | 'info' | 'error';
+  }[];
+
+  readonly online: boolean;
+  turnOwnerID: string;
+  // readonly playerID: string;
+  readonly p1: BattlePlayerData;
+  readonly p2: BattlePlayerData;
+  droneFired: boolean = false;
+  turns = 1;
+  complete: {
+    winnerID: string;
     quit: boolean;
   } | null = null;
 
@@ -27,8 +35,9 @@ export default class Battle {
 
     this.online = data.online;
     this.turnOwnerID = data.starterID;
-    this.player = new BattlePlayerData(data.player);
-    this.opponent = new BattlePlayerData(data.opponent);
+    // this.playerID = data.playerID;
+    this.p1 = new BattlePlayerData(data.p1);
+    this.p2 = new BattlePlayerData(data.p2);
 
   }
 

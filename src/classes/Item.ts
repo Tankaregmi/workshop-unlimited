@@ -2,42 +2,43 @@ import { ItemStats } from "../managers/StatsManager";
 import textureMissing from '../assets/images/texture-missing.png';
 import Vector2 from "../utils/Vector2";
 import GetImageData from "../utils/GetImageData";
+import StatInstructions from '../data/stats';
 
 
 // Types
 
 type ItemElement = 'PHYSICAL' | 'EXPLOSIVE' | 'ELECTRIC' | 'COMBINED';
 type ItemType = (
-  'TORSO' | 'LEGS' | 'SIDE_WEAPON' | 'TOP_WEAPON' | 'DRONE'
-  | 'CHARGE_ENGINE' | 'TELEPORTER' | 'GRAPPLING_HOOK' | 'MODULE'
+	'TORSO' | 'LEGS' | 'SIDE_WEAPON' | 'TOP_WEAPON' | 'DRONE'
+	| 'CHARGE_ENGINE' | 'TELEPORTER' | 'GRAPPLING_HOOK' | 'MODULE'
 );
 
 export interface TorsoAttachment {
-  leg1: Vector2;
-  leg2: Vector2;
-  side1: Vector2;
-  side2: Vector2;
-  side3: Vector2;
-  side4: Vector2;
-  top1: Vector2;
-  top2: Vector2;
+	leg1: Vector2;
+	leg2: Vector2;
+	side1: Vector2;
+	side2: Vector2;
+	side3: Vector2;
+	side4: Vector2;
+	top1: Vector2;
+	top2: Vector2;
 }
 
 export interface RawItem {
-  id: number;
-  name: string;
-  image: string;
-  width?: number;
-  height?: number;
-  type: ItemType;
-  element: ItemElement;
+	id: number;
+	name: string;
+	image: string;
+	width?: number;
+	height?: number;
+	type: ItemType;
+	element: ItemElement;
 	unlock_level?: number;
 	gold_price?: number;
 	tokens_price?: number;
-  transform_range: string;
-  attachment?: TorsoAttachment | Vector2;
-  stats: ItemStats;
-  tags?: string[];
+	transform_range: string;
+	attachment?: TorsoAttachment | Vector2;
+	stats: ItemStats;
+	tags?: string[];
 }
 
 
@@ -48,22 +49,22 @@ export default class Item {
 
 	private static maxImageSize = 600;
 	private static defaultImage = {
-    url: textureMissing,
-    width: 200,
-    height: 200,
-  };
+		url: textureMissing,
+		width: 200,
+		height: 200,
+	};
 
 
 	raw: RawItem;
 
-  id: number;
-  type: ItemType;
+	id: number;
+	type: ItemType;
 	element: ItemElement;
-	stats: ItemStats;
+	stats: ItemStats = {};
 	tags: string[] = [];
 
 	// Graphic
-  name: string;
+	name: string;
 	transform_range: string;
 	attachment: TorsoAttachment | Vector2 | null = null;
 	kind: string;
@@ -77,14 +78,15 @@ export default class Item {
 		this.id = raw.id;
 		this.type = raw.type;
 		this.element = raw.element;
-		this.stats = raw.stats;
 		
 		this.name = raw.name;
 		this.transform_range = raw.transform_range;
 		this.kind = (raw.element + '_' + raw.type).toLowerCase();
 
+		this.parseStats(raw);
 		this.setTags();
 		this.setAttachment();
+
 	}
 
 
@@ -182,6 +184,47 @@ export default class Item {
 				break;
 	
 		}
+	}
+
+
+	private parseStats (item: RawItem): void {
+
+		const stats: ItemStats = {};
+
+		for (const instruction of StatInstructions) {
+
+			const source = item.stats[instruction.key];
+
+			if (source) {
+
+				if (Array.isArray(source)) {
+
+					const output = source.map(Number);
+
+					if (output.some(x => isNaN(x))) {
+						console.warn(`Invalid value for stat '${instruction.key}' in ${item.name}. Expected: [number, number]`);
+					} else {
+						// @ts-ignore
+						stats[instruction.key] = output;
+					}
+
+				} else {
+
+					const output = Number(source);
+
+					if (isNaN(output)) {
+						console.warn(`Invalid value for stat '${instruction.key}' in ${item.name}. Expected: number`);
+					} else {
+						// @ts-ignore
+						stats[instruction.key] = output;
+					}
+
+				}
+				
+			}
+
+		}
+
 	}
 
 }

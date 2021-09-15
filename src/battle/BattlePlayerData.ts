@@ -1,25 +1,25 @@
 import StatsM from '../managers/StatsManager';
-import ItemsManager from '../managers/ItemsManager';
+import ItemsManager, { EssentialItemData } from '../managers/ItemsManager';
 import Item from '../classes/Item';
 
 
 export interface BattleStartPlayerData {
   id: string;
   name: string;
-  setup: number[];
+  setup: (EssentialItemData | null)[];
   position: number;
 }
 
 
 export default class BattlePlayerData {
 
-  public readonly name: string;
-  public readonly id: string;
+  public name: string;
+  public id: string;
 
-  public readonly weapons: [Item, number][];
-  public readonly specials: [Item, number][];
+  public weapons: [Item, number][];
+  public specials: [Item, number][];
 
-  public readonly items: (Item | null)[];
+  public items: (Item | null)[];
   public position: number;
   public uses: number[];
   public usedInTurn: number[] = [];
@@ -41,7 +41,7 @@ export default class BattlePlayerData {
 
   constructor (data: BattleStartPlayerData) {
 
-    const items = ItemsManager.ids2items(data.setup);
+    const items = ItemsManager.ids2items(ItemsManager.items2ids(data.setup));
     const statsMap = StatsM.getStats(items, true);
 
     const {

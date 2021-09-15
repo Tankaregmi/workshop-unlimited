@@ -15,12 +15,13 @@ export interface ItemsPack {
   items: RawItem[];
 }
 
-interface EssentialItemData {
+export interface EssentialItemData {
   id: number;
   name: string;
   type: string;
   stats: Item['stats'];
-  tags: string[];
+  tags: Item['tags'];
+  element: Item['element'];
 }
 
 type MechSetup = (Item | null)[];
@@ -176,7 +177,7 @@ function getItems (filter?: (item: Item) => boolean): Item[] {
 }
 
 
-function items2ids (items: MechSetup): number[] {
+function items2ids (items: (Item | EssentialItemData | null)[]): number[] {
   return items.map(item => item ? item.id : 0);
 }
 
@@ -197,6 +198,7 @@ function getEssentialItemData (item: Item): EssentialItemData {
     stats: item.stats,
     tags: item.tags,
     type: item.type,
+    element: item.element,
   };
 }
 

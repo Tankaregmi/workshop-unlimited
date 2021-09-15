@@ -11,8 +11,8 @@
   color: var(--color);
   font-family: inherit;
   font-size: inherit;
-  font-weight: inherit;
   cursor: pointer;
+  font-weight: inherit;
   transition:
     filter 100ms ease,
     box-shadow 100ms ease;

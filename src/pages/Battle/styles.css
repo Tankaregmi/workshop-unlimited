@@ -86,8 +86,8 @@
   gap: 0.5rem;
   background-color: #05060a;
   border-top: 0.2rem solid #000000;
-  box-shadow: 0 0 1rem #000000;
   grid-area: footer;
+  transition: bottom 250ms;
 }
 
 #screen-battle > footer > button {

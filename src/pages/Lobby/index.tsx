@@ -9,7 +9,7 @@ import HalvedButton from '../../components/HalvedButton';
 
 import MechSavesM, { Mech } from '../../managers/MechSavesManager';
 import SocketManager from '../../managers/SocketManager';
-import ItemsManager from '../../managers/ItemsManager';
+import ItemsManager, { EssentialItemData } from '../../managers/ItemsManager';
 import pagePaths from '../pagePaths';
 import BattleUtils from '../../battle/BattleUtils';
 import { BattleStartData } from '../../battle/Battle';
@@ -18,9 +18,14 @@ import { arrayRandomItem } from '../../utils/arrayRandom';
 import './styles.css';
 
 
-function isValidSetupHash (setupIDs: number[], hash: string): boolean {
-  const setup = setupIDs.map(ItemsManager.getEssentialItemDataByID);
-  return hash === sha256(JSON.stringify(setup));
+function isValidSetupHash (setup: (EssentialItemData | null)[], hash: string): boolean {
+
+  const validSetup = setup.map(item =>
+    item && ItemsManager.getEssentialItemDataByID(item.id)
+  );
+
+  return hash === sha256(JSON.stringify(validSetup));
+
 }
 
 
@@ -39,12 +44,14 @@ const Lobby: React.FC = () => {
 
       'match_maker.is_valid_setup' (resolve, reject, data): void {
 
-        const isSetupHashValid = isValidSetupHash(data.setupIDs, data.setupHash);
+        const isSetupHashValid = isValidSetupHash(data.setup, data.setupHash);
 
         if (isSetupHashValid) {
 
-          const setup = ItemsManager.ids2items(data.setupIDs);
-          const { can, reason } = BattleUtils.canBattleWithSetup(setup);
+          // The setup is valid relative to my items, but
+          // I still have to check if it can battle
+
+          const { can, reason } = BattleUtils.canBattleWithSetup(data.setup);
 
           if (can) {
             resolve();
@@ -53,7 +60,7 @@ const Lobby: React.FC = () => {
           }
 
         } else {
-          reject({ message: `Invalid setup hash:\nsetup: [${data.setupIDs.join(', ')}]\nhash: ${data.setupHash}` });
+          reject({ message: `Invalid setup hash` });
         }
 
       },
@@ -62,14 +69,23 @@ const Lobby: React.FC = () => {
 
         const battle = data;
 
-        resolve();
+        const { player, opponent } = (() =>
+          SocketManager.psocket.socket.id === battle.p1.id
+          ? { player: battle.p1, opponent: battle.p2 }
+          : { player: battle.p2, opponent: battle.p1 }
+        )();
+
         history.push({
           pathname: pagePaths.battle,
           state: {
             battle,
-            mirror: battle.player.position > battle.opponent.position,
+            playerID: player.id,
+            mirror: player.position > opponent.position,
           },
         });
+
+        resolve();
+
       },
 
     });
@@ -113,7 +129,7 @@ const Lobby: React.FC = () => {
   }
 
   function arenaPoolQuit (): void {
-    SocketManager.emit('match_maker.quit', null);
+    SocketManager.emit('match_maker.quit', null).catch();
     setInPool(false);
   }
 
@@ -127,21 +143,22 @@ const Lobby: React.FC = () => {
   function onBattleVSComputer (): void {
 
     const [pos1, pos2] = BattleUtils.getRandomStartPositions();
+    const playerID = 'player';
 
     const battle: BattleStartData = {
       online: false,
-      starterID: 'player',
-      player: {
-        id: 'player',
+      starterID: playerID,
+      p1: {
+        id: playerID,
         name: 'You',
         position: pos1,
-        setup: ItemsManager.items2ids(mech.setup),
+        setup: mech.setup,
       },
-      opponent: {
-        id: 'opponent',
+      p2: {
+        id: 'computer',
         name: 'Bot',
         position: pos2,
-        setup: ItemsManager.items2ids(getOponentFromMechSaves().setup),
+        setup: getOponentFromMechSaves().setup,
       },
     };
     
@@ -149,7 +166,8 @@ const Lobby: React.FC = () => {
       pathname: pagePaths.battle,
       state: {
         battle,
-        mirror: battle.player.position > battle.opponent.position,
+        playerID,
+        mirror: false,
       },
     });
   }
@@ -165,6 +183,7 @@ const Lobby: React.FC = () => {
       ? arrayRandomItem(mechsPreffered)
       : arrayRandomItem(mechsApt)
     ) as Mech;
+
   }
 
 

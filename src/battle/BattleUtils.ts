@@ -1,23 +1,10 @@
 import Battle from "./Battle";
 import Item from "../classes/Item";
+import { BattleEvent } from "./BattleManager";
 
 
 
 // Functions
-
-function getDirection (battle: Battle): 1 | -1 {
-	return (
-		battle.player.position < battle.opponent.position
-		?  1
-		: -1
-	);
-}
-
-
-function isPlayerTurn (battle: Battle): boolean {
-	return battle.turnOwnerID === battle.player.id;
-}
-
 
 function getRandomStartPositions (): [number, number] {
 	const presets: [number, number][] = [[4, 5], [3, 6], [2, 7]];
@@ -100,7 +87,7 @@ function canBattleWithSetup (setup: (Item | null)[] | number[]) {
 }
 
 
-function getItemRangePlot (battle: Battle, itemIndex: number): boolean[] {
+function plotItemRange (battle: Battle, itemIndex: number): boolean[] {
 
 	const { attacker, defender } = getAttackerAndDefender(battle);
 	const item = attacker.items[itemIndex];
@@ -132,9 +119,9 @@ function getItemRangePlot (battle: Battle, itemIndex: number): boolean[] {
 
 function getAttackerAndDefender (battle: Battle) {
 	return (
-		battle.player.id === battle.turnOwnerID
-		? { attacker: battle.player, defender: battle.opponent }
-		: { defender: battle.player, attacker: battle.opponent }
+		battle.p1.id === battle.turnOwnerID
+		? { attacker: battle.p1, defender: battle.p2 }
+		: { defender: battle.p1, attacker: battle.p2 }
 	);
 }
 
@@ -143,8 +130,8 @@ function getTeleportablePositions (battle: Battle): boolean[] {
 
 	const positions = Array(10).fill(true);
 
-	positions[battle.player.position] = false;
-	positions[battle.opponent.position] = false;
+	positions[battle.p1.position] = false;
+	positions[battle.p2.position] = false;
 
 	return positions;
 
@@ -186,8 +173,8 @@ function getWalkablePositions (battle: Battle): boolean[] {
 
 
 	// Set positions where the players are to inaccessible
-	positions[battle.player.position] = false;
-	positions[battle.opponent.position] = false;
+	positions[battle.p1.position] = false;
+	positions[battle.p2.position] = false;
 
 
 	return positions;
@@ -229,7 +216,7 @@ function canPlayerUseItem (
 	}
 
 	if (!suppressList.includes('range') && item.stats.range) {
-		const range = getItemRangePlot(battle, itemIndex);
+		const range = plotItemRange(battle, itemIndex);
 		if (!range[defender.position]) {
 			return cant('Out of range');
 		}
@@ -320,21 +307,37 @@ function getUsableWeapons (
 }
 
 
+function getRandomDamageForEvent (battle: Battle, event: BattleEvent): number {
+
+	const indexesHelper: Partial<Record<BattleEvent['name'], number>> = {
+		stomp: 1,
+		drone_fire: 8,
+		charge_engine: 9,
+		teleport: 10,
+		grappling_hook: 11,
+	};
+
+	const itemIndex = event.weaponIndex || indexesHelper[event.name] || 0;
+
+	return getDamageToDeal(battle, itemIndex);
+
+}
+
+
 
 // Exports
 
 const BattleUtils = {
-	getDirection,
-	isPlayerTurn,
 	getRandomStartPositions,
 	canBattleWithSetup,
 	getAttackerAndDefender,
 	getTeleportablePositions,
-	getItemRangePlot,
+	plotItemRange,
 	getWalkablePositions,
 	canPlayerUseItem,
 	getDamageToDeal,
 	getUsableWeapons,
+	getRandomDamageForEvent,
 };
 
 export default BattleUtils;
